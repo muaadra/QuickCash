@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "371622594834",
+    "firebase_url": "https://quickcash-e7427.firebaseio.com",
+    "project_id": "quickcash-e7427",
+    "storage_bucket": "quickcash-e7427.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:371622594834:android:ebedcbc01a094a4df54bcb",
+        "android_client_info": {
+          "package_name": "com.softeng.quickcash"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "371622594834-3l9kqceup3irgeoifdnk1soteeps5vnc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.softeng.quickcash",
+            "certificate_hash": "0ea584c093c17c2d5c2ae7e5526b4dec9cc3bd67"
+          }
+        },
+        {
+          "client_id": "371622594834-m4rc5dv16dh3j0m5bnvvuaucc99ulael.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2PBTjC_ItoW9LNZzbSwEHr37ruIbyl0A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "371622594834-m4rc5dv16dh3j0m5bnvvuaucc99ulael.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
