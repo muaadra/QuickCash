@@ -27,4 +27,17 @@ public class InputValidation {
         }
         return false;
     }
+
+    /**
+     * checks if email length is valid
+     * i.e. the shortest accepted email will be at least 5
+     * @param email email to be checked
+     * @return true if valid
+     */
+    public boolean isEmailLengthValid(String email){
+        if(email.length() < 5){
+            return false;
+        }
+        return true;
+    }
 }
