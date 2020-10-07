@@ -18,4 +18,17 @@ public class InputValidationTest {
         assertTrue(input.isPasswordLengthValid("password"));
     }
 
+    /**
+     * This test checks if password contains one uppercase
+     * and one lower case character
+     */
+    @Test
+    public void passwordCharacterCaseTest() {
+        InputValidation input = new InputValidation();
+
+        assertFalse(input.isPasswordCaseValid("password"));
+        assertTrue(input.isPasswordCaseValid("Password"));
+        assertTrue(input.isPasswordCaseValid("passWoRd"));
+        assertFalse(input.isPasswordCaseValid("PASSWORD"));
+    }
 }
