@@ -37,4 +37,19 @@ public class InputValidation {
     public boolean isEmailLengthValid(String email){
         return email.length() >= 5;
     }
+
+    /**
+     * checks if email has a valid format
+     * email will be accepted if has a format of i@i.i
+     * where i is at least one character (i.e. any character including special chars)
+     * @param email email input to be validated
+     * @return true if valid
+     */
+    public boolean isEmailFormatValid(String email){
+        //input validation
+        String emailValidationRegEx = ".+@.+[.].+";
+        return email.matches(emailValidationRegEx);
+    }
+
+
 }
