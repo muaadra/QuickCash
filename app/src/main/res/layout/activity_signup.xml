@@ -60,6 +60,13 @@
                     android:layout_gravity="center"
                     android:ems="10"
                     android:inputType="textEmailAddress" />
+                <TextView
+                    android:id="@+id/emailStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text=""
+                    android:textColor="#BA0C0C" />
             </LinearLayout>
 
             <LinearLayout
@@ -86,6 +93,15 @@
                     android:layout_gravity="center"
                     android:ems="10"
                     android:inputType="textEmailAddress" />
+
+                <TextView
+                    android:id="@+id/passwordStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text=""
+                    android:textColor="#BA0C0C" />
+
             </LinearLayout>
 
             <LinearLayout
