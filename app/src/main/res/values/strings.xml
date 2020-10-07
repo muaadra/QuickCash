@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">QuickCash</string>
+    <string name="registration">Registration</string>
+
 </resources>
