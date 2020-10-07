@@ -13,10 +13,7 @@ public class InputValidation {
      * @return
      */
     public boolean isPasswordLengthValid(String password){
-        if(password.length() < 6){
-            return false;
-        }
-        return true;
+        return password.length() >= 6;
     }
 
     /**
