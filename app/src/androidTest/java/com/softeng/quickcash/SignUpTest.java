@@ -75,4 +75,21 @@ public class SignUpTest {
                 .check(matches(withText(R.string.InvalidPassword)));
     }
 
+    /**
+     * this UI test checks if entered password is valid
+     */
+    @Test
+    public void testValidPassword_Test2(){
+        onView(withId(R.id.password_EditText))
+                .perform(click())
+                .perform(typeText("pasSwoRd"));
+
+        onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard());
+
+        onView(withId(R.id.createAccount_Button))
+                .perform(click());
+
+        onView(withId(R.id.passwordStatus))
+                .check(matches(withText("")));
+    }
 }
