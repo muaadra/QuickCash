@@ -6,6 +6,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+/**
+ * This class is the sign up activity; it takes email and password inputs from UI
+ * then validates the input
+ *
+ * @author Muaad Alrawhani (B00538563)
+ */
 
 public class SignUp extends AppCompatActivity {
 
@@ -22,13 +28,14 @@ public class SignUp extends AppCompatActivity {
         //reset warning labels/text views
         clearWarningLabels();
 
-        InputValidation validation = new InputValidation();
-
         String email = ((EditText) findViewById(R.id.email_EditText))
                 .getText().toString();
 
         String password = ((EditText) findViewById(R.id.password_EditText))
                 .getText().toString();
+
+        //validate inputs
+        InputValidation validation = new InputValidation();
 
         //validate email input
         if(!validation.isEmailValid(email)){
