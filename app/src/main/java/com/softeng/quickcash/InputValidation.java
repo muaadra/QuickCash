@@ -35,9 +35,6 @@ public class InputValidation {
      * @return true if valid
      */
     public boolean isEmailLengthValid(String email){
-        if(email.length() < 5){
-            return false;
-        }
-        return true;
+        return email.length() >= 5;
     }
 }
