@@ -24,7 +24,7 @@ public class SignUpTest {
      * this UI test checks if email entered is valid
      */
     @Test
-    public void testValidUserName_Test1(){
+    public void testValidEmail_Test1(){
         onView(withId(R.id.email_EditText))
                 .perform(click())
                 .perform(typeText("email@mail"));
@@ -43,7 +43,7 @@ public class SignUpTest {
      * this UI test checks if email entered is valid
      */
     @Test
-    public void testValidUserName_Test2(){
+    public void testValidEmail_Test2(){
         onView(withId(R.id.email_EditText))
                 .perform(click())
                 .perform(typeText("email@mail.com"));
@@ -55,6 +55,24 @@ public class SignUpTest {
 
         onView(withId(R.id.emailStatus))
                 .check(matches(withText("")));
+    }
+
+    /**
+     * this UI test checks if entered password is valid
+     */
+    @Test
+    public void testValidPassword_Test1(){
+        onView(withId(R.id.password_EditText))
+                .perform(click())
+                .perform(typeText("pas"));
+
+        onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard());
+
+        onView(withId(R.id.createAccount_Button))
+                .perform(click());
+
+        onView(withId(R.id.passwordStatus))
+                .check(matches(withText(R.string.InvalidPassword)));
     }
 
 }
