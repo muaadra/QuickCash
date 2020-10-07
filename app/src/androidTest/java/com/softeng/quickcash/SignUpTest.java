@@ -54,7 +54,7 @@ public class SignUpTest {
                 .perform(click());
 
         onView(withId(R.id.emailStatus))
-                .check(matches(withText(R.string.InvalidEmail)));
+                .check(matches(withText("")));
     }
 
 }
