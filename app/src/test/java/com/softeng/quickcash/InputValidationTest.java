@@ -31,4 +31,19 @@ public class InputValidationTest {
         assertTrue(input.isPasswordCaseValid("passWoRd"));
         assertFalse(input.isPasswordCaseValid("PASSWORD"));
     }
+
+    /**
+     * This test checks if email length is valid
+     * i.e. the shortest accepted email will be at least 5
+     * characters as in a@b.c
+     */
+    @Test
+    public void emailLengthTest() {
+        InputValidation input = new InputValidation();
+
+        assertTrue(input.isEmailLengthValid("a@b.c"));
+        assertFalse(input.isEmailLengthValid("a@"));
+        assertFalse(input.isEmailLengthValid(""));
+        assertTrue(input.isEmailLengthValid("a@b.com"));
+    }
 }
