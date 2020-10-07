@@ -2,5 +2,7 @@
     <string name="app_name">QuickCash</string>
     <string name="registration">Registration</string>
     <string name="InvalidEmail">Invalid Email Format</string>
+    <string name="InvalidPassword">Password must be at least 6 characters and includes
+    1 contains one uppercase and one lower case</string>
 
 </resources>
