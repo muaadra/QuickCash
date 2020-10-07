@@ -38,4 +38,23 @@ public class SignUpTest {
                 .check(matches(withText(R.string.InvalidEmail)));
     }
 
+
+    /**
+     * this UI test checks if email entered is valid
+     */
+    @Test
+    public void testValidUserName_Test2(){
+        onView(withId(R.id.email_EditText))
+                .perform(click())
+                .perform(typeText("email@mail.com"));
+
+        onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard());
+
+        onView(withId(R.id.createAccount_Button))
+                .perform(click());
+
+        onView(withId(R.id.emailStatus))
+                .check(matches(withText(R.string.InvalidEmail)));
+    }
+
 }
