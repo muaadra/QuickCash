@@ -51,4 +51,22 @@ public class InputValidationTest {
         assertFalse(input.isEmailLengthValid(""));
         assertTrue(input.isEmailLengthValid("a@b.com"));
     }
+
+    /**
+     * This test checks if email has a valid format
+     * email will be accepted if it's of a "i@i.i" format
+     * where i is at least one character (i.e. any character including special chars)
+     */
+    @Test
+    public void emailFormatTest() {
+        InputValidation input = new InputValidation();
+
+        assertFalse(input.isEmailFormatValid("email.c"));
+        assertFalse(input.isEmailFormatValid("email."));
+        assertFalse(input.isEmailFormatValid("@email"));
+        assertFalse(input.isEmailFormatValid("a@aaa"));
+        assertFalse(input.isEmailFormatValid("aa@a."));
+        assertTrue(input.isEmailFormatValid("!@%.5"));
+        assertTrue(input.isEmailFormatValid("jojo@me.com"));
+    }
 }
