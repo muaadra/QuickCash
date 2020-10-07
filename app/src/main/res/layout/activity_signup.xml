@@ -111,23 +111,6 @@
                 android:layout_marginBottom="30dp"
                 android:orientation="vertical">
 
-                <TextView
-                    android:textColor="#000000"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="1dp"
-                    android:layout_weight="1"
-                    android:text="Confirm Password"
-                    android:textSize="17sp" />
-
-                <EditText
-                    android:id="@+id/confirmPassword_EditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:ems="10"
-                    android:inputType="textEmailAddress" />
             </LinearLayout>
 
             <LinearLayout
