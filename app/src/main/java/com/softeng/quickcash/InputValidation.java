@@ -18,4 +18,16 @@ public class InputValidation {
         }
         return true;
     }
+
+    /**
+     * This method checks if password contains one uppercase
+     * and one lower case character
+     */
+    public boolean isPasswordCaseValid(String password){
+        if(password.matches(".*[a-z].*") &&
+                password.matches(".*[A-Z].*")){
+            return true;
+        }
+        return false;
+    }
 }
