@@ -10,7 +10,7 @@ public class InputValidation {
 
     /**
      * validates password length, max is 6 characters
-     * @return
+     * @return true if valid
      */
     public boolean isPasswordLengthValid(String password){
         return password.length() >= 6;
