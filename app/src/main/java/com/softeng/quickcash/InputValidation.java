@@ -51,5 +51,22 @@ public class InputValidation {
         return email.matches(emailValidationRegEx);
     }
 
+    /**
+     * check if password length and case is valid
+     * @param password password to be checked
+     * @return true if valid
+     */
+    public boolean isPasswordValid(String password){
+        return isPasswordLengthValid(password) && isPasswordCaseValid(password);
+    }
 
+    /**
+     * checks if email input has a valid length (>5) and valid format
+     * as in a@b.c
+     * @param email email input to be validated
+     * @return true if valid
+     */
+    public boolean isEmailValid(String email){
+        return isEmailLengthValid(email) && isEmailFormatValid(email);
+    }
 }
