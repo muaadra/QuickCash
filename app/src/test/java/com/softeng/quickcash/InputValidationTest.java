@@ -1,7 +1,12 @@
 package com.softeng.quickcash;
 import org.junit.Test;
 import static org.junit.Assert.*;
-
+/**
+ * Test cases for InputValidation class
+ *
+ * @author Muaad Alrawhani (B00538563)
+ *
+ */
 public class InputValidationTest {
 
     /**
