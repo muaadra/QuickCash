@@ -27,6 +27,9 @@ public class SignUp extends AppCompatActivity {
         String email = ((EditText) findViewById(R.id.email_EditText))
                 .getText().toString();
 
+        String password = ((EditText) findViewById(R.id.password_EditText))
+                .getText().toString();
+
         //validate email input
         if(!validation.isEmailValid(email)){
             ((TextView) findViewById(R.id.emailStatus))
@@ -34,7 +37,7 @@ public class SignUp extends AppCompatActivity {
         }
 
         //validate password input
-        if(!validation.isPasswordValid(email)){
+        if(!validation.isPasswordValid(password)){
             ((TextView) findViewById(R.id.passwordStatus))
                     .setText(R.string.InvalidPassword);
         }
