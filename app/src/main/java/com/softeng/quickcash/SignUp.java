@@ -33,6 +33,11 @@ public class SignUp extends AppCompatActivity {
                     .setText(R.string.InvalidEmail);
         }
 
+        //validate password input
+        if(!validation.isPasswordValid(email)){
+            ((TextView) findViewById(R.id.passwordStatus))
+                    .setText(R.string.InvalidPassword);
+        }
     }
 
     private void clearWarningLabels(){
