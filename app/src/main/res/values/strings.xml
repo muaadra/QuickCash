@@ -5,4 +5,8 @@
     <string name="InvalidPassword">Password must be at least 6 characters and includes
     1 contains one uppercase and one lower case</string>
 
+    <string name="createAccountButton">Create Account</string>
+    <string name="signInButton">Sign In</string>
+    <string name="continueAsGuestButton">Continue as Guest ></string>
+    <string name="mainPageImage">Main page image</string>
 </resources>
