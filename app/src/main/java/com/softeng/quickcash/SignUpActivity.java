@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.service.autofill.UserData;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -96,15 +97,15 @@ public class SignUpActivity extends AppCompatActivity {
      * in database
      */
     private void addNewUserToDb(){
-
-        //check if user in db
+        //replace "." with ";" in user email, as for simplicity the email is used
+        //as the user id, and path cannot contain "."
         String userId = userData.getEmail().replace(".", ";");
-
         //path to database object
         String path = "users/"+ userId +"/SignUpInfo";
 
         //read data from database
-        DbRead<UserSignUpData> dbRead = new DbRead<UserSignUpData>(path, UserSignUpData.class, db) {
+        DbRead<UserSignUpData> dbRead = new DbRead<UserSignUpData>(path,
+                UserSignUpData.class, db) {
             @Override
             public void getReturnedDbData(UserSignUpData dataFromDb) {
                 //after data is received from db call checkDbData
@@ -121,7 +122,7 @@ public class SignUpActivity extends AppCompatActivity {
         //if result from db is null, means record does not exist
         if(dataFromDb == null){
             //user is not in db, write new user to db
-            writeUserDataToDB(userData);
+            writeUserDataToDB();
         }else {
             ((TextView) findViewById(R.id.signUpStatus))
                     .setText(R.string.UserAlreadyExists);
@@ -131,31 +132,20 @@ public class SignUpActivity extends AppCompatActivity {
     /**
      * this method writes the data to database
      */
-    private void writeUserDataToDB(final UserSignUpData userData) {
-        //using email address as user id and replacing "." with ";"
-        final String id = userData.getEmail().replace(".", ";");
+    private void writeUserDataToDB() {
+        //replace "." with ";" in user email, as for simplicity the email is used
+        //as the user id, and path cannot contain "."
+        String userId = userData.getEmail().replace(".", ";");
 
-        //create a success listener to report back if db was committed successful
-        OnSuccessListener<Void> onSuccessListener = new OnSuccessListener<Void>() {
+        //path where you want to write data to
+        String path = "users/"+ userId +"/SignUpInfo";
+
+        DbWrite<UserSignUpData> dataDbWrite = new DbWrite<UserSignUpData>(path,userData,db) {
             @Override
-            public void onSuccess(Void aVoid) {
-                // Write was successful!
-                updateUIWithSignUpStatus(userData);
+            public void writeResult(UserSignUpData userdata) {
+                updateUIWithSignUpStatus(userdata);
             }
         };
-
-        //create a failure listener to report back if db was not committed successful
-        OnFailureListener onFailureListener = new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                updateUIWithSignUpStatus(null);
-            }
-        };
-
-        //write data to database
-        dbReference.child("users").child(id).child("SignUpInfo").setValue(userData)
-                .addOnSuccessListener(onSuccessListener)
-                .addOnFailureListener(onFailureListener);
 
     }
 
