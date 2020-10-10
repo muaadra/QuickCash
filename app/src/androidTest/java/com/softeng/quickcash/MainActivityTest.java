@@ -36,8 +36,6 @@ public class MainActivityTest {
                     @Override
                     public void perform(MainActivity activity) {
                         UserStatusData.removeAllUserPreferences(activity);
-                        UserStatusData.setUserFirstRun(activity,false);
-
                         //restart the activity
                         Intent intent = new Intent(activity, MainActivity.class);
                         activity.startActivity(intent);
@@ -61,7 +59,7 @@ public class MainActivityTest {
                     @Override
                     public void perform(MainActivity activity) {
                         UserStatusData.removeAllUserPreferences(activity);
-                        UserStatusData.setUserFirstRun(activity,true);
+                        UserStatusData.setUserFirstRun(activity,false);
 
                         //restart the activity
                         Intent intent = new Intent(activity, MainActivity.class);

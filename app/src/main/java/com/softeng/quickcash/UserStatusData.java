@@ -24,6 +24,27 @@ public class UserStatusData {
     }
 
     /**
+     * set user first run flag; if it's not user's firs run set to false
+     */
+    public static void setUserFirstRun(Context context, boolean firstRun) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                "UserPreferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("firstRun", firstRun);
+        editor.apply();
+    }
+
+    /**
+     * get first run status
+     * @return true if user first run
+     */
+    public static boolean getUserFirstRunStatus(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                "UserPreferences", MODE_PRIVATE);
+        return sharedPreferences.getBoolean("firstRun", true);
+    }
+
+    /**
      * gets user sign-in status
      */
     public static boolean isUserSignIn(Context context) {
@@ -71,7 +92,7 @@ public class UserStatusData {
      */
     public static void removeAllUserPreferences(Context context) {
         SharedPreferences prefs = context
-                .getSharedPreferences("email", MODE_PRIVATE);
+                .getSharedPreferences("UserPreferences", MODE_PRIVATE);
         prefs.edit().clear().apply();
     }
 
