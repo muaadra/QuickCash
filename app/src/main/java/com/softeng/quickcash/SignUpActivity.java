@@ -25,7 +25,9 @@ import com.google.firebase.database.ValueEventListener;
  */
 
 public class SignUpActivity extends AppCompatActivity {
+    final FirebaseDatabase db = FirebaseDatabase.getInstance();
     private DatabaseReference dbReference;
+    UserSignUpData userData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,12 +53,11 @@ public class SignUpActivity extends AppCompatActivity {
 
 
         //create user sign-up data object
-        UserSignUpData userData = new UserSignUpData(email,password);
+        userData = new UserSignUpData(email,password);
 
         if(isRegistrationInputValid(email,password)){
-            addNewUserToDb(userData);
+            addNewUserToDb();
         }
-
     }
 
     /**
@@ -94,38 +95,37 @@ public class SignUpActivity extends AppCompatActivity {
      * send data to fireBase database and add new user if user doesn't exist
      * in database
      */
-    UserSignUpData userData;
-    private void addNewUserToDb(UserSignUpData newUserData){
-        userData = newUserData;
+    private void addNewUserToDb(){
 
-        ValueEventListener postListener = new ValueEventListener() {
+        //check if user in db
+        String userId = userData.getEmail().replace(".", ";");
+
+        //path to database object
+        String path = "users/"+ userId +"/SignUpInfo";
+
+        //read data from database
+        DbRead<UserSignUpData> dbRead = new DbRead<UserSignUpData>(path, UserSignUpData.class, db) {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String userId = userData.getEmail().replace(".", ";");
-
-                //get user sign up info as a UserSignUpData object
-                UserSignUpData userDataFromDb = dataSnapshot.child("users")
-                        .child(userId).child("SignUpInfo")
-                        .getValue(UserSignUpData.class);
-
-                if(userDataFromDb == null){
-                    //user is not in db, write new user to db
-                    writeUserDataToDB(userData);
-                }else {
-                    ((TextView) findViewById(R.id.signUpStatus))
-                            .setText(R.string.UserAlreadyExists);
-                }
+            public void getReturnedDbData(UserSignUpData dataFromDb) {
+                //after data is received from db call checkDbData
+                checkDbData(dataFromDb);
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // error
-                System.out.println("onCancelled error:" + error.getMessage());
-            }
-
         };
 
-        dbReference.addListenerForSingleValueEvent(postListener);
+    }
+
+    /**
+     * this method runs after data is received from db
+     */
+    private void checkDbData(UserSignUpData dataFromDb){
+        //if result from db is null, means record does not exist
+        if(dataFromDb == null){
+            //user is not in db, write new user to db
+            writeUserDataToDB(userData);
+        }else {
+            ((TextView) findViewById(R.id.signUpStatus))
+                    .setText(R.string.UserAlreadyExists);
+        }
     }
 
     /**
