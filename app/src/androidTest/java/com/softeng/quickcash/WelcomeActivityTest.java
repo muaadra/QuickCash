@@ -17,10 +17,10 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class MainActivityTest {
+public class WelcomeActivityTest {
     @Rule
-    public ActivityScenarioRule<MainActivity> activityRule =
-            new ActivityScenarioRule<>(MainActivity.class);
+    public ActivityScenarioRule<WelcomeActivity> activityRule =
+            new ActivityScenarioRule<>(WelcomeActivity.class);
 
     @Test
     public void tapCreateAccount() {

@@ -18,8 +18,8 @@ import static org.junit.Assert.assertTrue;
 
 public class UserStatusDataTest {
     @Rule
-    public ActivityScenarioRule<MainActivity> activityScenarioRule
-            = new ActivityScenarioRule<>(MainActivity.class);
+    public ActivityScenarioRule<WelcomeActivity> activityScenarioRule
+            = new ActivityScenarioRule<>(WelcomeActivity.class);
 
     final Context[] appContext = new Context[1];
 
@@ -28,9 +28,9 @@ public class UserStatusDataTest {
      */
     @Before
     public void setup(){
-        activityScenarioRule.getScenario().onActivity(new ActivityScenario.ActivityAction<MainActivity>() {
+        activityScenarioRule.getScenario().onActivity(new ActivityScenario.ActivityAction<WelcomeActivity>() {
             @Override
-            public void perform(MainActivity activity) {
+            public void perform(WelcomeActivity activity) {
                 appContext[0] = activity;
                 UserStatusData.removeAllUserPreferences(activity);
                 UserStatusData.saveUserData("email","jojo@mo.com", activity);
@@ -61,9 +61,9 @@ public class UserStatusDataTest {
      */
     @After
     public void tearDown(){
-        activityScenarioRule.getScenario().onActivity(new ActivityScenario.ActivityAction<MainActivity>() {
+        activityScenarioRule.getScenario().onActivity(new ActivityScenario.ActivityAction<WelcomeActivity>() {
             @Override
-            public void perform(MainActivity activity) {
+            public void perform(WelcomeActivity activity) {
                 UserStatusData.removeAllUserPreferences(activity);
             }
         });

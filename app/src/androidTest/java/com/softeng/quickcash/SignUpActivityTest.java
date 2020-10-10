@@ -14,10 +14,10 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
-public class SignUpTest {
+public class SignUpActivityTest {
     @Rule
-    public ActivityScenarioRule<SignUp> activityScenarioRule
-            = new ActivityScenarioRule<>(SignUp.class);
+    public ActivityScenarioRule<SignUpActivity> activityScenarioRule
+            = new ActivityScenarioRule<>(SignUpActivity.class);
 
 
     /**
