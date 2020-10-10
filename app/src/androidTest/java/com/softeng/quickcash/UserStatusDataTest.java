@@ -43,8 +43,10 @@ public class UserStatusDataTest {
      */
     @Test
     public void testValidUserWritePreferencesTest(){
-        assertNotEquals("TT@mo.com", UserStatusData.getEmail(appContext[0]));
-        assertEquals("jojo@mo.com", UserStatusData.getEmail(appContext[0]));
+        assertNotEquals("TT@mo.com", UserStatusData
+                .getUserPreferenceData("email", appContext[0]));
+        assertEquals("jojo@mo.com", UserStatusData
+                .getUserPreferenceData("email", appContext[0]));
     }
 
     /**

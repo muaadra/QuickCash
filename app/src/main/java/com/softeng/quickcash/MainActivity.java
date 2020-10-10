@@ -2,6 +2,7 @@ package com.softeng.quickcash;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.service.autofill.UserData;
 import android.widget.TextView;
@@ -27,7 +28,10 @@ public class MainActivity extends AppCompatActivity {
            /*******  uncomment once MainActivity is ready  *********/
            //UserStatusData.setUserFirstRun(this,false);
            /*********                                        *******/
-           NewActivity.goToActivity(this,WelcomeActivity.class);
+
+           //go to next activity
+           Intent intent = new Intent(this, WelcomeActivity.class);
+           startActivity(intent);
        }
     }
 }

@@ -13,18 +13,11 @@ public class UserStatusData {
      * get user Email
      */
     public static String getEmail(Context context) {
-        return getUserData("email", context);
+        return getUserPreferenceData("email", context);
     }
 
     /**
-     * get user UserName
-     */
-    public static String getUserName(Context context) {
-        return getUserData("userName", context);
-    }
-
-    /**
-     * set user first run flag; if it's not user's firs run set to false
+     * set user first run status/flag; if it's not user's firs run set to false
      */
     public static void setUserFirstRun(Context context, boolean firstRun) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(
@@ -69,7 +62,7 @@ public class UserStatusData {
     /**
      * get user data from SharedPreferences
      */
-    public static String getUserData(String key, Context context) {
+    public static String getUserPreferenceData(String key, Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(
                 "UserPreferences", MODE_PRIVATE);
 
