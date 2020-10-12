@@ -51,7 +51,7 @@
                     android:textSize="17sp" />
 
                 <EditText
-                    android:id="@+id/input_email_address"
+                    android:id="@+id/input_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -60,7 +60,8 @@
                 <TextView
                     android:id="@+id/err_msg_email"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:textColor="#F44336" />
 
             </LinearLayout>
 
@@ -89,7 +90,8 @@
                 <TextView
                     android:id="@+id/err_msg_pw"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:textColor="#F44336" />
 
             </LinearLayout>
 
@@ -111,7 +113,8 @@
             <TextView
                 android:id="@+id/msg_confirm"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textColor="#3F51B5" />
 
 
         </LinearLayout>
