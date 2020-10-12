@@ -1,5 +1,7 @@
 package com.softeng.quickcash;
 
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.matcher.ViewMatchers;
@@ -23,10 +25,14 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.RootMatchers.isDialog;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.endsWith;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class SignInTest {
@@ -90,14 +96,14 @@ public class SignInTest {
         signUpInfo.put("email", "signUp@test.com");
         signUpInfo.put("password", "testPassword1111");   //Wrong password
 
-        onView(withId(R.id.input_email)).perform(typeText("signUp@test;com"));
+        onView(withId(R.id.input_email)).perform(typeText("signUp@test.com"));
         onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.input_password)).perform(typeText("testPassword"));
+        onView(withId(R.id.input_password)).perform(typeText("testPassword1111"));
         onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard());
         onView(withId(R.id.btn_login)).perform(click());
 
         assertFalse(signUpInfo.equals(info.get("users").get("signUp@test;com").get("SignUpInfo")));
+        onView(withId(R.id.err_msg_pw)).check(matches(isDisplayed()));
     }
-
 
 }

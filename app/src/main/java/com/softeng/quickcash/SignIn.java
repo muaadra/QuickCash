@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.database.DataSnapshot;
@@ -52,7 +53,6 @@ public class SignIn extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String email = useremail.replace(".", ";");
-                System.out.println(email);
                 info = (Map<String, HashMap<String, HashMap<String, HashMap<String, String>>>>) dataSnapshot.getValue();
                 try {
                     String password = info.get("users").get(email).get("SignUpInfo").get("password").toString();
@@ -63,7 +63,11 @@ public class SignIn extends AppCompatActivity {
                         ((TextView) findViewById(R.id.err_msg_pw)).setText("Passwords do not match.");
                     }
                 } catch (Exception e) {
-                    Toast.makeText(SignIn.this, "User not found.", Toast.LENGTH_SHORT).show();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SignIn.this);
+                    builder.setTitle("User not found.");
+                    builder.setMessage("User not found.");
+                    builder.setCancelable(true);
+                    builder.create().show();
                 }
             }
 
