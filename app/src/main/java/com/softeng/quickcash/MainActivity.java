@@ -4,7 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.service.autofill.UserData;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -12,10 +13,25 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //check if this is the first run
+        checkUserFirstRun();
+
     }
 
-    public void signUp(View view) {
-        Intent intent = new Intent(this, SignUp.class);
-        startActivity(intent);
+    /**
+     * checks if this is the first user run
+     */
+    private void checkUserFirstRun(){
+       if(UserStatusData.getUserFirstRunStatus(this)){
+           //if it is the first run, then set status of first run to false
+           /*******  uncomment once MainActivity is ready  *********/
+           //UserStatusData.setUserFirstRun(this,false);
+           /*********                                        *******/
+
+           //go to next activity
+           Intent intent = new Intent(this, WelcomeActivity.class);
+           startActivity(intent);
+       }
     }
 }

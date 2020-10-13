@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".SignUp"
+    tools:context=".SignUpActivity"
     android:gravity="center">
 
     <LinearLayout
@@ -92,7 +92,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:ems="10"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="textPassword" />
 
                 <TextView
                     android:id="@+id/passwordStatus"
@@ -130,7 +130,7 @@
                     android:textSize="22sp" />
 
                 <TextView
-                    android:id="@+id/status"
+                    android:id="@+id/signUpStatus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
