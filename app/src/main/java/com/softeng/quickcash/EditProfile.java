@@ -57,6 +57,25 @@ public class EditProfile extends AppCompatActivity {
         });
 
     }
+    /**
+     * This method Will process the information if edit profile button is clicked.
+     * Specific command implemented in order to update information.
+     * @param idEmail
+     * @param fName
+     * @param aboutMe
+     */
+    public void editProfile(String idEmail, String fName, String aboutMe){
+        userProfile profile = new userProfile(fName,aboutMe);   //create newly updated profile object
+        Map<String,Object> updates = new HashMap<String,Object>();  //create Map in order to update children
+
+        updates.put("aboutMe",profile.getAboutMe());    //update list of updates ( set to object path in db ) pass retrieved object information
+        updates.put("fName",profile.getfName());
+
+        idEmail = "email7;com";
+        dbProfile.child(idEmail).child("Profile").updateChildren(updates);  //push the updates to the database
+        ((TextView) findViewById(R.id.textViewEditProfileConfirm)).setText(R.string.profileEdited); //acknowledge that user profile has been edited
+
+    }
 
 
 
