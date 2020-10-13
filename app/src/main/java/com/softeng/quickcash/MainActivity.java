@@ -23,11 +23,10 @@ public class MainActivity extends AppCompatActivity {
      * checks if this is the first user run
      */
     private void checkUserFirstRun(){
-       if(UserStatusData.getUserFirstRunStatus(this)){
+       if(UserStatusData.getUserFirstRunStatus(this)
+       && !UserStatusData.isUserSignIn(this)){
            //if it is the first run, then set status of first run to false
-           /*******  uncomment once MainActivity is ready  *********/
-           //UserStatusData.setUserFirstRun(this,false);
-           /*********                                        *******/
+           UserStatusData.setUserFirstRun(this,false);
 
            //go to next activity
            Intent intent = new Intent(this, WelcomeActivity.class);
