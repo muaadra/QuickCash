@@ -1,8 +1,10 @@
 package com.softeng.quickcash;
 
 import android.content.Context;
+import android.content.Intent;
 
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.espresso.assertion.ViewAssertions;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import org.junit.After;
@@ -11,6 +13,9 @@ import org.junit.Rule;
 import org.junit.Test;
 
 
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
@@ -18,8 +23,8 @@ import static org.junit.Assert.assertTrue;
 
 public class UserStatusDataTest {
     @Rule
-    public ActivityScenarioRule<WelcomeActivity> activityScenarioRule
-            = new ActivityScenarioRule<>(WelcomeActivity.class);
+    public ActivityScenarioRule<MainActivity> activityScenarioRule
+            = new ActivityScenarioRule<>(MainActivity.class);
 
     final Context[] appContext = new Context[1];
 
@@ -28,9 +33,10 @@ public class UserStatusDataTest {
      */
     @Before
     public void setup(){
-        activityScenarioRule.getScenario().onActivity(new ActivityScenario.ActivityAction<WelcomeActivity>() {
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<MainActivity>() {
             @Override
-            public void perform(WelcomeActivity activity) {
+            public void perform(MainActivity activity) {
                 appContext[0] = activity;
                 UserStatusData.removeAllUserPreferences(activity);
                 UserStatusData.saveUserData("email","jojo@mo.com", activity);
@@ -59,13 +65,32 @@ public class UserStatusDataTest {
     }
 
     /**
+     * tests if signed-in user goes to mainActivity
+     */
+    @Test
+    public void checkIfSignedInUserInMainActivityTest(){
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<MainActivity>() {
+                    @Override
+                    public void perform(MainActivity activity) {
+                        Intent intent = new Intent(activity, MainActivity.class);
+                        activity.startActivity(intent);
+                    }
+                });
+        //check sign-up screen is displayed
+        onView(withId(R.id.mainActivityLayOut))
+                .check(ViewAssertions.matches(isDisplayed()));
+    }
+
+    /**
      * clear all data from SharedPreferences
      */
     @After
     public void tearDown(){
-        activityScenarioRule.getScenario().onActivity(new ActivityScenario.ActivityAction<WelcomeActivity>() {
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<MainActivity>() {
             @Override
-            public void perform(WelcomeActivity activity) {
+            public void perform(MainActivity activity) {
                 UserStatusData.removeAllUserPreferences(activity);
             }
         });
