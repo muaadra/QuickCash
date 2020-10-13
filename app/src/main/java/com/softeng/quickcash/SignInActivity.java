@@ -26,6 +26,7 @@ public class SignInActivity extends AppCompatActivity {
     private DatabaseReference dbReference;
     UserSignUpData userData;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,12 +43,18 @@ public class SignInActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * clear err message
+     */
     private void clearWarningLabels() {
         ((TextView) findViewById(R.id.err_msg_email)).setText("");
         ((TextView) findViewById(R.id.err_msg_pw)).setText("");
         ((TextView) findViewById(R.id.msg_confirm)).setText("");
     }
 
+    /**
+     * this method is called when user clicks on the login button
+     */
     public void login_check(FirebaseDatabase db, UserSignUpData userData) {
         clearWarningLabels();
         //replace "." with ";" in user email, as for simplicity the email is used
@@ -81,11 +88,8 @@ public class SignInActivity extends AppCompatActivity {
             }
 
         } catch (Exception e) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(SignInActivity.this);
-            builder.setTitle("User not found.");
-            builder.setMessage("User not found.");
-            builder.setCancelable(true);
-            builder.create().show();
+            ((TextView) findViewById(R.id.err_msg_email))
+                    .setText("User not found.");
         }
     }
 }
