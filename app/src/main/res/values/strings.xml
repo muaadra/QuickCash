@@ -9,4 +9,7 @@
     <string name="signInButton">Sign In</string>
     <string name="continueAsGuestButton">Continue as Guest ></string>
     <string name="mainPageImage">Main page image</string>
+    <string name="UserAlreadyExists">Account information already exits in database</string>
+    <string name="UnsuccessfulSignUp">Registration was not successful</string>
+    <string name="SuccessfulSignUp">Registration was successful</string>
 </resources>
