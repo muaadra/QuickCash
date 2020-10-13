@@ -92,7 +92,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:ems="10"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="textPassword" />
 
                 <TextView
                     android:id="@+id/passwordStatus"
