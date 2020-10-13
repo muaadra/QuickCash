@@ -57,6 +57,38 @@ public class EditProfile extends AppCompatActivity {
         });
 
     }
+
+
+    /**
+     * This method is called to retrieve the users profile information if previously stored.
+     * It will take a datasnapshot and see if the users profile is stored, if yes display said info
+     */
+    public void onStartEditProfile() {
+        ValueEventListener postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+
+                String userEmail = "email7;com";
+                userProfile userDataFromDb = snapshot.child("email7;com").child("Profile").getValue(userProfile.class); //create profile object and set to according path (if null it is not there)
+                if(userDataFromDb!=null) {  //if the datasnapshot does not contain the users profile
+                    System.out.println("ABOUT ME : " +userDataFromDb.getAboutMe());
+                    ((TextView) findViewById(R.id.editProfileAboutMe)).setText(userDataFromDb.getAboutMe());    //setting text views to previously stored information
+                    ((TextView) findViewById(R.id.editProfileName)).setText(userDataFromDb.getfName());
+                }else{
+                    ((TextView) findViewById(R.id.editProfileAboutMe)).setText("");
+                    ((TextView) findViewById(R.id.editProfileName)).setText("");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.w(TAG, "LoadPost:onCancelled", error.toException());
+            }
+        };
+        dbProfile.addValueEventListener(postListener);
+
+    }
+
     /**
      * This method Will process the information if edit profile button is clicked.
      * Specific command implemented in order to update information.
