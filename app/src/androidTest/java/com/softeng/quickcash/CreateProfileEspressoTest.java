@@ -24,13 +24,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 public class CreateProfileEspressoTest {
 
-        //  'CreateProfile' will be the name of the activity functionality
-        // editProfileName will be the name of the textview for a users profile name
-        // editProfileAboutMe will be the name of the textview for a users about me info
-        // createProfile will be the button a user will click to create their profile
-        // textViewProfileConfirm will be the name of the label i will use to acknowledge a profile being created
-        // profileCreated will be a String reference I will use, this will be the text shown in the label
-
         @Rule
         public ActivityScenarioRule<CreateProfile> activityScenarioRule = new ActivityScenarioRule<CreateProfile>(CreateProfile.class);
         /**
