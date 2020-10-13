@@ -69,6 +69,7 @@ public class UserStatusDataTest {
      */
     @Test
     public void checkIfSignedInUserInMainActivityTest(){
+        //restarting activity
         activityScenarioRule.getScenario().onActivity(
                 new ActivityScenario.ActivityAction<MainActivity>() {
                     @Override
