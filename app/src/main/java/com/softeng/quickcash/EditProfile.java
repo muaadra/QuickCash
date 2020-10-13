@@ -29,7 +29,7 @@ public class EditProfile extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_editprofile);
+        setContentView(R.layout.activity_edit_profile);
 
         textViewFName = (TextView) findViewById(R.id.editProfileName); // Text view 'full name'
         textViewAboutMe = (TextView) findViewById(R.id.editProfileAboutMe); //Text view 'about me'
