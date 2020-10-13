@@ -76,7 +76,16 @@ public class EditProfile extends AppCompatActivity {
         ((TextView) findViewById(R.id.textViewEditProfileConfirm)).setText(R.string.profileEdited); //acknowledge that user profile has been edited
 
     }
-
+    /**
+     * This method will delete user profile if delete profile button is clicked
+     * Set respective path under Profile to null
+     * @param idEmail
+     */
+    public void deleteProfile(String idEmail){
+        idEmail = "email7;com";
+        dbProfile.child(idEmail).child("Profile").setValue(null);   //set the Profile object to null to its respective account email
+        ((TextView) findViewById(R.id.textViewDeleteProfileConfirm)).setText(R.string.profileDelete); //acknowledge that user profile has been deleted
+    }
 
 
 }
