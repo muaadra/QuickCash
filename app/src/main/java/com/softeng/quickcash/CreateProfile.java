@@ -42,6 +42,17 @@ public class CreateProfile extends AppCompatActivity {
         });
 
     }
+    /**
+     * This method will take in the arguments in order to create userProfile object
+     * args; String+ email(users email(to be retrieved from other methods)) String+ users First Name String+ users About Me
+     */
+    public void writeNewProfile(String idEmail, String fName, String aboutMe){
 
+        userProfile profile = new userProfile(fName,aboutMe);   //pass information to create profile object
+        idEmail = "email7;com"; //THIS NEEDS TO BE PASSED IN (global)
+        dbProfile.child(idEmail).child("Profile").setValue(profile);    //store user profile into database using the email as a unique 'child' ID
+        ((TextView)findViewById(R.id.textViewProfileConfirm)).setText(R.string.profileCreated); //display label acknowledging profile created
+
+    }
 
 }
