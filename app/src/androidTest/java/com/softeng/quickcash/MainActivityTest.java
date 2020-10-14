@@ -35,13 +35,12 @@ public class MainActivityTest {
      * tests that the main activity is showing if user is signed in
      */
     @Test
-    public void welcomeActivityShowingForFirstRunTest(){
+    public void mainActivityShowingSignedInUserTest(){
         //setup
         activityScenarioRule.getScenario().onActivity(
                 new ActivityScenario.ActivityAction<MainActivity>() {
                     @Override
                     public void perform(MainActivity activity) {
-                        UserStatusData.removeAllUserPreferences(activity);
                         UserStatusData.saveUserData("email","jojo@mo.com", activity);
                         //restart the activity
                         Intent intent = new Intent(activity, MainActivity.class);
