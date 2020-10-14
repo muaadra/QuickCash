@@ -32,7 +32,7 @@ public class MainActivityTest {
             = new ActivityScenarioRule<>(MainActivity.class);
 
     /**
-     * tests that the welcome activity should show to first time users only
+     * tests that the main activity is showing if user is signed in
      */
     @Test
     public void welcomeActivityShowingForFirstRunTest(){
@@ -42,6 +42,7 @@ public class MainActivityTest {
                     @Override
                     public void perform(MainActivity activity) {
                         UserStatusData.removeAllUserPreferences(activity);
+                        UserStatusData.saveUserData("email","jojo@mo.com", activity);
                         //restart the activity
                         Intent intent = new Intent(activity, MainActivity.class);
                         activity.startActivity(intent);
@@ -49,13 +50,13 @@ public class MainActivityTest {
                 });
 
         //check sign-up screen is displayed
-        onView(withId(R.id.welcomeLayout))
+        onView(withId(R.id.mainActivityLayOut))
                 .check(ViewAssertions.matches(isDisplayed()));
 
     }
 
     /**
-     * tests that the welcome activity should not show after first run
+     * tests that the main activity is not showing if user is signed in
      */
     @Test
     public void welcomeActivityNotShowingAfterFirstRunTest(){
@@ -65,7 +66,6 @@ public class MainActivityTest {
                     @Override
                     public void perform(MainActivity activity) {
                         UserStatusData.removeAllUserPreferences(activity);
-                        UserStatusData.setUserFirstRun(activity,false);
 
                         //restart the activity
                         Intent intent = new Intent(activity, MainActivity.class);
@@ -74,7 +74,7 @@ public class MainActivityTest {
                 });
 
         //check sign-up screen is displayed
-        onView(withId(R.id.welcomeLayout)).check(doesNotExist());
+        onView(withId(R.id.mainActivityLayOut)).check(doesNotExist());
 
     }
 
@@ -98,9 +98,8 @@ public class MainActivityTest {
 
         onView(withId(R.id.signOut)).perform(click());
 
-        //check sign-up screen is displayed
-        onView(withId(R.id.SignUpActivity_Layout))
-                .check(ViewAssertions.matches(isDisplayed()));
+        //check screen is displayed
+        onView(withId(R.id.mainActivityLayOut)).check(doesNotExist());
 
     }
 

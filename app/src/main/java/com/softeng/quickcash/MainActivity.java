@@ -22,14 +22,10 @@ public class MainActivity extends AppCompatActivity {
      * checks if this is the first user run
      */
     private void userSignedInCheck(){
-       if(UserStatusData.getUserFirstRunStatus(this)
-               && !UserStatusData.isUserSignIn(this)){
-           //if it is the first run, then set status of first run to false
-           UserStatusData.setUserFirstRun(this,false);
-
-           //go to next activity
-           Intent intent = new Intent(this, WelcomeActivity.class);
-           startActivity(intent);
+       if(!UserStatusData.isUserSignIn(this)){
+            //go to next activity
+            Intent intent = new Intent(this, WelcomeActivity.class);
+            startActivity(intent);
        }
     }
 
@@ -41,11 +37,7 @@ public class MainActivity extends AppCompatActivity {
         UserStatusData.setUserSignInToFalse(this);
 
         //go to next activity
-        Intent intent = new Intent(this, SignUpActivity.class);
+        Intent intent = new Intent(this, WelcomeActivity.class);
         startActivity(intent);
-
-        //reset to first run
-        UserStatusData.setUserFirstRun(this,true);
-
     }
 }
