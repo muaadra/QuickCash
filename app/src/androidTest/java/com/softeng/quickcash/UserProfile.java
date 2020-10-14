@@ -2,13 +2,13 @@ package com.softeng.quickcash;
 
 import androidx.annotation.Keep;
 
-class userProfile{
+class UserProfile {
     public String fName ="";
     public String aboutMe ="";
     //public avatar;
     @Keep
-    public userProfile(){}
-    public userProfile(String fName, String aboutMe){
+    public UserProfile(){}
+    public UserProfile(String fName, String aboutMe){
         this.fName = fName;
         this.aboutMe = aboutMe;
         //val avatar

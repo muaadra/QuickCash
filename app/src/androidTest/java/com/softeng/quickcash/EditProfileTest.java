@@ -21,7 +21,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
-public class EditProfileEspressoTest {
+public class EditProfileTest {
     @Rule
     public ActivityScenarioRule<EditProfile> activityScenarioRule = new ActivityScenarioRule<EditProfile>(EditProfile.class);
 

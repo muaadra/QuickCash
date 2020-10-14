@@ -30,18 +30,24 @@ public class CreateProfile extends AppCompatActivity {
 
         Button createProfile = (Button) findViewById(R.id.createProfile);   //initialize buttons
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();     //initialize database reference with instance (path; users -> email -> User account object and user profile object
+        //initialize database reference with instance
+        // (path; users -> email -> User account object and user profile object
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
         dbProfile = database.getReference("users");
 
         createProfile.setOnClickListener(new View.OnClickListener() {   //button listener to actions by user
             @Override
             public void onClick(View v) {
-                //idEMAIL NEEDS TO BE PASSED IN FROM CURRENT SESSION (register account > create profile ( pass in email used to register )
-                writeNewProfile("", textViewFName.getText().toString(), textViewAboutMe.getText().toString());     //send text from text views to method to create user object
+                //idEMAIL NEEDS TO BE PASSED IN FROM CURRENT SESSION
+                // (register account > create profile ( pass in email used to register )
+
+                //send text from text views to method to create user object
+                writeNewProfile("", textViewFName.getText().toString(), textViewAboutMe.getText().toString());
             }
         });
 
     }
+
     /**
      * This method will take in the arguments in order to create userProfile object
      * args; String+ email(users email(to be retrieved from other methods)) String+ users First Name String+ users About Me

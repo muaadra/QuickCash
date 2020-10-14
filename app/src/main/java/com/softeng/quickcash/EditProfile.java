@@ -38,8 +38,12 @@ public class EditProfile extends AppCompatActivity {
         Button deleteProfile = (Button) findViewById(R.id.deleteProfile);   //button 'delete profile'
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        dbProfile = database.getReference("users");     //initialize database reference to 'users'
-        onStartEditProfile();   //If a user is editing their profile, it should preview the stored information
+
+        //initialize database reference to 'users'
+        dbProfile = database.getReference("users");
+
+        //If a user is editing their profile, it should preview the stored information
+        onStartEditProfile();
 
         deleteProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,8 +55,10 @@ public class EditProfile extends AppCompatActivity {
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //idEMAIL NEEDS TO BE PASSED IN FROM CURRENT SESSION (logged in with account > edit profile ( pass in email logged in )
-                editProfile("", textViewFName.getText().toString(), textViewAboutMe.getText().toString());
+                //idEMAIL NEEDS TO BE PASSED IN FROM CURRENT SESSION
+                // (logged in with account > edit profile ( pass in email logged in )
+                editProfile("", textViewFName.getText().toString(),
+                        textViewAboutMe.getText().toString());
             }
         });
 
@@ -92,9 +98,6 @@ public class EditProfile extends AppCompatActivity {
     /**
      * This method Will process the information if edit profile button is clicked.
      * Specific command implemented in order to update information.
-     * @param idEmail
-     * @param fName
-     * @param aboutMe
      */
     public void editProfile(String idEmail, String fName, String aboutMe){
         userProfile profile = new userProfile(fName,aboutMe);   //create newly updated profile object
