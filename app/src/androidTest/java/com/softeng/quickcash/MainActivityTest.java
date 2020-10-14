@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.assertion.ViewAssertions;
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import org.junit.After;
@@ -14,9 +16,13 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 
 public class MainActivityTest {
@@ -26,7 +32,7 @@ public class MainActivityTest {
             = new ActivityScenarioRule<>(MainActivity.class);
 
     /**
-     * tests that the welcome activity should show to first time users only
+     * tests that the main activity is showing if user is signed in
      */
     @Test
     public void welcomeActivityShowingForFirstRunTest(){
@@ -36,6 +42,7 @@ public class MainActivityTest {
                     @Override
                     public void perform(MainActivity activity) {
                         UserStatusData.removeAllUserPreferences(activity);
+                        UserStatusData.saveUserData("email","jojo@mo.com", activity);
                         //restart the activity
                         Intent intent = new Intent(activity, MainActivity.class);
                         activity.startActivity(intent);
@@ -43,13 +50,13 @@ public class MainActivityTest {
                 });
 
         //check sign-up screen is displayed
-        onView(withId(R.id.welcomeLayout))
+        onView(withId(R.id.mainActivityLayOut))
                 .check(ViewAssertions.matches(isDisplayed()));
 
     }
 
     /**
-     * tests that the welcome activity should not show after first run
+     * tests that the main activity is not showing if user is signed in
      */
     @Test
     public void welcomeActivityNotShowingAfterFirstRunTest(){
@@ -59,7 +66,6 @@ public class MainActivityTest {
                     @Override
                     public void perform(MainActivity activity) {
                         UserStatusData.removeAllUserPreferences(activity);
-                        UserStatusData.setUserFirstRun(activity,false);
 
                         //restart the activity
                         Intent intent = new Intent(activity, MainActivity.class);
@@ -68,9 +74,35 @@ public class MainActivityTest {
                 });
 
         //check sign-up screen is displayed
-        onView(withId(R.id.welcomeLayout)).check(doesNotExist());
+        onView(withId(R.id.mainActivityLayOut)).check(doesNotExist());
 
     }
+
+    /**
+     * testing sign out button
+     */
+    @Test
+    public void signOutTest(){
+        //setup, making sure user is signed in
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<MainActivity>() {
+                    @Override
+                    public void perform(MainActivity activity) {
+                        UserStatusData.removeAllUserPreferences(activity);
+                        UserStatusData.saveUserData("email","jojo@mo.com", activity);
+                        //restarting activity
+                        Intent intent = new Intent(activity, MainActivity.class);
+                        activity.startActivity(intent);
+                    }
+                });
+
+        onView(withId(R.id.signOut)).perform(click());
+
+        //check screen is displayed
+        onView(withId(R.id.mainActivityLayOut)).check(doesNotExist());
+
+    }
+
 
     /**
      * clear all data from SharedPreferences
