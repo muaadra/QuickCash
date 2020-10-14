@@ -27,4 +27,10 @@ public class WelcomeActivityTest {
         onView(withId(R.id.createAccountButton)).perform(click());
         onView(withId(R.id.SignUpActivity_Layout)).check(matches(isDisplayed()));
     }
+
+    @Test
+    public void tapContinueAsGuest() {
+        onView(withId(R.id.continueAsGuestButton)).perform(click());
+        onView(withId(R.id.GuestView_Layout));
+    }
 }
