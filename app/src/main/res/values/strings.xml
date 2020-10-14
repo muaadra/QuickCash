@@ -12,7 +12,6 @@
     <string name="UserAlreadyExists">Account information already exits in database</string>
     <string name="UnsuccessfulSignUp">Registration was not successful</string>
     <string name="SuccessfulSignUp">Registration was successful</string>
-<<<<<<< HEAD
     <string name="profileCreated">User Profile Has Been Created Successfully</string>
     <string name="profileEdited">User Profile Has Been Edited Successfully</string>
     <string name="profileDelete">User Profile Has Been Deleted Successfully</string>
