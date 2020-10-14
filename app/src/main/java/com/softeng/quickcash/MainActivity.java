@@ -40,4 +40,13 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, WelcomeActivity.class);
         startActivity(intent);
     }
+
+    /**
+     * runs when go to profile button is clicked
+     */
+    public void goToProfileOnClickButton(View view){
+        //go to next activity
+        Intent intent = new Intent(this, EditProfile.class);
+        startActivity(intent);
+    }
 }
