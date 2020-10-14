@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/editProfileLayout"
-    tools:context=".MainActivity" >
+    tools:context=".EditProfile" >
 
     <LinearLayout
         android:layout_width="409dp"
@@ -45,10 +45,11 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/imageView2"
+                    android:id="@+id/profileImage_E"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="center"
+                    android:onClick="profileImageOnClick"
                     app:srcCompat="@drawable/defaultavatar" />
 
                 <LinearLayout
@@ -89,7 +90,7 @@
                         android:text="Enter Information About Yourself" />
 
                     <EditText
-                        android:id="@+id/editProfileAboutMe"
+                        android:id="@+id/saveChanges"
                         android:layout_width="match_parent"
                         android:layout_height="159dp"
                         android:ems="10"
@@ -117,7 +118,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:text="EditProfile" />
+                                android:text="Save Changes" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -130,6 +131,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:onClick="cancelEditProfile"
                                 android:text="Cancel" />
                         </LinearLayout>
                     </LinearLayout>

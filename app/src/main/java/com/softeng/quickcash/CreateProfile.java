@@ -27,7 +27,7 @@ public class CreateProfile extends AppCompatActivity {
         setContentView(R.layout.activity_create_profile);
 
         textViewFName = (TextView) findViewById(R.id.editProfileName);      //initialize text views
-        textViewAboutMe = (TextView) findViewById(R.id.editProfileAboutMe);
+        textViewAboutMe = (TextView) findViewById(R.id.saveChanges);
 
         Button createProfile = (Button) findViewById(R.id.createProfile);   //initialize buttons
         Button cancelProfile = (Button) findViewById(R.id.cancelProfile);   //initialize buttons

@@ -49,7 +49,7 @@ public class EditProfile extends AppCompatActivity {
         fbStorage = FirebaseStorage.getInstance();
 
         textViewFName = (TextView) findViewById(R.id.editProfileName); // Text view 'full name'
-        textViewAboutMe = (TextView) findViewById(R.id.editProfileAboutMe); //Text view 'about me'
+        textViewAboutMe = (TextView) findViewById(R.id.saveChanges); //Text view 'about me'
 
         Button editProfile = (Button) findViewById(R.id.createProfile);     // button 'create profile'
         Button deleteProfile = (Button) findViewById(R.id.deleteProfile);   //button 'delete profile'
@@ -60,7 +60,11 @@ public class EditProfile extends AppCompatActivity {
         dbProfile = database.getReference("users");
 
         //If a user is editing their profile, it should preview the stored information
-        onStartEditProfile();
+        try {
+            onStartEditProfile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         deleteProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,6 +83,7 @@ public class EditProfile extends AppCompatActivity {
             }
         });
 
+        profileImage = (ImageView)findViewById(R.id.profileImage_E);
     }
 
 
@@ -86,19 +91,20 @@ public class EditProfile extends AppCompatActivity {
      * This method is called to retrieve the users profile information if previously stored.
      * It will take a datasnapshot and see if the users profile is stored, if yes display said info
      */
-    public void onStartEditProfile() {
+    public void onStartEditProfile() throws IOException {
+        final String userEmail = UserStatusData.getEmail(this);
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
 
-                String userEmail = "email7;com";
-                userProfile userDataFromDb = snapshot.child("email7;com").child("Profile").getValue(userProfile.class); //create profile object and set to according path (if null it is not there)
+
+                userProfile userDataFromDb = snapshot.child(userEmail).child("Profile").getValue(userProfile.class); //create profile object and set to according path (if null it is not there)
                 if(userDataFromDb!=null) {  //if the datasnapshot does not contain the users profile
                     System.out.println("ABOUT ME : " +userDataFromDb.getAboutMe());
-                    ((TextView) findViewById(R.id.editProfileAboutMe)).setText(userDataFromDb.getAboutMe());    //setting text views to previously stored information
+                    ((TextView) findViewById(R.id.saveChanges)).setText(userDataFromDb.getAboutMe());    //setting text views to previously stored information
                     ((TextView) findViewById(R.id.editProfileName)).setText(userDataFromDb.getfName());
                 }else{
-                    ((TextView) findViewById(R.id.editProfileAboutMe)).setText("");
+                    ((TextView) findViewById(R.id.saveChanges)).setText("");
                     ((TextView) findViewById(R.id.editProfileName)).setText("");
                 }
             }
@@ -110,6 +116,7 @@ public class EditProfile extends AppCompatActivity {
         };
         dbProfile.addValueEventListener(postListener);
 
+        setProfileImage();
     }
 
     /**
@@ -123,9 +130,11 @@ public class EditProfile extends AppCompatActivity {
         updates.put("aboutMe",profile.getAboutMe());    //update list of updates ( set to object path in db ) pass retrieved object information
         updates.put("fName",profile.getfName());
 
-        idEmail = "email7;com";
+        idEmail = UserStatusData.getEmail(this);
         dbProfile.child(idEmail).child("Profile").updateChildren(updates);  //push the updates to the database
         ((TextView) findViewById(R.id.textViewEditProfileConfirm)).setText(R.string.profileEdited); //acknowledge that user profile has been edited
+
+        uploadImage(profileImage);
 
     }
     /**
@@ -134,10 +143,99 @@ public class EditProfile extends AppCompatActivity {
      * @param idEmail
      */
     public void deleteProfile(String idEmail){
-        idEmail = "email7;com";
+        idEmail = UserStatusData.getEmail(this);
         dbProfile.child(idEmail).child("Profile").setValue(null);   //set the Profile object to null to its respective account email
         ((TextView) findViewById(R.id.textViewDeleteProfileConfirm)).setText(R.string.profileDelete); //acknowledge that user profile has been deleted
     }
 
+    /**
+     * when user clicks on profile image to edit, start browsing
+     * local images
+     */
+    public void profileImageOnClick(View view){
+        profileImage = (ImageView)view;
 
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent,1);
+    }
+
+    /**
+     * result after user brows images
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==1 && resultCode == RESULT_OK
+                && data != null && data.getData() != null){
+            imageUri = data.getData();
+
+            try {
+                setProfileImage();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * show image on device locally
+     */
+    private void setProfileImage() throws IOException {
+        System.out.println(">>>>>>>>" + (imageUri == null));
+        if(imageUri == null){
+            getImage(profileImage);
+        }else {
+            profileImage.setImageURI(imageUri);
+        }
+
+    }
+
+    /**
+     * upload image to firebase when clicked on save data
+     */
+    public void uploadImage(View view){
+        String id = UserStatusData.getEmail(this).replace(".",";");
+        String imagePathAndName = "Images/user_ProfileImages/" + id;
+        DbUploadImage dbUploadImage = new DbUploadImage(fbStorage,imagePathAndName,imageUri) {
+            @Override
+            public void uploadResult(boolean success, String uploadMessage) {
+                //result whether upload was successful..
+                if(success){
+                    System.out.println(uploadMessage);
+                }
+            }
+        };
+    }
+
+    /**
+     * get image to firebase when clicked on save data
+     */
+    public void getImage(final View view) throws IOException {
+        String id = UserStatusData.getEmail(this).replace(".",";");
+        String imagePathAndName = "Images/user_ProfileImages/" + id;
+
+        DbGetImage dbGetImage = new DbGetImage(fbStorage,imagePathAndName) {
+            @Override
+            public void imageGetResult(Bitmap dbProfileImage) {
+                //set image on screen to image retrieved from db
+                if(dbProfileImage != null){
+                    profileImage.setImageBitmap(dbProfileImage);
+                }else {
+                    System.out.println("error getting image");
+                }
+
+            }
+        };
+    }
+
+    /**
+     * runs when a user dismisses create profile
+     */
+    public void cancelEditProfile(View view) {
+        //go to next activity
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
 }
