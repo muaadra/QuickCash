@@ -90,7 +90,7 @@
                         android:text="Enter Information About Yourself" />
 
                     <EditText
-                        android:id="@+id/saveChanges"
+                        android:id="@+id/aboutMe_EditBox"
                         android:layout_width="match_parent"
                         android:layout_height="159dp"
                         android:ems="10"
@@ -118,6 +118,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
+                                android:onClick="saveProfileChanges"
                                 android:text="Save Changes" />
                         </LinearLayout>
 
@@ -147,19 +148,22 @@
                         android:id="@+id/deleteProfile"
                         android:layout_width="match_parent"
                         android:layout_height="36dp"
+                        android:onClick="deleteProfile"
                         android:text="Delete Profile" />
 
                     <TextView
                         android:id="@+id/textViewEditProfileConfirm"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="#FF0000" />
+                        android:textColor="#302D2D"
+                        android:gravity="center"/>
 
                     <TextView
                         android:id="@+id/textViewDeleteProfileConfirm"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="#FF0000" />
+                        android:textColor="#FF0000"
+                        android:layout_gravity="center"/>
                 </LinearLayout>
 
             </LinearLayout>

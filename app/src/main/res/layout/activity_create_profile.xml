@@ -82,7 +82,7 @@
                         android:text="Enter Information About Yourself" />
 
                     <EditText
-                        android:id="@+id/saveChanges"
+                        android:id="@+id/aboutMe_EditBox"
                         android:layout_width="match_parent"
                         android:layout_height="192dp"
                         android:ems="10"

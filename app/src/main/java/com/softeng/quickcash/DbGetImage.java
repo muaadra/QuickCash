@@ -19,34 +19,59 @@ public abstract class DbGetImage {
     FirebaseStorage fbStorage;
     String imagePathAndName;
 
-    public DbGetImage(FirebaseStorage fbStorage, String DbImagePathAndName) throws IOException {
+    public DbGetImage(FirebaseStorage fbStorage, String DbImagePathAndName) {
         this.fbStorage = fbStorage;
         this.imagePathAndName = DbImagePathAndName;
-        getImage();
     }
 
     /**
      * upload image to firebase when clicked on save data
      */
-    public void getImage() throws IOException {
+    public void getImage() {
+        StorageReference imageRef = fbStorage.getReference().child(imagePathAndName);
+            try {
+                final File localFile = File.createTempFile(imagePathAndName.replace("/",""), "jpg");
+
+                imageRef.getFile(localFile)
+                        .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                Bitmap profileImage = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                                // Successfully downloaded data to local file
+                                imageGetResult(profileImage);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle failed download
+                        System.out.println("ERROR GETTING IMAGE: " + exception.getMessage());
+                        imageGetResult(null);
+                    }
+                });
+
+            } catch (IOException e) {
+                //do nothing
+            }
+
+
+
+    }
+
+    /**
+     * upload image to firebase when clicked on save data
+     */
+    public void deleteImage() {
         StorageReference imageRef = fbStorage.getReference().child(imagePathAndName);
 
-        final File localFile = File.createTempFile(imagePathAndName.replace("/",""), "jpg");
-
-        imageRef.getFile(localFile)
-                .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        Bitmap profileImage = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-                        // Successfully downloaded data to local file
-                        imageGetResult(profileImage);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
+        imageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // File deleted successfully
+            }
+        }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                // Handle failed download
-                System.out.println("ERROR GETTING IMAGE: " + exception.getMessage());
-                imageGetResult(null);
+                // Uh-oh, an error occurred!
             }
         });
 
