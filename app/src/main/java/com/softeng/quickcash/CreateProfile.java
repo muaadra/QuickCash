@@ -3,6 +3,7 @@
  * QuickCash Group 17 Development
  */
 package com.softeng.quickcash;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -29,6 +30,7 @@ public class CreateProfile extends AppCompatActivity {
         textViewAboutMe = (TextView) findViewById(R.id.editProfileAboutMe);
 
         Button createProfile = (Button) findViewById(R.id.createProfile);   //initialize buttons
+        Button cancelProfile = (Button) findViewById(R.id.cancelProfile);   //initialize buttons
 
         //initialize database reference with instance
         // (path; users -> email -> User account object and user profile object
@@ -43,6 +45,13 @@ public class CreateProfile extends AppCompatActivity {
 
                 //send text from text views to method to create user object
                 writeNewProfile("", textViewFName.getText().toString(), textViewAboutMe.getText().toString());
+            }
+        });
+
+        cancelProfile.setOnClickListener(new View.OnClickListener() {   //button listener to actions by user
+            @Override
+            public void onClick(View v) {
+                cancelCreateProfile(v);
             }
         });
 
@@ -61,4 +70,12 @@ public class CreateProfile extends AppCompatActivity {
 
     }
 
+    /**
+     * runs when a user dismisses create profile
+     */
+    public void cancelCreateProfile(View view) {
+        //go to next activity
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
 }
