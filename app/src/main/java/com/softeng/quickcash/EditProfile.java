@@ -3,21 +3,31 @@
  * QuickCash Group 17 Development
  */
 package com.softeng.quickcash;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class EditProfile extends AppCompatActivity {
+
     private static final String TAG = "";
     private DatabaseReference mDatabase;        //Reference to
     String idEmail = "";
@@ -25,11 +35,18 @@ public class EditProfile extends AppCompatActivity {
     TextView textViewAboutMe;   //Text view for users About me section
     DatabaseReference dbProfile;    //Database reference
 
+    private Uri imageUri;
+    private ImageView profileImage;
+    private FirebaseStorage fbStorage;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+
+        //create instance of FirebaseStorage
+        fbStorage = FirebaseStorage.getInstance();
 
         textViewFName = (TextView) findViewById(R.id.editProfileName); // Text view 'full name'
         textViewAboutMe = (TextView) findViewById(R.id.editProfileAboutMe); //Text view 'about me'
