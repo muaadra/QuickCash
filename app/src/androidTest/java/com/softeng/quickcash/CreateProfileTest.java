@@ -49,7 +49,7 @@ public class CreateProfileTest {
      * tests that the main activity is showing after user canceled creating a profile
      */
     @Test
-    public void welcomeActivityNotShowingAfterFirstRunTest(){
+    public void mainActivityShowingAfterUserCancels(){
         //setup, making sure user is signed in
         activityScenarioRule.getScenario().onActivity(
                 new ActivityScenario.ActivityAction<CreateProfile>() {
