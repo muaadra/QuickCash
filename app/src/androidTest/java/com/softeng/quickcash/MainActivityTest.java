@@ -42,6 +42,8 @@ public class MainActivityTest {
                     @Override
                     public void perform(MainActivity activity) {
                         UserStatusData.saveUserData("email","jojo@mo.com", activity);
+                        UserSignUpData signUpData = new UserSignUpData("email","jojo@mo.com");
+                        UserStatusData.setUserSignInToTrue(activity,signUpData);
                         //restart the activity
                         Intent intent = new Intent(activity, MainActivity.class);
                         activity.startActivity(intent);
