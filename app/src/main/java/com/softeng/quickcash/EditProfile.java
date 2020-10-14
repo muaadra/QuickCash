@@ -19,8 +19,6 @@ import android.widget.Toast;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 
-import java.io.IOException;
-
 public class EditProfile extends AppCompatActivity {
 
     final FirebaseDatabase db = FirebaseDatabase.getInstance();
@@ -234,12 +232,13 @@ public class EditProfile extends AppCompatActivity {
             }
         };
         dbGetImage.deleteImage();
-        goBack();
+        goToMain();
         Toast.makeText(this,"Profile deleted",Toast.LENGTH_SHORT).show();
     }
 
-    private void goBack(){
-        finish();
+    private void goToMain(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     /**
@@ -247,7 +246,6 @@ public class EditProfile extends AppCompatActivity {
      */
     public void cancelEditProfile(View view) {
         //go to next activity
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        goToMain();
     }
 }

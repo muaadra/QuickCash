@@ -14,6 +14,7 @@ import org.junit.Test;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
+import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -38,17 +39,15 @@ public class EditProfileTest {
 
     }
     /**
-     * This will test the UI if the user deletes the profile (checks against the delete profile button label appearing)
+     * This will test the UI if the user deletes the profile, the profile screen closes
      */
     @Test
-    public void testDeleteProfileLabel(){
-        onView(withId(R.id.editProfileName)).perform(click()).perform(typeText("Jonathan Robichaud"));
-
+    public void deleteProfileScreenClose(){
         onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard());
 
         onView(withId(R.id.deleteProfile)).perform(click());
 
-        onView(withId(R.id.textViewDeleteProfileConfirm)).check(matches(withText(R.string.profileDelete)));
+        onView(withId(R.id.mainActivityLayOut)).check(matches(isDisplayed()));
 
     }
 
