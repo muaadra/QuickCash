@@ -20,6 +20,7 @@
         </activity>
         <activity android:name=".CreateProfile" />
         <activity android:name=".EditProfile" />
+        <activity android:name=".GuestViewActivity" />
 
     </application>
 
