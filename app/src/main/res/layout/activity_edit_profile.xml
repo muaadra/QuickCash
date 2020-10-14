@@ -14,6 +14,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:background="#FFFFFF"
+
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
@@ -27,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="Edit Profile"
+                android:text="Profile"
                 android:textColor="#000000"
                 android:textSize="50sp" />
         </LinearLayout>
@@ -60,14 +62,17 @@
 
                     <TextView
                         android:id="@+id/textView4"
-                        android:layout_width="match_parent"
+                        android:layout_width="283dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:text="Enter Full Name" />
 
                     <EditText
+                        android:layout_gravity="center"
                         android:id="@+id/editProfileName"
-                        android:layout_width="match_parent"
+                        android:layout_width="284dp"
                         android:layout_height="wrap_content"
+                        android:background="#FFFFFF"
                         android:ems="10"
                         android:inputType="textPersonName" />
 
@@ -90,64 +95,49 @@
                         android:text="Enter Information About Yourself" />
 
                     <EditText
+                        android:background="#FFFFFF"
                         android:id="@+id/aboutMe_EditBox"
                         android:layout_width="match_parent"
-                        android:layout_height="159dp"
+                        android:layout_height="120dp"
                         android:ems="10"
                         android:gravity="start|top"
                         android:inputType="textMultiLine" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="37dp"
-                    android:orientation="vertical">
+
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
                         android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="173dp"
+                        <Button
+                            android:id="@+id/createProfile"
+                            android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-                            <Button
-                                android:id="@+id/createProfile"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:onClick="saveProfileChanges"
-                                android:text="Save Changes" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <Button
-                                android:id="@+id/cancelProfile"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:onClick="cancelEditProfile"
-                                android:text="Cancel" />
-                        </LinearLayout>
+                            android:layout_weight="1"
+                            android:onClick="saveProfileChanges"
+                            android:text="Save Changes" />
+                        <Button
+                            android:id="@+id/cancelProfile"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:onClick="cancelEditProfile"
+                            android:text="Cancel" />
                     </LinearLayout>
-
-                </LinearLayout>
-
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="87dp"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <Button
                         android:id="@+id/deleteProfile"
                         android:layout_width="match_parent"
-                        android:layout_height="36dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="25dp"
+                        android:background="#F6F6F6"
+                        android:gravity="center"
                         android:onClick="deleteProfile"
                         android:text="Delete Profile" />
 
@@ -165,6 +155,8 @@
                         android:textColor="#FF0000"
                         android:layout_gravity="center"/>
                 </LinearLayout>
+
+
 
             </LinearLayout>
         </LinearLayout>
