@@ -4,8 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.service.autofill.UserData;
-import android.widget.TextView;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,24 +13,31 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //check if this is the first run
-        checkUserFirstRun();
+        //check if user is signed in
+        userSignedInCheck();
 
     }
 
     /**
      * checks if this is the first user run
      */
-    private void checkUserFirstRun(){
-       if(UserStatusData.getUserFirstRunStatus(this)){
-           //if it is the first run, then set status of first run to false
-           /*******  uncomment once MainActivity is ready  *********/
-           //UserStatusData.setUserFirstRun(this,false);
-           /*********                                        *******/
-
-           //go to next activity
-           Intent intent = new Intent(this, WelcomeActivity.class);
-           startActivity(intent);
+    private void userSignedInCheck(){
+       if(!UserStatusData.isUserSignIn(this)){
+            //go to next activity
+            Intent intent = new Intent(this, WelcomeActivity.class);
+            startActivity(intent);
        }
+    }
+
+    /**
+     * runs when sig-out button is clicked
+     */
+    public void signOutOnClickButton(View view){
+        //set user status to signed out
+        UserStatusData.setUserSignInToFalse(this);
+
+        //go to next activity
+        Intent intent = new Intent(this, WelcomeActivity.class);
+        startActivity(intent);
     }
 }
