@@ -48,7 +48,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="center"
-                    app:srcCompat="@drawable/defaultAvatar" />
+                    app:srcCompat="@drawable/defaultavatar" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
