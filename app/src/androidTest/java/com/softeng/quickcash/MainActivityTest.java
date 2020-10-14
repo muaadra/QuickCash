@@ -98,8 +98,9 @@ public class MainActivityTest {
 
         onView(withId(R.id.signOut)).perform(click());
 
-        onView(withId(R.id.emailStatus))
-                .check(matches(withText(R.string.YouAreSignedOut)));
+        //check sign-up screen is displayed
+        onView(withId(R.id.SignUpActivity_Layout))
+                .check(ViewAssertions.matches(isDisplayed()));
 
     }
 
