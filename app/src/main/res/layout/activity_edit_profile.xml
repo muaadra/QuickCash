@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:id="@+id/editProfileLayout"
+    tools:context=".MainActivity" >
 
     <LinearLayout
         android:layout_width="409dp"
@@ -25,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="Create Profile"
+                android:text="Edit Profile"
                 android:textColor="#000000"
                 android:textSize="50sp" />
         </LinearLayout>
@@ -51,7 +53,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="92dp"
                     android:layout_gravity="center"
                     android:orientation="vertical">
 
@@ -67,6 +69,11 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:inputType="textPersonName" />
+
+                    <TextView
+                        android:id="@+id/textViewProfileConfirm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
                 </LinearLayout>
 
@@ -84,7 +91,7 @@
                     <EditText
                         android:id="@+id/editProfileAboutMe"
                         android:layout_width="match_parent"
-                        android:layout_height="192dp"
+                        android:layout_height="159dp"
                         android:ems="10"
                         android:gravity="start|top"
                         android:inputType="textMultiLine" />
@@ -92,12 +99,12 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="55dp"
+                    android:layout_height="37dp"
                     android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:orientation="horizontal">
 
                         <LinearLayout
@@ -108,9 +115,9 @@
                             <Button
                                 android:id="@+id/createProfile"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:text="Create Profile" />
+                                android:text="EditProfile" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -123,7 +130,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Continue Without" />
+                                android:text="Cancel" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -131,11 +138,23 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="66dp"
+                    android:layout_height="87dp"
                     android:orientation="vertical">
 
+                    <Button
+                        android:id="@+id/deleteProfile"
+                        android:layout_width="match_parent"
+                        android:layout_height="36dp"
+                        android:text="Delete Profile" />
+
                     <TextView
-                        android:id="@+id/textViewProfileConfirm"
+                        android:id="@+id/textViewEditProfileConfirm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#FF0000" />
+
+                    <TextView
+                        android:id="@+id/textViewDeleteProfileConfirm"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="#FF0000" />
