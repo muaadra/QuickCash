@@ -40,10 +40,11 @@ public class SignInActivityTest {
                     @Override
                     public void perform(MainActivity activity) {
                         UserStatusData.removeAllUserPreferences(activity);
-                        Intent intent = new Intent(activity, SignInActivity.class);
+                        Intent intent = new Intent(activity, WelcomeActivity.class);
                         activity.startActivity(intent);
                     }
         });
+        onView(withId(R.id.signInButton)).perform(click());
     }
 
     /**
