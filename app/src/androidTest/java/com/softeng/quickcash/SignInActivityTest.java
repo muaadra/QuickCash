@@ -112,7 +112,7 @@ public class SignInActivityTest {
      */
     @Test
     public void test_user_not_found() {
-        onView(withId(R.id.input_email)).perform(typeText("signUp1@test.com"));
+        onView(withId(R.id.input_email)).perform(typeText("signUp1test.com"));
         onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard());
 
         onView(withId(R.id.input_password)).perform(typeText("testPassword"));
