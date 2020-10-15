@@ -1,5 +1,6 @@
 package com.softeng.quickcash;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -80,8 +81,11 @@ public class SignInActivity extends AppCompatActivity {
     private void checkDbData(UserSignUpData dataFromDb){
         try {
             if (userData.getPassword().equals(dataFromDb.getPassword())) {
-                ((TextView) findViewById(R.id.msg_confirm))
-                        .setText("Login successful");
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                UserSignUpData signUpData = new UserSignUpData("email", userData.getEmail());
+                UserStatusData.setUserSignInToTrue(this,signUpData);
+
             } else {
                 ((TextView) findViewById(R.id.err_msg_pw))
                         .setText("The password does not match.");

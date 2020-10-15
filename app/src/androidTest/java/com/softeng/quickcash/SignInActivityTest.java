@@ -1,5 +1,8 @@
 package com.softeng.quickcash;
 
+import android.content.Intent;
+
+import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -27,10 +30,20 @@ public class SignInActivityTest {
     public ActivityScenarioRule<MainActivity> activityScenarioRule
             = new ActivityScenarioRule<>(MainActivity.class);
 
+    /**
+     * setup method for remove UserStatus Data.
+     */
     @Before
     public void setup() {
-        onView(withId(R.id.signInButton)).perform(click());
-        onView(withId(R.id.SignInActivity_Layout)).check(matches(isDisplayed()));
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<MainActivity>() {
+                    @Override
+                    public void perform(MainActivity activity) {
+                        UserStatusData.removeAllUserPreferences(activity);
+                        Intent intent = new Intent(activity, SignInActivity.class);
+                        activity.startActivity(intent);
+                    }
+        });
     }
 
     /**
@@ -38,16 +51,27 @@ public class SignInActivityTest {
      */
     @Test
     public void test_user_correct_credential() {
-        HashMap<String, String> signUpInfo = new HashMap<String, String>();
-        signUpInfo.put("email", "signUp@test.com");
-        signUpInfo.put("password", "testPassword");
 
-        onView(withId(R.id.input_email)).perform(typeText("signUp@test;com"));
+        onView(withId(R.id.input_email)).perform(typeText("signUp@test.com"));
         onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard());
         onView(withId(R.id.input_password)).perform(typeText("testPassword"));
         onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard());
         onView(withId(R.id.btn_login)).perform(click());
-        onView(withId(R.id.msg_confirm)).check(matches(isDisplayed()));
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<MainActivity>() {
+                    @Override
+                    public void perform(MainActivity activity) {
+                        UserStatusData.saveUserData("email","signUp@test.com", activity);
+                        UserSignUpData signUpData = new UserSignUpData("email","signUp@test.com");
+                        UserStatusData.setUserSignInToTrue(activity,signUpData);
+                        //restart the activity
+                        Intent intent = new Intent(activity, MainActivity.class);
+                        activity.startActivity(intent);
+
+                    }
+                });
+        onView(withId(R.id.SignInStatus)).check(matches(isDisplayed()));
+
     }
 
     /**
@@ -73,9 +97,6 @@ public class SignInActivityTest {
      */
     @Test
     public void test_user_wrong_credential() {
-        HashMap<String, String> signUpInfo = new HashMap<String, String>();
-        signUpInfo.put("email", "signUp@test.com");
-        signUpInfo.put("password", "testPassword1111");   //Wrong password
 
         onView(withId(R.id.input_email)).perform(typeText("signUp@test.com"));
         onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard());
@@ -91,10 +112,7 @@ public class SignInActivityTest {
      */
     @Test
     public void test_user_not_found() {
-        HashMap<String, String> signUpInfo = new HashMap<String, String>();
-        signUpInfo.put("email", "signUp@test.com");
-        signUpInfo.put("password", "testPassword");
-        onView(withId(R.id.input_email)).perform(typeText("signUp@test.com"));
+        onView(withId(R.id.input_email)).perform(typeText("signUp1@test.com"));
         onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard());
 
         onView(withId(R.id.input_password)).perform(typeText("testPassword"));
