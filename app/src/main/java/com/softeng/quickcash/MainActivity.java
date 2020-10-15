@@ -6,6 +6,7 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -13,28 +14,41 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //check if this is the first run
-        checkUserFirstRun();
+        //check if user is signed in
+        userSignedInCheck();
 
     }
 
     /**
      * checks if this is the first user run
      */
-    private void checkUserFirstRun(){
-       if(UserStatusData.getUserFirstRunStatus(this)){
-           //if it is the first run, then set status of first run to false
-           /*******  uncomment once MainActivity is ready  *********/
-           //UserStatusData.setUserFirstRun(this,false);
-           /*********                                        *******/
-
-           //go to next activity
-           Intent intent = new Intent(this, WelcomeActivity.class);
-           startActivity(intent);
-       }
+    private void userSignedInCheck() {
+        if (!UserStatusData.isUserSignIn(this)) {
+            //go to next activity
+            Intent intent = new Intent(this, WelcomeActivity.class);
+            startActivity(intent);
+        }
     }
-    public void signIn(View view) {
-        Intent intent = new Intent(this, SignInActivity.class);
+
+
+    /**
+     * runs when sig-out button is clicked
+     */
+    public void signOutOnClickButton(View view) {
+        //set user status to signed out
+        UserStatusData.setUserSignInToFalse(this);
+
+        //go to next activity
+        Intent intent = new Intent(this, WelcomeActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * runs when go to profile button is clicked
+     */
+    public void goToProfileOnClickButton(View view) {
+        //go to next activity
+        Intent intent = new Intent(this, EditProfile.class);
         startActivity(intent);
     }
 }

@@ -53,6 +53,7 @@
         android:layout_marginBottom="105dp"
         android:alpha="100"
         android:background="#00FFFFFF"
+        android:onClick="continueAsGuest"
         android:text="@string/continueAsGuestButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
