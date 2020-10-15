@@ -1,10 +1,11 @@
 package com.softeng.quickcash;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,18 +22,19 @@ public class MainActivity extends AppCompatActivity {
     /**
      * checks if this is the first user run
      */
-    private void userSignedInCheck(){
-       if(!UserStatusData.isUserSignIn(this)){
+    private void userSignedInCheck() {
+        if (!UserStatusData.isUserSignIn(this)) {
             //go to next activity
             Intent intent = new Intent(this, WelcomeActivity.class);
             startActivity(intent);
-       }
+        }
     }
+
 
     /**
      * runs when sig-out button is clicked
      */
-    public void signOutOnClickButton(View view){
+    public void signOutOnClickButton(View view) {
         //set user status to signed out
         UserStatusData.setUserSignInToFalse(this);
 
@@ -44,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * runs when go to profile button is clicked
      */
-    public void goToProfileOnClickButton(View view){
+    public void goToProfileOnClickButton(View view) {
         //go to next activity
         Intent intent = new Intent(this, EditProfile.class);
         startActivity(intent);
