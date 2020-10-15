@@ -88,7 +88,7 @@ public class SignInActivity extends AppCompatActivity {
 
             } else {
                 ((TextView) findViewById(R.id.err_msg_pw))
-                        .setText("The password does not match.");
+                        .setText("Incorrect username and/or password.");
             }
 
         } catch (Exception e) {
