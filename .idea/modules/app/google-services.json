@@ -8,12 +8,131 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:371622594834:android:d8a6a8f1bbfd04e1f54bcb",
+        "android_client_info": {
+          "package_name": "com.example.roughcreateaprofile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "371622594834-i6qvdidafbq2niakcsnkb9o5m9qfp10h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.roughcreateaprofile",
+            "certificate_hash": "825c4d46c605810556ca16f5876f4c81311943f9"
+          }
+        },
+        {
+          "client_id": "371622594834-m4rc5dv16dh3j0m5bnvvuaucc99ulael.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2PBTjC_ItoW9LNZzbSwEHr37ruIbyl0A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "371622594834-m4rc5dv16dh3j0m5bnvvuaucc99ulael.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:371622594834:android:76628224748f8b9af54bcb",
+        "android_client_info": {
+          "package_name": "com.example.test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "371622594834-1pbvm25hda8i6opk0qv2olqojh7mp912.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.test",
+            "certificate_hash": "825c4d46c605810556ca16f5876f4c81311943f9"
+          }
+        },
+        {
+          "client_id": "371622594834-m4rc5dv16dh3j0m5bnvvuaucc99ulael.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2PBTjC_ItoW9LNZzbSwEHr37ruIbyl0A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "371622594834-m4rc5dv16dh3j0m5bnvvuaucc99ulael.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:371622594834:android:27a717a40a35742df54bcb",
+        "android_client_info": {
+          "package_name": "com.example.testprofile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "371622594834-jtkna24gvan8e0fgh63an7aj7negmhfb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.testprofile",
+            "certificate_hash": "825c4d46c605810556ca16f5876f4c81311943f9"
+          }
+        },
+        {
+          "client_id": "371622594834-m4rc5dv16dh3j0m5bnvvuaucc99ulael.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2PBTjC_ItoW9LNZzbSwEHr37ruIbyl0A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "371622594834-m4rc5dv16dh3j0m5bnvvuaucc99ulael.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:371622594834:android:ebedcbc01a094a4df54bcb",
         "android_client_info": {
           "package_name": "com.softeng.quickcash"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "371622594834-4h1n29o2t29revn47l8rd21e2i5ttgtq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.softeng.quickcash",
+            "certificate_hash": "825c4d46c605810556ca16f5876f4c81311943f9"
+          }
+        },
         {
           "client_id": "371622594834-3l9kqceup3irgeoifdnk1soteeps5vnc.apps.googleusercontent.com",
           "client_type": 1,

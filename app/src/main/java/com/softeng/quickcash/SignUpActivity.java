@@ -158,7 +158,7 @@ public class SignUpActivity extends AppCompatActivity {
                     .setText(R.string.SuccessfulSignUp);
 
             // go to main activity
-            Intent intent = new Intent(this, CreateProfile.class);
+            Intent intent = new Intent(this, EditProfile.class);
             startActivity(intent);
 
             //save user login status

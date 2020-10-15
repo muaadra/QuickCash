@@ -3,8 +3,8 @@ package com.softeng.quickcash;
 import androidx.annotation.Keep;
 
 class userProfile{
-    public String fName ="";
-    public String aboutMe ="";
+    private String fName ="";
+    private String aboutMe ="";
     //public avatar;
     @Keep
     public userProfile(){}
