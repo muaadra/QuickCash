@@ -83,7 +83,7 @@ public class SignInActivity extends AppCompatActivity {
             if (userData.getPassword().equals(dataFromDb.getPassword())) {
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
-                UserSignUpData signUpData = new UserSignUpData("email", userData.getEmail());
+                UserSignUpData signUpData = new UserSignUpData(userData.getEmail(),"password");
                 UserStatusData.setUserSignInToTrue(this,signUpData);
 
             } else {
