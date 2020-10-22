@@ -130,7 +130,7 @@ public class MainActivityTest {
     }
 
     /**
-     * testing go to post a task page
+     * testing go to post a task page if user is signed in
      */
     @Test
     public void goToMyPostsActivity() throws InterruptedException {
@@ -154,6 +154,7 @@ public class MainActivityTest {
         onView(withId(R.id.myPostsLayout)).check(matches(isDisplayed()));
 
     }
+
 
     /**
      * clear all data from SharedPreferences
