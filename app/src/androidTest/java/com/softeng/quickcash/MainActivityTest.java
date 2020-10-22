@@ -133,20 +133,21 @@ public class MainActivityTest {
      * testing go to post a task page
      */
     @Test
-    public void goToMyPostsActivity(){
+    public void goToMyPostsActivity() throws InterruptedException {
         //setup, making sure user is signed in
         activityScenarioRule.getScenario().onActivity(
             new ActivityScenario.ActivityAction<MainActivity>() {
                 @Override
                 public void perform(MainActivity activity) {
-                    UserStatusData.removeAllUserPreferences(activity);
-                    UserStatusData.saveUserData("email","jojo@mo.com", activity);
+                    UserSignUpData signUpData = new UserSignUpData("email","jojo@mo.com");
+                    UserStatusData.setUserSignInToTrue(activity,signUpData);
                     //restarting activity
                     Intent intent = new Intent(activity, MainActivity.class);
                     activity.startActivity(intent);
                 }
             });
 
+        Thread.sleep(1200);
         onView(withId(R.id.postATask_main)).perform(click());
 
         //check screen is displayed
