@@ -37,7 +37,7 @@
         android:layout_marginTop="40dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
-        android:minHeight="450dp"
+        android:minHeight="370dp"
         android:background="@drawable/rounded_edit_text"
 
         android:orientation="vertical">
@@ -47,11 +47,11 @@
             android:layout_height="wrap_content"
             android:padding="20dp"
             android:textSize="16sp"
-            android:text="You don't have any posts yet, you can start by clicking on the new task button  below"
+            android:text="You don't have any posts yet, you can start by clicking on the 'Post A New Task' button  below"
             />
         <androidx.recyclerview.widget.RecyclerView
             android:padding="10dp"
-            android:id="@+id/my_recycler_view"
+            android:id="@+id/postsList_MyPosts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
