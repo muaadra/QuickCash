@@ -8,6 +8,22 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="5dp"
+        android:layout_gravity="end"
+        >
+        <Button
+            android:id="@+id/postATask_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Post A task"
+            android:onClick="gotToMyPostsOnButtonClick"
+            android:layout_gravity = "end"
+            />
+    </LinearLayout>
     <Button
         android:id="@+id/goToProfile"
         android:layout_width="107dp"

@@ -44,6 +44,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * runs when post task button is clicked
+     */
+    public void gotToMyPostsOnButtonClick(View view) {
+        Intent intent = new Intent(this, MyPosts.class);
+        startActivity(intent);
+    }
+
+    /**
      * runs when go to profile button is clicked
      */
     public void goToProfileOnClickButton(View view) {
