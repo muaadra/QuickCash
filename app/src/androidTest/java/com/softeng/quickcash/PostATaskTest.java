@@ -20,6 +20,7 @@ import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
@@ -67,5 +68,14 @@ public class PostATaskTest {
                 });
 
         assertEquals(taskTypes[0].size(),count[0]);
+    }
+
+    @Test
+    public void ExpectedDateFieldIsNotEmptyWhenSubmit_Test(){
+        onView(withId(R.id.postATaskButton)).perform(click());
+
+        onView(withId(R.id.postATaskStatus))
+                .check(matches(withText(R.string.ExpectedDateError)));;
+
     }
 }
