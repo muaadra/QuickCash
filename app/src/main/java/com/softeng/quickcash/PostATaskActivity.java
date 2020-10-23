@@ -9,14 +9,20 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class PostATaskActivity extends AppCompatActivity
         implements DatePickerDialog.OnDateSetListener {
 
-    String[] taskTypes = {"Task1", "Task2","Task3","Task4"};
+    public String[] taskTypes = {"Task1", "Task2","Task3","Task4"};
+    final FirebaseDatabase db = FirebaseDatabase.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,14 +58,66 @@ public class PostATaskActivity extends AppCompatActivity
         spinner.setAdapter(adapter);
     }
 
+
+    int numberOfLastPostInDB = 0;
+    Calendar expectedDate;
+    public void postATaskOnButtonClick(View view){
+
+
+        String userId = UserStatusData.getEmail(this).replace(".", ";");
+        //path to database object
+        String path = "users/"+ userId +"/TaskPosts";
+
+        //read data from database
+        DbRead<DataSnapshot> dbRead = new DbRead<DataSnapshot>(path,
+                DataSnapshot.class, db) {
+            @Override
+            public void getReturnedDbData(DataSnapshot dataFromDb) {
+                numberOfLastPostInDB = (int) dataFromDb.getChildrenCount();
+
+                //get last item number
+                String taskId = "";
+                for (DataSnapshot userdata : dataFromDb.getChildren()) {
+                    taskId = userdata.getKey();
+                }
+
+                if(taskId != ""){
+                    numberOfLastPostInDB = Integer.parseInt(taskId.split("_")[0]);
+
+                }else {
+                    numberOfLastPostInDB = 0;
+                }
+            }
+        };
+
+
+        String taskTitle =  ((Spinner) findViewById(R.id.tasksTypeSpinner_PostATask))
+                .getSelectedItem().toString();
+        String description =  ((TextView) findViewById(R.id.taskDescEditTxt)).getText().toString();
+        //Date date = expectedDate.getTime();
+        String cost =  ((TextView) findViewById(R.id.costEditTxt)).getText().toString();
+
+        //path where you want to write data to
+        numberOfLastPostInDB++;
+        path =  "users/"+ userId +"/TaskPosts/" + numberOfLastPostInDB + "_" + taskTitle ;
+
+        TaskPost taskPost = new TaskPost(taskTitle,description,cost);
+        new DbWrite<TaskPost>(path,taskPost,db) {
+            @Override
+            public void writeResult(TaskPost userdata) {
+                System.out.println("task posted");
+            }
+        };
+    }
+
     @Override
     public void onDateSet(android.widget.DatePicker view, int year, int month, int dayOfMonth) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(calendar.YEAR,year);
-        calendar.set(calendar.MONTH,month);
-        calendar.set(calendar.DAY_OF_MONTH,dayOfMonth);
+        expectedDate = Calendar.getInstance();
+        expectedDate.set(expectedDate.YEAR,year);
+        expectedDate.set(expectedDate.MONTH,month);
+        expectedDate.set(expectedDate.DAY_OF_MONTH,dayOfMonth);
 
-        String date = DateFormat.getDateInstance().format(calendar.getTime());
+        String date = DateFormat.getDateInstance().format(expectedDate.getTime());
         ((Button)findViewById(R.id.datePickerPostAtask)).setText(date);
     }
 }

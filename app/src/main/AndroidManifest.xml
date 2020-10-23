@@ -15,9 +15,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <service android:name="PostATaskActivity"
-            android:foregroundServiceType="location"/>
-
         <activity android:name=".PostATaskActivity"></activity>
         <activity android:name=".MyPosts" />
         <activity android:name=".EditProfile" />
