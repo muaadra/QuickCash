@@ -11,6 +11,8 @@ public class PostATaskTest {
     public void checkIfAStringIsEmpty_Test1() {
         PostATaskActivity postATask = new PostATaskActivity();
         assertTrue(postATask.isStringEmpty(""));
+        assertTrue(postATask.isStringEmpty(null));
+        assertFalse(postATask.isStringEmpty("test"));
     }
 
 }
