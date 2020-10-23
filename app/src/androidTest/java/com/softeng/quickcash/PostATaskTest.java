@@ -10,6 +10,10 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
@@ -35,7 +39,7 @@ public class PostATaskTest {
     }
 
     @Test
-    public void taskTypesSpinnerIsNotEmptyTest(){
+    public void taskTypesSpinnerIsNotEmpty_Test(){
         final int[] count = {-1};
         activityScenarioRule.getScenario().onActivity(
                 new ActivityScenario.ActivityAction<PostATaskActivity>() {
@@ -46,5 +50,22 @@ public class PostATaskTest {
                 });
 
         assertNotEquals(count[0], 0);
+    }
+
+    @Test
+    public void taskTypesSpinnerHasSameCount_Test(){
+        final int[] count = {-1};
+        final List<String>[] taskTypes = new List[]{new ArrayList<>()};
+
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<PostATaskActivity>() {
+                    @Override
+                    public void perform(PostATaskActivity activity) {
+                        taskTypes[0] = Arrays.asList(activity.taskTypes);
+                        count[0] =((Spinner)activity.findViewById(R.id.tasksTypeSpinner_PostATask)).getCount();
+                    }
+                });
+
+        assertEquals(taskTypes[0].size(),count[0]);
     }
 }
