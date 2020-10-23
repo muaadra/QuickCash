@@ -102,12 +102,21 @@ public class PostATaskActivity extends AppCompatActivity
     }
 
     private boolean areRequiredFieldsProvidedAndShowStatus(){
-        String cost =  ((TextView) findViewById(R.id.costEditTxt)).getText().toString();
         String taskTitle =  ((Spinner) findViewById(R.id.tasksTypeSpinner_PostATask))
                 .getSelectedItem().toString();
         String description =  ((TextView) findViewById(R.id.taskDescEditTxt)).getText().toString();
+        String cost =  ((TextView) findViewById(R.id.costEditTxt)).getText().toString();
 
-         if(expectedDate == null)
+        if(taskTitle.equals(getResources().getString(R.string.selectATask)))
+        {
+            ((TextView)findViewById(R.id.postATaskStatus)).setText(R.string.selectATaskMissing);
+            return false;
+
+        }else if(description.equals(""))
+        {
+            ((TextView)findViewById(R.id.postATaskStatus)).setText(R.string.missingDescPostATask);
+            return false;
+        }else if(expectedDate == null)
         {
             ((TextView)findViewById(R.id.postATaskStatus)).setText(R.string.ExpectedDateError);
             return false;
@@ -115,16 +124,7 @@ public class PostATaskActivity extends AppCompatActivity
         {
             ((TextView)findViewById(R.id.postATaskStatus)).setText(R.string.costMissingPostATask);
             return false;
-        }else if(taskTitle.equals(getResources().getString(R.string.selectATask)))
-         {
-             ((TextView)findViewById(R.id.postATaskStatus)).setText(R.string.selectATaskMissing);
-             return false;
-
-         }else if(description.equals(""))
-         {
-             ((TextView)findViewById(R.id.postATaskStatus)).setText(R.string.missingDescPostATask);
-             return false;
-         }
+        }
 
         return true;
     }
