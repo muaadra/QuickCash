@@ -28,10 +28,11 @@ import java.util.List;
 
 public class PostATaskActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
-    MyLocation myLocation;
-
     public String[] taskTypes = {"Select A Category"
-            , "Task1", "Task2","Task3","Task4"};
+            , "mowing the lawn", "walking a dog","babysitting",
+            "picking up a grocery", "computer repairs"};
+
+    MyLocation myLocation;
     final FirebaseDatabase db = FirebaseDatabase.getInstance();
 
     @Override
@@ -56,7 +57,7 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
         };
     }
 
-    void showMyLocationOnUI(Location location){
+    private void showMyLocationOnUI(Location location){
         double lat = location.getLatitude();
         double lon = location.getLongitude();
 
@@ -84,6 +85,9 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
         datePicker.show(getSupportFragmentManager(),"date picker");
     }
 
+    /**
+     * check if a sting is empty
+     */
     public boolean isStringEmpty(String text){
         if(text == null || text.equals("")){
             return true;
@@ -91,19 +95,29 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
         return false;
     }
 
+    /**
+     * generates the spinner
+     */
     public void spinnerSetup() {
         Spinner spinner = (Spinner) findViewById(R.id.tasksTypeSpinner_PostATask);
-        // Create an ArrayAdapter using the string array and a default spinner layout
+
+        // Create an ArrayAdapter
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
                 (this, android.R.layout.simple_spinner_item, taskTypes);
+
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
     }
 
 
     Calendar expectedDate;
+
+    /**
+     * runs when a user clicks on the post button
+     */
     public void postATaskOnButtonClick(View view){
         if(!areRequiredFieldsProvidedAndShowStatus()){
             return;
@@ -117,12 +131,11 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
     }
 
     private boolean areRequiredFieldsProvidedAndShowStatus(){
+        //getting value from ui
         String taskTitle =  ((Spinner) findViewById(R.id.tasksTypeSpinner_PostATask))
                 .getSelectedItem().toString();
         String description =  ((TextView) findViewById(R.id.taskDescEditTxt)).getText().toString();
         String cost =  ((TextView) findViewById(R.id.costEditTxt)).getText().toString();
-
-        System.out.println(cost);
 
         if(taskTitle.equals(getResources().getString(R.string.selectATask)))
         {
@@ -147,6 +160,7 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
     }
 
     private void writeTaskToDB(){
+        //getting values from ui
         String taskTitle =  ((Spinner) findViewById(R.id.tasksTypeSpinner_PostATask))
                 .getSelectedItem().toString();
         String description =  ((TextView) findViewById(R.id.taskDescEditTxt)).getText().toString();
@@ -163,21 +177,24 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
         String postId =  db.getReference(path).push().getKey();
 
         path = path + postId;
+
+        //creating new task object
         TaskPost taskPost = new TaskPost(taskTitle,description,cost,false,false
                 ,date, latLonLocation);
 
+        //writing to db
         new DbWrite<TaskPost>(path,taskPost,db) {
             @Override
             public void writeResult(TaskPost userdata) {
                 //task successful posted
                 successPosted();
-                finish();
             }
         };
     }
 
     private void successPosted(){
         Toast.makeText(this,"Task successful posted!",Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     @Override
