@@ -23,6 +23,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class MyPostsTest {
     @Rule
@@ -64,4 +65,24 @@ public class MyPostsTest {
         assertEquals(2, count[0]);
     }
 
+    @Test
+    public void MyPostRecyclerViewIsEmptyWhenNoList_Test2() {
+        //setup
+        final ArrayList<TaskPost> posts = new ArrayList<>();
+        final boolean[] noRecyclerView = new boolean[1];
+        noRecyclerView[0] = false;
+
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<MyPosts>() {
+                    @Override
+                    public void perform(MyPosts activity) {
+                        activity.createRecyclerView(posts);
+                        noRecyclerView[0] =  (((RecyclerView) activity.findViewById(R.id.postsList_MyPosts))
+                                .getAdapter() == null);
+                    }
+                });
+
+
+        assertTrue(noRecyclerView[0]);
+    }
 }
