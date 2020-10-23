@@ -76,6 +76,7 @@
             android:background="@drawable/rounded_button"
             android:text="Post A new task"
             android:textColor="#FFFFFF"
+            android:onClick="goToPostATaskOnClickButton"
             android:textSize="22sp" />
     </LinearLayout>
 
