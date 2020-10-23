@@ -134,4 +134,31 @@ public class PostATaskTest {
                 .check(matches(withText(R.string.costMissingPostATask)));
 
     }
+
+    @Test
+    public void tileFieldIsSelectedWhenPostingATask_Test() {
+
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<PostATaskActivity>() {
+                    @Override
+                    public void perform(PostATaskActivity activity) {
+                        activity.expectedDate = Calendar.getInstance();
+                    }
+                });
+
+
+        onView(withId(R.id.taskDescEditTxt)).perform(typeText("my description"));
+
+        onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard());
+
+        onView(withId(R.id.costEditTxt)).perform(click())
+                .perform(typeText("30"));
+        onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard());
+
+        onView(withId(R.id.postATaskButton)).perform(click());
+
+        onView(withId(R.id.postATaskStatus))
+                .check(matches(withText(R.string.selectATaskMissing)));
+
+    }
 }
