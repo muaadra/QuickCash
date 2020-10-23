@@ -103,6 +103,8 @@ public class PostATaskActivity extends AppCompatActivity
 
     private boolean areRequiredFieldsProvidedAndShowStatus(){
         String cost =  ((TextView) findViewById(R.id.costEditTxt)).getText().toString();
+        String taskTitle =  ((Spinner) findViewById(R.id.tasksTypeSpinner_PostATask))
+                .getSelectedItem().toString();
 
          if(expectedDate == null)
         {
@@ -112,7 +114,12 @@ public class PostATaskActivity extends AppCompatActivity
         {
             ((TextView)findViewById(R.id.postATaskStatus)).setText(R.string.costMissingPostATask);
             return false;
-        }
+        }else if(taskTitle.equals(getResources().getString(R.string.selectATask)))
+         {
+             ((TextView)findViewById(R.id.postATaskStatus)).setText(R.string.selectATaskMissing);
+             return false;
+
+         }
 
         return true;
     }
