@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 
 public class MyPosts extends AppCompatActivity {
+    final FirebaseDatabase db = FirebaseDatabase.getInstance();
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -32,13 +33,13 @@ public class MyPosts extends AppCompatActivity {
     int emptyListTextViewOriginalHeight = -1;
     public void createRecyclerView(ArrayList<TaskPost> posts) {
         TextView emptyListTV = (TextView)findViewById(R.id.emptyStatusMyPosts);
+        if(emptyListTextViewOriginalHeight == -1){
+            emptyListTextViewOriginalHeight = emptyListTV.getHeight();
+        }
 
-        if(posts.size() > 0){
+        if(posts != null && posts.size() > 0){
 
             //hide message saying that the list is empty
-            if(emptyListTextViewOriginalHeight == -1){
-                emptyListTextViewOriginalHeight = emptyListTV.getHeight();
-            }
             emptyListTV.setHeight(0);
 
             ((TextView)findViewById(R.id.emptyStatusMyPosts)).setText("");
@@ -57,7 +58,42 @@ public class MyPosts extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+
+        final ArrayList<TaskPost> posts = new ArrayList<>();
+
+        String userId = UserStatusData.getEmail(this).replace(".", ";");
+        //path to database object
+        String path = "users/"+ userId +"/TaskPosts";
+
+        new DbRead<DataSnapshot>(path, DataSnapshot.class, db) {
+            @Override
+            public void getReturnedDbData(DataSnapshot dataFromDb) {
+                //loop through all children in path
+                for (DataSnapshot userdata : dataFromDb.getChildren()) {
+                    TaskPost taskPost = (TaskPost) userdata.getValue(TaskPost.class);
+                    if(taskPost != null){
+                        posts.add(taskPost);
+                    }
+                }
+                createRecyclerView(posts);
+            }
+        };
+
+
+    }
+
+    /**
+     * runs when "post a task" button is clicked
+     */
+    public void goToPostATaskOnClickButton(View view) {
+        //go to next activity
+        Intent intent = new Intent(this, PostATaskActivity.class);
+        startActivity(intent);
+    }
 
 
 

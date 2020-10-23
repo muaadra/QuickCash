@@ -29,8 +29,7 @@ import java.util.List;
 public class PostATaskActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
     public String[] taskTypes = {"Select A Category"
-            , "mowing the lawn", "walking a dog","babysitting",
-            "picking up a grocery", "computer repairs"};
+            , "lawn mowing", "dog walking","baby sitting", "computer repairs"};
 
     MyLocation myLocation;
     final FirebaseDatabase db = FirebaseDatabase.getInstance();
@@ -81,7 +80,7 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
      * runs when calendar button is clicked
      */
     public void openCalenderOnClickButton(View view) {
-        DialogFragment datePicker = new DatePicker();
+        DatePicker datePicker = new DatePicker();
         datePicker.show(getSupportFragmentManager(),"date picker");
     }
 
@@ -186,7 +185,7 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
         path = path + postId;
 
         //creating new task object
-        TaskPost taskPost = new TaskPost(taskTitle,description,cost,false,false
+        TaskPost taskPost = new TaskPost(postId, taskTitle,description,cost,false,false
                 ,date, latLonLocation);
 
         //writing to db

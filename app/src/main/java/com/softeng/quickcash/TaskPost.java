@@ -3,6 +3,7 @@ package com.softeng.quickcash;
 import java.util.Date;
 
 public class TaskPost {
+    private String postId;
     private String taskTitle;
     private String taskDescription;
     private String taskCost;
@@ -14,7 +15,7 @@ public class TaskPost {
     public TaskPost() {
     }
 
-    public TaskPost(String taskTitle, String taskDescription,
+    public TaskPost(String postId, String taskTitle, String taskDescription,
                     String taskCost, boolean isPostClosed,
                     boolean isPostAccepted, Date expectedDate,
                     String latLonLocation) {
@@ -25,6 +26,15 @@ public class TaskPost {
         this.isPostAccepted = isPostAccepted;
         this.expectedDate = expectedDate;
         this.latLonLocation = latLonLocation;
+        this.postId = postId;
+    }
+
+    public String getPostId() {
+        return postId;
+    }
+
+    public void setPostId(String postId) {
+        this.postId = postId;
     }
 
     public String getTaskTitle() {
