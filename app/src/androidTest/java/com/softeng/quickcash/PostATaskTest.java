@@ -47,6 +47,16 @@ public class PostATaskTest {
         onView(withId(R.id.datePickerPostAtask)).check(doesNotExist());
     }
 
+
+    @Test
+    public void PostATaskCancelActivityTest() {
+
+        onView(withId(R.id.cancelPostAtask)).perform(click());
+
+        //check screen is not displayed
+        onView(withId(R.id.myPostsLayout)).check(matches(isDisplayed()));
+    }
+
     @Test
     public void taskTypesSpinnerIsNotEmpty_Test() {
         final int[] count = {-1};
@@ -189,4 +199,6 @@ public class PostATaskTest {
                 .check(matches(withText(R.string.missingDescPostATask)));
 
     }
+
+
 }
