@@ -56,7 +56,6 @@
                 android:layout_height="54dp" />
         </LinearLayout>
 
-
         <TextView
             android:layout_marginTop="15dp"
             android:textSize="16sp"
@@ -176,15 +175,48 @@
 
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/postATaskButton"
-            android:layout_width="277dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rounded_button"
-            android:text="Post"
-            android:onClick="postATaskOnButtonClick"
-            android:textColor="#FFFFFF"
-            android:textSize="22sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:paddingLeft="10dp"
+            android:gravity="center"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/cancelPostAtask"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_button_2"
+                    android:onClick="cancelPostATaskOnButtonClick"
+                    android:text="Cancel"
+                    android:textColor="#FFFFFF"
+                    android:textSize="22sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:paddingLeft="25dp"
+                android:gravity="right">
+                <Button
+                    android:id="@+id/postATaskButton"
+                    android:layout_width="230dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_button"
+                    android:text="Post"
+                    android:onClick="postATaskOnButtonClick"
+                    android:textColor="#FFFFFF"
+                    android:textSize="22sp" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
         <TextView
             android:id="@+id/postATaskStatus"
             android:layout_width="match_parent"

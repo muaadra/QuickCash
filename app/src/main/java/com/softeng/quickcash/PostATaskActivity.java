@@ -116,6 +116,13 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
     Calendar expectedDate;
 
     /**
+     * runs when a user cancels posting a task
+     */
+    public void cancelPostATaskOnButtonClick(View view){
+        finish();
+    }
+
+    /**
      * runs when a user clicks on the post button
      */
     public void postATaskOnButtonClick(View view){

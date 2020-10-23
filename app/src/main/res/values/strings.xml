@@ -22,4 +22,5 @@
     <string name="selectATaskMissing">Please select a task category</string>
     <string name="missingDescPostATask">Please add some description</string>
     <string name="costMissingPostATask">compensation field is required</string>
+    <string name="emptyStringMessage">You don\'t have any posts yet, you can start by clicking on the \'Post A New Task\' button below \n------------------</string>
 </resources>

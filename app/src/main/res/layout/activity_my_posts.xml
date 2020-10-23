@@ -32,23 +32,22 @@
     <LinearLayout
 
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="390dp"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="40dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
-        android:minHeight="370dp"
         android:background="@drawable/rounded_edit_text"
 
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/emptyStatusMyPosts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="20dp"
-            android:textSize="16sp"
-            android:text="You don't have any posts yet, you can start by clicking on the 'Post A New Task' button  below"
-            />
+            android:text="@string/emptyStringMessage"
+            android:textSize="16sp" />
         <androidx.recyclerview.widget.RecyclerView
             android:padding="10dp"
             android:id="@+id/postsList_MyPosts"
