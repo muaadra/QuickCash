@@ -102,8 +102,15 @@ public class PostATaskActivity extends AppCompatActivity
     }
 
     private boolean areRequiredFieldsProvidedAndShowStatus(){
-        if(expectedDate == null) {
-            ((TextView) findViewById(R.id.postATaskStatus)).setText(R.string.ExpectedDateError);
+        String cost =  ((TextView) findViewById(R.id.costEditTxt)).getText().toString();
+
+         if(expectedDate == null)
+        {
+            ((TextView)findViewById(R.id.postATaskStatus)).setText(R.string.ExpectedDateError);
+            return false;
+        }else if(cost.equals(""))
+        {
+            ((TextView)findViewById(R.id.postATaskStatus)).setText(R.string.costMissingPostATask);
             return false;
         }
 
