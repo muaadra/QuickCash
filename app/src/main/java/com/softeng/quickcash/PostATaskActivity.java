@@ -105,6 +105,7 @@ public class PostATaskActivity extends AppCompatActivity
         String cost =  ((TextView) findViewById(R.id.costEditTxt)).getText().toString();
         String taskTitle =  ((Spinner) findViewById(R.id.tasksTypeSpinner_PostATask))
                 .getSelectedItem().toString();
+        String description =  ((TextView) findViewById(R.id.taskDescEditTxt)).getText().toString();
 
          if(expectedDate == null)
         {
@@ -119,6 +120,10 @@ public class PostATaskActivity extends AppCompatActivity
              ((TextView)findViewById(R.id.postATaskStatus)).setText(R.string.selectATaskMissing);
              return false;
 
+         }else if(description.equals(""))
+         {
+             ((TextView)findViewById(R.id.postATaskStatus)).setText(R.string.missingDescPostATask);
+             return false;
          }
 
         return true;
