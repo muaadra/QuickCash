@@ -107,4 +107,31 @@ public class PostATaskTest {
                 .check(matches(withText(R.string.ExpectedDateError)));
 
     }
+
+    @Test
+    public void CostFieldIsNotEmptyWhenPostingATask_Test() {
+
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<PostATaskActivity>() {
+                    @Override
+                    public void perform(PostATaskActivity activity) {
+                        activity.taskTypes[1] = "Task 1";
+                        activity.spinnerSetup();
+                        activity.expectedDate = Calendar.getInstance();
+                    }
+                });
+
+        onView(withId(R.id.tasksTypeSpinner_PostATask)).perform(click());
+        onData(allOf(is(instanceOf(String.class)), is("Task 1"))).perform(click());
+
+        onView(withId(R.id.taskDescEditTxt)).perform(typeText("my description"));
+
+        onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard());
+
+        onView(withId(R.id.postATaskButton)).perform(click());
+
+        onView(withId(R.id.postATaskStatus))
+                .check(matches(withText(R.string.costMissingPostATask)));
+
+    }
 }
