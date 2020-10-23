@@ -154,6 +154,7 @@
 
             android:background="@drawable/rounded_edit_text"
             android:ems="10"
+            android:paddingLeft="5sp"
             android:hint="   $"
             android:inputType="numberDecimal" />
 
