@@ -14,7 +14,7 @@ public class PostATaskActivity extends AppCompatActivity {
 
 
     public boolean isStringEmpty(String text){
-        if(text.equals("")){
+        if(text == null || text.equals("")){
             return true;
         }
         return false;
