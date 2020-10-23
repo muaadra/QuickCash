@@ -21,13 +21,18 @@ import java.util.Date;
 public class PostATaskActivity extends AppCompatActivity
         implements DatePickerDialog.OnDateSetListener {
 
-    public String[] taskTypes = {"Task1", "Task2","Task3","Task4"};
+    public String[] taskTypes = {"Select A Category"
+            , "Task1", "Task2","Task3","Task4"};
     final FirebaseDatabase db = FirebaseDatabase.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_a_task);
+
+        String selectACategory = getResources().getString(R.string.selectATask);
+        taskTypes[0] = selectACategory;
+
         spinnerSetup();
     }
 
@@ -62,7 +67,9 @@ public class PostATaskActivity extends AppCompatActivity
     int numberOfLastPostInDB = 0;
     Calendar expectedDate;
     public void postATaskOnButtonClick(View view){
-
+        if(!areRequiredFieldsProvidedAndShowStatus()){
+            return;
+        }
 
         String userId = UserStatusData.getEmail(this).replace(".", ";");
         //path to database object
@@ -94,12 +101,25 @@ public class PostATaskActivity extends AppCompatActivity
 
     }
 
+    private boolean areRequiredFieldsProvidedAndShowStatus(){
+        if(expectedDate == null) {
+            ((TextView) findViewById(R.id.postATaskStatus)).setText(R.string.ExpectedDateError);
+            return false;
+        }
+
+        return true;
+    }
+
     private void writeTaskToDB(){
         String taskTitle =  ((Spinner) findViewById(R.id.tasksTypeSpinner_PostATask))
                 .getSelectedItem().toString();
         String description =  ((TextView) findViewById(R.id.taskDescEditTxt)).getText().toString();
-        //Date date = expectedDate.getTime();
+        Date date = expectedDate.getTime();
         String cost =  ((TextView) findViewById(R.id.costEditTxt)).getText().toString();
+
+        if(date == null){
+            ((TextView)findViewById(R.id.postATaskStatus)).setText(R.string.ExpectedDateError);
+        }
 
         String userId = UserStatusData.getEmail(this).replace(".", ";");
         //path where you want to write data to
@@ -114,7 +134,6 @@ public class PostATaskActivity extends AppCompatActivity
             }
         };
     }
-
 
     @Override
     public void onDateSet(android.widget.DatePicker view, int year, int month, int dayOfMonth) {
