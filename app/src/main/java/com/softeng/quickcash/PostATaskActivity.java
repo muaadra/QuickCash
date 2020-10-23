@@ -12,4 +12,11 @@ public class PostATaskActivity extends AppCompatActivity {
         setContentView(R.layout.activity_post_a_task);
     }
 
+
+    public boolean isStringEmpty(String text){
+        if(text.equals("")){
+            return true;
+        }
+        return false;
+    }
 }
