@@ -161,4 +161,32 @@ public class PostATaskTest {
                 .check(matches(withText(R.string.selectATaskMissing)));
 
     }
+
+    @Test
+    public void descriptionFieldIsNotEmptyWhenPostingATask_Test() {
+
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<PostATaskActivity>() {
+                    @Override
+                    public void perform(PostATaskActivity activity) {
+                        activity.taskTypes[1] = "Task 1";
+                        activity.spinnerSetup();
+                        activity.expectedDate = Calendar.getInstance();
+                    }
+                });
+
+        onView(withId(R.id.tasksTypeSpinner_PostATask)).perform(click());
+        onData(allOf(is(instanceOf(String.class)), is("Task 1"))).perform(click());
+
+
+        onView(withId(R.id.costEditTxt)).perform(click())
+                .perform(typeText("30"));
+        onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard());
+
+        onView(withId(R.id.postATaskButton)).perform(click());
+
+        onView(withId(R.id.postATaskStatus))
+                .check(matches(withText(R.string.missingDescPostATask)));
+
+    }
 }
