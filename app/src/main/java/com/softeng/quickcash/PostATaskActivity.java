@@ -80,26 +80,31 @@ public class PostATaskActivity extends AppCompatActivity
                 for (DataSnapshot userdata : dataFromDb.getChildren()) {
                     taskId = userdata.getKey();
                 }
-
                 if(taskId != ""){
                     numberOfLastPostInDB = Integer.parseInt(taskId.split("_")[0]);
-
                 }else {
                     numberOfLastPostInDB = 0;
                 }
+
+                writeTaskToDB();
             }
         };
 
 
+
+    }
+
+    private void writeTaskToDB(){
         String taskTitle =  ((Spinner) findViewById(R.id.tasksTypeSpinner_PostATask))
                 .getSelectedItem().toString();
         String description =  ((TextView) findViewById(R.id.taskDescEditTxt)).getText().toString();
         //Date date = expectedDate.getTime();
         String cost =  ((TextView) findViewById(R.id.costEditTxt)).getText().toString();
 
+        String userId = UserStatusData.getEmail(this).replace(".", ";");
         //path where you want to write data to
         numberOfLastPostInDB++;
-        path =  "users/"+ userId +"/TaskPosts/" + numberOfLastPostInDB + "_" + taskTitle ;
+        String path =  "users/"+ userId +"/TaskPosts/" + numberOfLastPostInDB + "_" + taskTitle ;
 
         TaskPost taskPost = new TaskPost(taskTitle,description,cost);
         new DbWrite<TaskPost>(path,taskPost,db) {
@@ -109,6 +114,7 @@ public class PostATaskActivity extends AppCompatActivity
             }
         };
     }
+
 
     @Override
     public void onDateSet(android.widget.DatePicker view, int year, int month, int dayOfMonth) {
