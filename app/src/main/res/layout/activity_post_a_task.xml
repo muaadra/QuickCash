@@ -51,7 +51,7 @@
             android:background="@drawable/rounded_edit_text"
             android:layout_height="wrap_content">
             <Spinner
-                android:id="@+id/tasksSpinner"
+                android:id="@+id/tasksTypeSpinner_PostATask"
                 android:layout_width="match_parent"
                 android:layout_height="54dp" />
         </LinearLayout>

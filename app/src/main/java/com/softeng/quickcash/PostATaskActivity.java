@@ -4,20 +4,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 
 import java.text.DateFormat;
 import java.util.Calendar;
 
-public class PostATaskActivity extends AppCompatActivity  implements DatePickerDialog.OnDateSetListener {
+public class PostATaskActivity extends AppCompatActivity
+        implements DatePickerDialog.OnDateSetListener {
+
+    String[] taskTypes = {"Task1", "Task2","Task3","Task4"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_a_task);
+        spinnerSetup();
     }
 
 
@@ -34,6 +39,17 @@ public class PostATaskActivity extends AppCompatActivity  implements DatePickerD
             return true;
         }
         return false;
+    }
+
+    void spinnerSetup() {
+        Spinner spinner = (Spinner) findViewById(R.id.tasksTypeSpinner_PostATask);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (this, android.R.layout.simple_spinner_item, taskTypes);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
     }
 
     @Override
