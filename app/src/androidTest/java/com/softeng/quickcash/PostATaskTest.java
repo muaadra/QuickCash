@@ -40,22 +40,12 @@ public class PostATaskTest {
 
     @Test
     public void PostATaskActivityNotShowingTest() {
-
         onView(withId(R.id.datePickerPostAtask)).perform(click());
 
         //check screen is not displayed
         onView(withId(R.id.datePickerPostAtask)).check(doesNotExist());
     }
 
-
-    @Test
-    public void PostATaskCancelActivityTest() {
-
-        onView(withId(R.id.cancelPostAtask)).perform(click());
-
-        //check screen is not displayed
-        onView(withId(R.id.myPostsLayout)).check(matches(isDisplayed()));
-    }
 
     @Test
     public void taskTypesSpinnerIsNotEmpty_Test() {
