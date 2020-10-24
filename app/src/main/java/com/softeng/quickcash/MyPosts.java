@@ -38,10 +38,8 @@ public class MyPosts extends AppCompatActivity {
         }
 
         if(posts != null && posts.size() > 0){
-
             //hide message saying that the list is empty
             emptyListTV.setHeight(0);
-
             ((TextView)findViewById(R.id.emptyStatusMyPosts)).setText("");
             recyclerView = (RecyclerView) findViewById(R.id.postsList_MyPosts);
 
@@ -94,15 +92,5 @@ public class MyPosts extends AppCompatActivity {
         Intent intent = new Intent(this, PostATaskActivity.class);
         startActivity(intent);
     }
-
-    /**
-     * runs when "post a task" button is clicked
-     */
-    public void editAPostOnClickButton(View view) {
-        //go to next activity
-        Intent intent = new Intent(this, PostATaskActivity.class);
-        startActivity(intent);
-    }
-
 
 }
