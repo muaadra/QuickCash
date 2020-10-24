@@ -90,5 +90,33 @@ public class MyPostsTest {
         assertTrue(noRecyclerView[0]);
     }
 
+    @Test
+    public void clickOnRecyclerViewGoesToPostATaskActivity() throws InterruptedException {
+        //setup
+        final ArrayList<TaskPost> posts = new ArrayList<>();
+        TaskPost taskPost1 = new TaskPost("1","t","d"
+                ,"5",false,false, Calendar.getInstance().getTime(),"hh");
+        TaskPost taskPost2 = new TaskPost("1","t","d"
+                ,"5",false,false, Calendar.getInstance().getTime(),"hh");
+        posts.add(taskPost1);
+        posts.add(taskPost2);
 
+        final int[] count = {-1};
+
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<MyPosts>() {
+                    @Override
+                    public void perform(MyPosts activity) {
+                        activity.createRecyclerView(posts);
+                        count[0] =  ((RecyclerView) activity.findViewById(R.id.postsList_MyPosts))
+                                .getAdapter().getItemCount();
+                    }
+                });
+
+
+        onView(withId(R.id.postsList_MyPosts)).perform(click());
+
+        //check screen is displayed
+        onView(withId(R.id.postTasksLayout)).check(matches(isDisplayed()));
+    }
 }
