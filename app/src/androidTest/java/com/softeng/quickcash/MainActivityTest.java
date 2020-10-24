@@ -102,32 +102,6 @@ public class MainActivityTest {
 
     }
 
-    /**
-     * testing go to post a task page if user is signed in
-     */
-    @Test
-    public void goToMyPostsActivity() throws InterruptedException {
-        //setup, making sure user is signed in
-        activityScenarioRule.getScenario().onActivity(
-            new ActivityScenario.ActivityAction<MainActivity>() {
-                @Override
-                public void perform(MainActivity activity) {
-                    UserSignUpData signUpData = new UserSignUpData("email","jojo@mo.com");
-                    UserStatusData.setUserSignInToTrue(activity,signUpData);
-                    //restarting activity
-                    Intent intent = new Intent(activity, MainActivity.class);
-                    activity.startActivity(intent);
-                }
-            });
-
-        Thread.sleep(1200);
-        onView(withId(R.id.postATask_main)).perform(click());
-
-        //check screen is displayed
-        onView(withId(R.id.myPostsLayout)).check(matches(isDisplayed()));
-
-    }
-
 
     @Test
     public void userCantGoToPostATaskIfNotSignedIn()  {
@@ -143,7 +117,7 @@ public class MainActivityTest {
         onView(withId(R.id.postATask_main)).perform(click());
 
         //check screen is displayed
-        onView(withId(R.id.SignUpActivity_Layout)).check(matches(isDisplayed()));
+        onView(withId(R.id.SignInActivity_Layout)).check(matches(isDisplayed()));
 
     }
 
