@@ -39,10 +39,14 @@ public class MainActivity extends AppCompatActivity {
         if(UserStatusData.isUserSignIn(this)){
             goToEditProfileActivity();
         }else {
-            Intent intent = new Intent(this, SignInActivity.class);
-            startActivity(intent);
+            goToSignInActivity();
         }
 
+    }
+
+    private void goToSignInActivity() {
+        Intent intent = new Intent(this, SignInActivity.class);
+        startActivity(intent);
     }
 
     /**
@@ -50,8 +54,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void gotToMyPostsOnButtonClick(View view) {
         if(!UserStatusData.isUserSignIn(this)){
-            Intent intent = new Intent(this, SignInActivity.class);
-            startActivity(intent);
+            goToSignInActivity();
         }else {
             checkIfUserHasAProfile();
         }
