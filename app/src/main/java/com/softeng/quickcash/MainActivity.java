@@ -37,8 +37,7 @@ public class MainActivity extends AppCompatActivity {
     public void goToProfileOnClickButton(View view) {
         //go to next activity
         if(UserStatusData.isUserSignIn(this)){
-            Intent intent = new Intent(this, EditProfile.class);
-            startActivity(intent);
+            goToEditProfileActivity();
         }else {
             Intent intent = new Intent(this, SignInActivity.class);
             startActivity(intent);
