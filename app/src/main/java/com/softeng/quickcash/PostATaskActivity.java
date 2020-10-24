@@ -89,6 +89,13 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
         String date = DateFormat.getDateInstance().format(expectedDate.getTime());
         ((Button)findViewById(R.id.datePickerPostAtask)).setText(date);
 
+
+        String address = latLongStringToAddress(dataFromDb);
+
+        ((TextView)findViewById(R.id.GPSLocation)).setText(address);
+    }
+
+    private String latLongStringToAddress(TaskPost dataFromDb) {
         //get the address from db
         List<Address> addresses = null;
         try {
@@ -107,9 +114,7 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
             getLocation();
         }
 
-        String address = addresses.get(0).getAddressLine(0);
-
-        ((TextView)findViewById(R.id.GPSLocation)).setText(address);
+        return addresses.get(0).getAddressLine(0);
     }
 
 
