@@ -156,6 +156,23 @@ public class MainActivityTest {
     }
 
 
+    @Test
+    public void userCantGoToPostATaskIfNotSignedIn()  {
+        //setup, making sure user is signed in
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<MainActivity>() {
+                    @Override
+                    public void perform(MainActivity activity) {
+                        UserStatusData.setUserSignInToFalse(activity);
+                    }
+                });
+
+        onView(withId(R.id.postATask_main)).perform(click());
+
+        //check screen is displayed
+        onView(withId(R.id.SignUpActivity_Layout)).check(matches(isDisplayed()));
+
+    }
     /**
      * clear all data from SharedPreferences
      */
