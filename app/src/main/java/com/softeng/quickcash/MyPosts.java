@@ -60,7 +60,10 @@ public class MyPosts extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        getDataFromDbAndShowOnUI();
+    }
 
+    private void getDataFromDbAndShowOnUI() {
         final ArrayList<TaskPost> posts = new ArrayList<>();
 
         String userId = UserStatusData.getEmail(this).replace(".", ";");
@@ -80,8 +83,6 @@ public class MyPosts extends AppCompatActivity {
                 createRecyclerView(posts);
             }
         };
-
-
     }
 
     /**
