@@ -35,22 +35,7 @@ public class MyPostsTest {
     public ActivityScenarioRule<MyPosts> activityScenarioRule
             = new ActivityScenarioRule<>(MyPosts.class);
 
-    @Before
-    public void setup() {
-        //setup
-        activityScenarioRule.getScenario().onActivity(
-                new ActivityScenario.ActivityAction<MyPosts>() {
-                    @Override
-                    public void perform(MyPosts activity) {
-                        UserSignUpData signUpData = new UserSignUpData("jojo@mo.com","password");
-                        UserStatusData.setUserSignInToTrue(activity,signUpData);
-                        //restart the activity
-                        Intent intent = new Intent(activity, MyPosts.class);
-                        activity.startActivity(intent);
-                    }
-                });
 
-    }
 
     @Test
     public void goToPostATaskActivityTest(){
@@ -64,6 +49,18 @@ public class MyPostsTest {
     @Test
     public void MyRecyclerViewCount_Test1() {
         //setup
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<MyPosts>() {
+                    @Override
+                    public void perform(MyPosts activity) {
+                        UserSignUpData signUpData = new UserSignUpData("jojo@mo.com","password");
+                        UserStatusData.setUserSignInToTrue(activity,signUpData);
+                        //restart the activity
+                        Intent intent = new Intent(activity, MyPosts.class);
+                        activity.startActivity(intent);
+                    }
+                });
+
         final ArrayList<TaskPost> posts = new ArrayList<>();
         TaskPost taskPost1 = new TaskPost("1","t","d"
                 ,"5",false,false, Calendar.getInstance().getTime(),"hh");
@@ -91,21 +88,19 @@ public class MyPostsTest {
     public void MyPostRecyclerViewIsEmptyWhenNoList_Test2() {
         //setup
         final ArrayList<TaskPost> posts = new ArrayList<>();
-        final boolean[] noRecyclerView = new boolean[1];
-        noRecyclerView[0] = false;
-
+        final int[] count = {-1};
         activityScenarioRule.getScenario().onActivity(
                 new ActivityScenario.ActivityAction<MyPosts>() {
                     @Override
                     public void perform(MyPosts activity) {
                         activity.createRecyclerView(posts);
-                        noRecyclerView[0] =  (((RecyclerView) activity.findViewById(R.id.postsList_MyPosts))
-                                .getAdapter() == null);
+                        count[0] =  ((RecyclerView) activity.findViewById(R.id.postsList_MyPosts))
+                                .getAdapter().getItemCount();
                     }
                 });
 
 
-        assertTrue(noRecyclerView[0]);
+        assertEquals(0, count[0]);
     }
 
 }
