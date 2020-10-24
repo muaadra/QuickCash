@@ -179,7 +179,7 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
     /**
      * check if a sting is empty
      */
-    public boolean isStringEmpty(String text){
+    private boolean isStringEmpty(String text){
         if(text == null || text.equals("")){
             return true;
         }
