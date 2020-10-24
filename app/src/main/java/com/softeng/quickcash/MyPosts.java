@@ -42,7 +42,6 @@ public class MyPosts extends AppCompatActivity {
             emptyListTextViewOriginalHeight = emptyListTV.getHeight();
         }
 
-        ((TextView)findViewById(R.id.emptyStatusMyPosts)).setText("");
         recyclerView = (RecyclerView) findViewById(R.id.postsList_MyPosts);
 
         // using a linear layout manager
@@ -125,10 +124,13 @@ public class MyPosts extends AppCompatActivity {
 
         if(!toggle){
             ((Button)findViewById(R.id.deletedPosts)).setText("< back");
-             showDeletedPosts();
+            ((TextView)findViewById(R.id.emptyStatusMyPosts)).setText(R.string.noDeletedPosts);
+            showDeletedPosts();
         }else {
             ((Button)findViewById(R.id.deletedPosts)).setText("show All posts");
+            ((TextView)findViewById(R.id.emptyStatusMyPosts)).setText(R.string.emptyStringMessage);
             showActivePosts();
+
         }
         toggle = !toggle;
 
