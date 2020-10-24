@@ -190,5 +190,33 @@ public class PostATaskTest {
 
     }
 
+    @Test
+    public void taskDeleted_Test() {
+        final int[] count = {-1};
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<PostATaskActivity>() {
+                    @Override
+                    public void perform(PostATaskActivity activity) {
+                        count[0] = ((Spinner) activity.findViewById(R.id.tasksTypeSpinner_PostATask)).getCount();
+                    }
+                });
 
+        assertNotEquals(count[0], 0);
+    }
+
+    @Test
+    public void DeleteButtonNotShowingInNewPosts_Test() {
+
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<PostATaskActivity>() {
+                    @Override
+                    public void perform(PostATaskActivity activity) {
+                        activity.taskPostFromDB = null;
+                    }
+                });
+
+
+        onView(withId(R.id.deletedPosts)).check(doesNotExist());
+
+    }
 }
