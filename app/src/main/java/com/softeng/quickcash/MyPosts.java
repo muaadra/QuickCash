@@ -69,6 +69,7 @@ public class MyPosts extends AppCompatActivity {
         getDataFromDbAndShowOnUI();
     }
 
+
     private void getDataFromDbAndShowOnUI() {
         resetToggle();
         final ArrayList<TaskPost> posts = new ArrayList<>();

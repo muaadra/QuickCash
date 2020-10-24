@@ -34,13 +34,13 @@
         android:text="Profile" />
 
     <Button
-        android:id="@+id/signOut"
+        android:id="@+id/signOutIn"
         android:layout_width="107dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="15dp"
         android:onClick="signInOrOutOnClickButton"
-        android:text="Sign In/Out" />
+        android:text="Sign In/out" />
 
     <TextView
         android:id="@+id/SignInStatus"

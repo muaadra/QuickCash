@@ -6,17 +6,16 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 
 public class MainActivity extends AppCompatActivity {
-
+    final FirebaseDatabase db = FirebaseDatabase.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
-
-
-
 
     /**
      * runs when sigIn/out button is clicked
@@ -31,23 +30,60 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    /**
-     * runs when post task button is clicked
-     */
-    public void gotToMyPostsOnButtonClick(View view) {
-        if(!UserStatusData.isUserSignIn(this)){
-            Intent intent = new Intent(this, SignUpActivity.class);
-            startActivity(intent);
-        }else {
-            Intent intent = new Intent(this, MyPosts.class);
-            startActivity(intent);
-        }
-    }
 
     /**
      * runs when go to profile button is clicked
      */
     public void goToProfileOnClickButton(View view) {
+        //go to next activity
+        if(UserStatusData.isUserSignIn(this)){
+            Intent intent = new Intent(this, EditProfile.class);
+            startActivity(intent);
+        }else {
+            Intent intent = new Intent(this, SignInActivity.class);
+            startActivity(intent);
+        }
+
+    }
+
+    /**
+     * runs when post task button is clicked
+     */
+    public void gotToMyPostsOnButtonClick(View view) {
+        if(!UserStatusData.isUserSignIn(this)){
+            Intent intent = new Intent(this, SignInActivity.class);
+            startActivity(intent);
+        }else {
+            checkIfUserHasAProfile();
+        }
+    }
+
+    private void checkIfUserHasAProfile(){
+        String userId = UserStatusData.getEmail(this).replace(".", ";");
+        //path to database object
+        String path = "users/"+ userId +"/Profile";
+
+        //read data from database
+        DbRead<userProfile> dbRead = new DbRead<userProfile>(path,
+                userProfile.class, db) {
+            @Override
+            public void getReturnedDbData(userProfile dataFromDb) {
+                //after data is received from db call checkDbData
+                if(dataFromDb!= null && dataFromDb.getfName() != null){
+                    goToMyPostsActivity();
+                }else {
+                    goToEditProfileActivity();
+                }
+            }
+        };
+
+    }
+    private void goToMyPostsActivity(){
+        Intent intent = new Intent(this, MyPosts.class);
+        startActivity(intent);
+    }
+
+    private void goToEditProfileActivity(){
         Intent intent = new Intent(this, EditProfile.class);
         startActivity(intent);
     }
