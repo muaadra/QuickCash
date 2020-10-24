@@ -95,6 +95,14 @@ public class MyPosts extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * runs when "post a task" button is clicked
+     */
+    public void editAPostOnClickButton(View view) {
+        //go to next activity
+        Intent intent = new Intent(this, PostATaskActivity.class);
+        startActivity(intent);
+    }
 
 
 }

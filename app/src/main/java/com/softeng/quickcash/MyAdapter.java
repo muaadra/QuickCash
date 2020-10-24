@@ -1,19 +1,19 @@
 package com.softeng.quickcash;
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ListItem> {
     private ArrayList<TaskPost> posts;
 
     // post list item will have variable titles and icons
@@ -23,37 +23,38 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     // Create new views (invoked by the layout manager)
     @Override
-    public MyAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,int viewType) {
+    public ListItem onCreateViewHolder(ViewGroup parent, int viewType) {
 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View v = inflater.inflate(R.layout.post_list_item, parent, false);
 
-        return (new MyViewHolder(v));
+        return (new ListItem(v,posts));
     }
 
     //
     @Override
-    public void onBindViewHolder(MyViewHolder viewHolder, int position) {
+    public void onBindViewHolder(ListItem listItem, int position) {
         // - replace the contents of the view with that element
         int pos = posts.size() - (position + 1);//to reverse order
 
-        viewHolder.postTitle.setText(posts.get(pos).getTaskTitle());
+        listItem.postTitle.setText(posts.get(pos).getTaskTitle());
 
         //set description and shorten length if needed
         String desc = posts.get(pos).getTaskDescription();
         if(desc.length() > 20){
             desc = desc.substring(0,20) + "...";
         }
-        viewHolder.postDescription.setText(desc);
+        listItem.postDescription.setText(desc);
 
         //setting up icon
-        Context context =  viewHolder.postDescription.getContext();
+        Context context =  listItem.postDescription.getContext();
         String drawableName = posts.get(pos).getTaskTitle().replace(" ","_");
         System.out.println(drawableName);
         int id = context.getResources().getIdentifier(
                 drawableName, "drawable", context.getPackageName());
 
-        viewHolder.jobIcon.setBackgroundResource(id);
+        listItem.jobIcon.setBackgroundResource(id);
+
     }
 
 
@@ -66,17 +67,41 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     // this is the class that represents list object/item
     //need to be instantiated for every item in the list
     // Provide a reference to the views for each list item
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
-
+    public static class ListItem extends RecyclerView.ViewHolder {
+        LinearLayout postLayout;
         TextView postTitle;
         TextView postDescription;
         ImageView jobIcon;
+        View mainView;
+        ArrayList<TaskPost> myPosts;
 
-        public MyViewHolder(View listItemView) {
+        public ListItem(View listItemView, ArrayList<TaskPost> posts) {
             super(listItemView);
+            myPosts = posts;
+            mainView = listItemView;
             postTitle = listItemView.findViewById(R.id.postTitle);
             jobIcon = listItemView.findViewById(R.id.jobIcon);
             postDescription = listItemView.findViewById(R.id.postDescTextView);
+            postLayout = listItemView.findViewById(R.id.postItem);
+
+
+            //make item clickable
+            postLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // get position
+                    gotToPostATask();
+                }
+            });
         }
+
+        private void gotToPostATask(){
+            Intent intent = new Intent(mainView.getContext(), PostATaskActivity.class);
+            int pos = myPosts.size() - (getAdapterPosition() + 1);//to reverse order
+            intent.putExtra("postID",myPosts.get(pos).getPostId());
+            mainView.getContext().startActivity(intent);
+        }
+
+
     }
 }

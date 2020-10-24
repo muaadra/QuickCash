@@ -34,7 +34,7 @@ public abstract class MyLocation {
     LocationRequest locationRequest;
     private LocationCallback locationCallback;
     Activity activity;
-    LongLatLocation lastLocation;
+    private LongLatLocation lastLocation;
 
 
     public MyLocation(Activity activity) {
@@ -105,6 +105,13 @@ public abstract class MyLocation {
 
     }
 
+    public void setLastLocation(LongLatLocation lastLocation) {
+        this.lastLocation = lastLocation;
+    }
+
+    public LongLatLocation getLastLocation() {
+        return lastLocation;
+    }
 
     public abstract void LocationResult(Location location);
 
