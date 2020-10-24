@@ -49,18 +49,23 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
 
         spinnerSetup();
 
-        //opening an existing task
+        showDataOnUI();
+
+    }
+
+    private void showDataOnUI() {
+        //check if this is an existing task
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
+            //existing task
             postID = bundle.getString("postID");
             if(postID != null){
                 retrieveDataFromDbAndDisplay(postID);
             }
-            System.out.println(postID);
         }else {
+            //new task post
             getLocation();
         }
-
     }
 
     private void retrieveDataFromDbAndDisplay(String postId) {
@@ -112,6 +117,7 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
             myLocation.setLastLocation(latLocation);
         } catch (IOException e) {
             getLocation();
+            return "";
         }
 
         return addresses.get(0).getAddressLine(0);
