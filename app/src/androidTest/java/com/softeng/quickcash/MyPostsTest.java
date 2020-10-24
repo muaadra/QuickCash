@@ -1,5 +1,6 @@
 package com.softeng.quickcash;
 
+import android.content.Intent;
 import android.widget.Spinner;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,6 +9,8 @@ import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -32,7 +35,22 @@ public class MyPostsTest {
     public ActivityScenarioRule<MyPosts> activityScenarioRule
             = new ActivityScenarioRule<>(MyPosts.class);
 
+    @Before
+    public void setup() {
+        //setup
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<MyPosts>() {
+                    @Override
+                    public void perform(MyPosts activity) {
+                        UserSignUpData signUpData = new UserSignUpData("jojo@mo.com","password");
+                        UserStatusData.setUserSignInToTrue(activity,signUpData);
+                        //restart the activity
+                        Intent intent = new Intent(activity, MyPosts.class);
+                        activity.startActivity(intent);
+                    }
+                });
 
+    }
 
     @Test
     public void goToPostATaskActivityTest(){
@@ -90,33 +108,4 @@ public class MyPostsTest {
         assertTrue(noRecyclerView[0]);
     }
 
-    @Test
-    public void clickOnRecyclerViewGoesToPostATaskActivity() throws InterruptedException {
-        //setup
-        final ArrayList<TaskPost> posts = new ArrayList<>();
-        TaskPost taskPost1 = new TaskPost("1","t","d"
-                ,"5",false,false, Calendar.getInstance().getTime(),"hh");
-        TaskPost taskPost2 = new TaskPost("1","t","d"
-                ,"5",false,false, Calendar.getInstance().getTime(),"hh");
-        posts.add(taskPost1);
-        posts.add(taskPost2);
-
-        final int[] count = {-1};
-
-        activityScenarioRule.getScenario().onActivity(
-                new ActivityScenario.ActivityAction<MyPosts>() {
-                    @Override
-                    public void perform(MyPosts activity) {
-                        activity.createRecyclerView(posts);
-                        count[0] =  ((RecyclerView) activity.findViewById(R.id.postsList_MyPosts))
-                                .getAdapter().getItemCount();
-                    }
-                });
-
-
-        onView(withId(R.id.postsList_MyPosts)).perform(click());
-
-        //check screen is displayed
-        onView(withId(R.id.postTasksLayout)).check(matches(isDisplayed()));
-    }
 }
