@@ -215,7 +215,6 @@ public class PostATaskTest {
                     }
                 });
 
-
         onView(withId(R.id.deletedPosts)).check(doesNotExist());
 
     }

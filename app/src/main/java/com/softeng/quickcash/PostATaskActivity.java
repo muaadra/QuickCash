@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,10 +34,11 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
     public String[] taskTypes = {"Select A Category"
             , "lawn mowing", "dog walking","baby sitting", "computer repairs"};
 
-    MyLocation myLocation;
+    private MyLocation myLocation;
     final FirebaseDatabase db = FirebaseDatabase.getInstance();
 
     private String postID;
+    TaskPost taskPostFromDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,14 +59,19 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
         //check if this is an existing task
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
-            //existing task
+            //existing task, show data from db
             postID = bundle.getString("postID");
             if(postID != null){
                 retrieveDataFromDbAndDisplay(postID);
             }
+
+
         }else {
             //new task post
             getLocation();
+
+
+            ((LinearLayout)findViewById(R.id.deleteButtonParent)).getLayoutParams().width = 0;
         }
     }
 
@@ -78,6 +85,7 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
             public void getReturnedDbData(TaskPost dataFromDb) {
                 //after data is received from db call checkDbData
                 showDbDataOnUi(dataFromDb);
+                taskPostFromDB = dataFromDb;
             }
         };
     }
@@ -98,6 +106,14 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
         String address = latLongStringToAddress(dataFromDb);
 
         ((TextView)findViewById(R.id.GPSLocation)).setText(address);
+
+        if(dataFromDb.isPostDeleted()){
+            ((Button) findViewById(R.id.postATaskButton)).setWidth(0);
+            ((LinearLayout)findViewById(R.id.deleteButtonParent)).getLayoutParams().width = 0;
+            ((LinearLayout)findViewById(R.id.postButtonParent)).getLayoutParams().width = 0;
+            ((TextView) findViewById(R.id.postATaskStatus)).setText("can't post, view only");
+
+        }
     }
 
     private String latLongStringToAddress(TaskPost dataFromDb) {
@@ -193,8 +209,9 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
     /**
      * runs when a user cancels posting a task
      */
-    public void cancelPostATaskOnButtonClick(View view){
-        finish();
+    public void deletePostATaskOnButtonClick(View view){
+        taskPostFromDB.setPostDeleted(true);
+        writeTaskToDB(taskPostFromDB);
     }
 
     /**
@@ -284,7 +301,7 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
     }
 
     private void successPosted(){
-        Toast.makeText(this,"Task successful posted!",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"Operation was successful",Toast.LENGTH_SHORT).show();
         finish();
     }
 
