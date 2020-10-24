@@ -56,28 +56,6 @@ public class MainActivityTest {
 
     }
 
-    /**
-     * tests that the main activity is not showing if user is signed in
-     */
-    @Test
-    public void welcomeActivityNotShowingAfterFirstRunTest(){
-        //setup
-        activityScenarioRule.getScenario().onActivity(
-                new ActivityScenario.ActivityAction<MainActivity>() {
-                    @Override
-                    public void perform(MainActivity activity) {
-                        UserStatusData.removeAllUserPreferences(activity);
-
-                        //restart the activity
-                        Intent intent = new Intent(activity, MainActivity.class);
-                        activity.startActivity(intent);
-                    }
-                });
-
-        //check sign-up screen is displayed
-        onView(withId(R.id.mainActivityLayOut)).check(doesNotExist());
-
-    }
 
     /**
      * testing sign out button
@@ -115,7 +93,8 @@ public class MainActivityTest {
                     @Override
                     public void perform(MainActivity activity) {
                         UserStatusData.removeAllUserPreferences(activity);
-                        UserStatusData.saveUserData("email","jojo@mo.com", activity);
+                        UserSignUpData signUpData = new UserSignUpData("email","jojo@mo.com");
+                        UserStatusData.setUserSignInToTrue(activity,signUpData);
                         //restarting activity
                         Intent intent = new Intent(activity, MainActivity.class);
                         activity.startActivity(intent);

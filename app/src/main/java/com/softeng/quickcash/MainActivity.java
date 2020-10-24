@@ -13,31 +13,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //check if user is signed in
-        userSignedInCheck();
-
     }
 
+
+
+
     /**
-     * checks if this is the first user run
+     * runs when sigIn/out button is clicked
      */
-    private void userSignedInCheck() {
-        if (!UserStatusData.isUserSignIn(this)) {
-            //go to next activity
-            Intent intent = new Intent(this, WelcomeActivity.class);
-            startActivity(intent);
+    public void signInOrOutOnClickButton(View view) {
+        if(UserStatusData.isUserSignIn(this)){
+            //set user status to signed out
+            UserStatusData.setUserSignInToFalse(this);
         }
-    }
-
-
-    /**
-     * runs when sig-out button is clicked
-     */
-    public void signOutOnClickButton(View view) {
-        //set user status to signed out
-        UserStatusData.setUserSignInToFalse(this);
-
         //go to next activity
         Intent intent = new Intent(this, WelcomeActivity.class);
         startActivity(intent);
@@ -47,15 +35,19 @@ public class MainActivity extends AppCompatActivity {
      * runs when post task button is clicked
      */
     public void gotToMyPostsOnButtonClick(View view) {
-        Intent intent = new Intent(this, MyPosts.class);
-        startActivity(intent);
+        if(!UserStatusData.isUserSignIn(this)){
+            Intent intent = new Intent(this, SignUpActivity.class);
+            startActivity(intent);
+        }else {
+            Intent intent = new Intent(this, MyPosts.class);
+            startActivity(intent);
+        }
     }
 
     /**
      * runs when go to profile button is clicked
      */
     public void goToProfileOnClickButton(View view) {
-        //go to next activity
         Intent intent = new Intent(this, EditProfile.class);
         startActivity(intent);
     }

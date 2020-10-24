@@ -18,10 +18,10 @@
         <activity android:name=".PostATaskActivity"></activity>
         <activity android:name=".MyPosts" />
         <activity android:name=".EditProfile" />
-        <activity android:name=".WelcomeActivity" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".SignInActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

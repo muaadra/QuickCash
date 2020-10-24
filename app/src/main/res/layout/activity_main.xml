@@ -39,8 +39,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="15dp"
-        android:onClick="signOutOnClickButton"
-        android:text="Sign Out" />
+        android:onClick="signInOrOutOnClickButton"
+        android:text="Sign In/Out" />
 
     <TextView
         android:id="@+id/SignInStatus"
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         android:gravity="center"
-        android:text="Welcome!\nYou are Signed In"
+        android:text="Main Interface"
         android:textColor="#2196F3"
         android:textSize="30sp" />
 
