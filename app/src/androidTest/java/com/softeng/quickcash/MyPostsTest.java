@@ -13,6 +13,8 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static androidx.test.espresso.Espresso.onView;
@@ -45,8 +47,10 @@ public class MyPostsTest {
     public void MyRecyclerViewCount_Test1() {
         //setup
         final ArrayList<TaskPost> posts = new ArrayList<>();
-        TaskPost taskPost1 = new TaskPost();
-        TaskPost taskPost2 = new TaskPost();
+        TaskPost taskPost1 = new TaskPost("1","t","d"
+                ,"5",false,false, Calendar.getInstance().getTime(),"hh");
+        TaskPost taskPost2 = new TaskPost("1","t","d"
+                ,"5",false,false, Calendar.getInstance().getTime(),"hh");
         posts.add(taskPost1);
         posts.add(taskPost2);
 
@@ -85,4 +89,6 @@ public class MyPostsTest {
 
         assertTrue(noRecyclerView[0]);
     }
+
+
 }
