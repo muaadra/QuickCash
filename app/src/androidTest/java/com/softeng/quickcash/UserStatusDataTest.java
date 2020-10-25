@@ -39,7 +39,8 @@ public class UserStatusDataTest {
             public void perform(MainActivity activity) {
                 appContext[0] = activity;
                 UserStatusData.removeAllUserPreferences(activity);
-                UserStatusData.saveUserData("email","jojo@mo.com", activity);
+                UserSignUpData signUpData = new UserSignUpData("jojo@mo.com","Password");
+                UserStatusData.setUserSignInToTrue(activity,signUpData);
             }
         });
     }

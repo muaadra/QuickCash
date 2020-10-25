@@ -17,4 +17,12 @@
     <string name="profileDelete">User Profile Has Been Deleted Successfully</string>
     <string name="YouAreSignedIn">Welcome!\n You are Signed In</string>
     <string name="YouAreSignedOut">You are Signed Out</string>
+    <string name="ExpectedDateError">Expected date is required to post</string>
+    <string name="selectATask">Select A Task Category</string>
+    <string name="selectATaskMissing">Please select a task category</string>
+    <string name="missingDescPostATask">Please add some description</string>
+    <string name="costMissingPostATask">compensation field is required</string>
+    <string name="emptyStringMessage">You don\'t have any posts yet, you can start by clicking on the \'Post A New Task\' button below \n------------------</string>
+    <string name="noDeletedPosts">You don\'t have any deleted posts \n------------------</string>
+
 </resources>

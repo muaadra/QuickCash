@@ -1,23 +1,17 @@
 package com.softeng.quickcash;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 
 import androidx.test.core.app.ActivityScenario;
-import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.assertion.ViewAssertions;
-import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -56,28 +50,6 @@ public class MainActivityTest {
 
     }
 
-    /**
-     * tests that the main activity is not showing if user is signed in
-     */
-    @Test
-    public void welcomeActivityNotShowingAfterFirstRunTest(){
-        //setup
-        activityScenarioRule.getScenario().onActivity(
-                new ActivityScenario.ActivityAction<MainActivity>() {
-                    @Override
-                    public void perform(MainActivity activity) {
-                        UserStatusData.removeAllUserPreferences(activity);
-
-                        //restart the activity
-                        Intent intent = new Intent(activity, MainActivity.class);
-                        activity.startActivity(intent);
-                    }
-                });
-
-        //check sign-up screen is displayed
-        onView(withId(R.id.mainActivityLayOut)).check(doesNotExist());
-
-    }
 
     /**
      * testing sign out button
@@ -97,7 +69,7 @@ public class MainActivityTest {
                     }
                 });
 
-        onView(withId(R.id.signOut)).perform(click());
+        onView(withId(R.id.signOutIn)).perform(click());
 
         //check screen is displayed
         onView(withId(R.id.mainActivityLayOut)).check(doesNotExist());
@@ -115,7 +87,8 @@ public class MainActivityTest {
                     @Override
                     public void perform(MainActivity activity) {
                         UserStatusData.removeAllUserPreferences(activity);
-                        UserStatusData.saveUserData("email","jojo@mo.com", activity);
+                        UserSignUpData signUpData = new UserSignUpData("email","jojo@mo.com");
+                        UserStatusData.setUserSignInToTrue(activity,signUpData);
                         //restarting activity
                         Intent intent = new Intent(activity, MainActivity.class);
                         activity.startActivity(intent);
@@ -129,6 +102,43 @@ public class MainActivityTest {
 
     }
 
+
+    @Test
+    public void userCantGoToPostATaskIfNotSignedIn()  {
+        //setup, making sure user is signed in
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<MainActivity>() {
+                    @Override
+                    public void perform(MainActivity activity) {
+                        UserStatusData.setUserSignInToFalse(activity);
+                    }
+                });
+
+        onView(withId(R.id.postATask_main)).perform(click());
+
+        //check screen is displayed
+        onView(withId(R.id.SignInActivity_Layout)).check(matches(isDisplayed()));
+
+    }
+
+    @Test
+    public void userGoesToSignInWhenClickOnProfileIfNotSignedIn()  {
+        //setup, making sure user is signed in
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<MainActivity>() {
+                    @Override
+                    public void perform(MainActivity activity) {
+                        UserStatusData.removeAllUserPreferences(activity);
+                        UserStatusData.setUserSignInToFalse(activity);
+                    }
+                });
+
+        onView(withId(R.id.goToProfile)).perform(click());
+
+        //check screen is displayed
+        onView(withId(R.id.SignInActivity_Layout)).check(matches(isDisplayed()));
+
+    }
     /**
      * clear all data from SharedPreferences
      */

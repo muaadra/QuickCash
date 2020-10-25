@@ -8,6 +8,22 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="5dp"
+        android:layout_gravity="end"
+        >
+        <Button
+            android:id="@+id/postATask_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Post A task"
+            android:onClick="gotToMyPostsOnButtonClick"
+            android:layout_gravity = "end"
+            />
+    </LinearLayout>
     <Button
         android:id="@+id/goToProfile"
         android:layout_width="107dp"
@@ -18,13 +34,13 @@
         android:text="Profile" />
 
     <Button
-        android:id="@+id/signOut"
+        android:id="@+id/signOutIn"
         android:layout_width="107dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="15dp"
-        android:onClick="signOutOnClickButton"
-        android:text="Sign Out" />
+        android:onClick="signInOrOutOnClickButton"
+        android:text="Sign In/out" />
 
     <TextView
         android:id="@+id/SignInStatus"
@@ -32,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         android:gravity="center"
-        android:text="Welcome!\nYou are Signed In"
+        android:text="Main Interface"
         android:textColor="#2196F3"
         android:textSize="30sp" />
 

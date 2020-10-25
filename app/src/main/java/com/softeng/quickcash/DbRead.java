@@ -29,7 +29,13 @@ public abstract class DbRead<T> implements ValueEventListener {
     @Override
     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         //get user sign up info as a UserSignUpData object
-        T dataFromDb = dataSnapshot.getValue(returnType);
+        T dataFromDb;
+        if(returnType == DataSnapshot.class){
+            dataFromDb = (T) dataSnapshot;
+        }else {
+            dataFromDb = dataSnapshot.getValue(returnType);
+        }
+
         getReturnedDbData(dataFromDb);
     }
 
