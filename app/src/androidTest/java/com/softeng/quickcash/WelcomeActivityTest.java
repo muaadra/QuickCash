@@ -28,6 +28,14 @@ public class WelcomeActivityTest {
         onView(withId(R.id.SignUpActivity_Layout)).check(matches(isDisplayed()));
     }
 
+    /**
+     * test if user goes to sign-in activity after click on sign in button
+     */
+    @Test
+    public void tapSignIn() {
+        onView(withId(R.id.signInButton)).perform(click());
+        onView(withId(R.id.SignInActivity_Layout)).check(matches(isDisplayed()));
+    }
     @Test
     public void tapContinueAsGuest() {
         onView(withId(R.id.continueAsGuestButton)).perform(click());

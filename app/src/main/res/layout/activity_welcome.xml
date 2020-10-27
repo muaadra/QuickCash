@@ -7,34 +7,72 @@
     android:layout_height="match_parent"
     tools:context=".WelcomeActivity">
 
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="#D8D8D8"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/AppLogo"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:background="#FFFFFF"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif-black"
+                android:gravity="center"
+                android:text="QUICK CA$H"
+                android:textColor="#3C3C3C"
+                android:textSize="45sp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
     <Button
         android:id="@+id/signInButton"
-        android:layout_width="235dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="88dp"
-        android:layout_marginLeft="88dp"
-        android:layout_marginTop="189dp"
-        android:layout_marginEnd="88dp"
-        android:layout_marginRight="88dp"
-        android:layout_marginBottom="10dp"
+        android:layout_width="242dp"
+        android:layout_height="72dp"
+        android:layout_marginTop="24dp"
+        android:background="#00BCD4"
+        android:onClick="signIn"
         android:text="@string/signInButton"
-        app:layout_constraintBottom_toTopOf="@+id/createAccountButton"
+        android:textColor="#FFFFFF"
+        android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <Button
         android:id="@+id/createAccountButton"
-        android:layout_width="235dp"
-        android:layout_height="48dp"
+        android:layout_width="242dp"
+        android:layout_height="72dp"
         android:layout_marginStart="88dp"
         android:layout_marginLeft="88dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="88dp"
         android:layout_marginRight="88dp"
         android:layout_marginBottom="10dp"
         android:onClick="signUp"
         android:text="@string/createAccountButton"
+        android:textColor="#FFFFFF"
+        android:textSize="22sp"
+        android:background="#00BCD4"
         app:layout_constraintBottom_toTopOf="@+id/continueAsGuestButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -59,19 +97,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/createAccountButton" />
 
-    <ImageView
-        android:id="@+id/imageView"
+    <TextView
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="142dp"
-        android:layout_marginLeft="142dp"
-        android:layout_marginTop="125dp"
-        android:layout_marginEnd="141dp"
-        android:layout_marginRight="141dp"
-        android:contentDescription="@string/mainPageImage"
+        android:layout_marginTop="104dp"
+        android:fontFamily="sans-serif-light"
+        android:text="Welcome!"
+        android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

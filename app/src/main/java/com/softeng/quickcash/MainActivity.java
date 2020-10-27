@@ -1,51 +1,91 @@
 package com.softeng.quickcash;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.FirebaseDatabase;
+
+
+public class MainActivity extends AppCompatActivity {
+    final FirebaseDatabase db = FirebaseDatabase.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //check if user is signed in
-        userSignedInCheck();
-
     }
 
     /**
-     * checks if this is the first user run
+     * runs when sigIn/out button is clicked
      */
-    private void userSignedInCheck(){
-       if(!UserStatusData.isUserSignIn(this)){
-            //go to next activity
-            Intent intent = new Intent(this, WelcomeActivity.class);
-            startActivity(intent);
-       }
-    }
-
-    /**
-     * runs when sig-out button is clicked
-     */
-    public void signOutOnClickButton(View view){
-        //set user status to signed out
-        UserStatusData.setUserSignInToFalse(this);
-
+    public void signInOrOutOnClickButton(View view) {
+        if(UserStatusData.isUserSignIn(this)){
+            //set user status to signed out
+            UserStatusData.setUserSignInToFalse(this);
+        }
         //go to next activity
         Intent intent = new Intent(this, WelcomeActivity.class);
         startActivity(intent);
     }
 
+
     /**
      * runs when go to profile button is clicked
      */
-    public void goToProfileOnClickButton(View view){
+    public void goToProfileOnClickButton(View view) {
         //go to next activity
+        if(UserStatusData.isUserSignIn(this)){
+            goToEditProfileActivity();
+        }else {
+            goToSignInActivity();
+        }
+
+    }
+
+    private void goToSignInActivity() {
+        Intent intent = new Intent(this, SignInActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * runs when post task button is clicked
+     */
+    public void gotToMyPostsOnButtonClick(View view) {
+        if(!UserStatusData.isUserSignIn(this)){
+            goToSignInActivity();
+        }else {
+            checkIfUserHasAProfile();
+        }
+    }
+
+    private void checkIfUserHasAProfile(){
+        String userId = UserStatusData.getEmail(this).replace(".", ";");
+        //path to database object
+        String path = "users/"+ userId +"/Profile";
+
+        //read data from database
+        DbRead<userProfile> dbRead = new DbRead<userProfile>(path,
+                userProfile.class, db) {
+            @Override
+            public void getReturnedDbData(userProfile dataFromDb) {
+                //after data is received from db call checkDbData
+                if(dataFromDb!= null && dataFromDb.getfName() != null){
+                    goToMyPostsActivity();
+                }else {
+                    goToEditProfileActivity();
+                }
+            }
+        };
+
+    }
+    private void goToMyPostsActivity(){
+        Intent intent = new Intent(this, MyPosts.class);
+        startActivity(intent);
+    }
+
+    private void goToEditProfileActivity(){
         Intent intent = new Intent(this, EditProfile.class);
         startActivity(intent);
     }
