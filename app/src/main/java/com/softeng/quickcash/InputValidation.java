@@ -69,4 +69,13 @@ public class InputValidation {
     public boolean isEmailValid(String email){
         return isEmailLengthValid(email) && isEmailFormatValid(email);
     }
+    /**
+     * checks if user enter number
+     * @param number input to be validated.
+     * @return true if valid
+     */
+    public boolean isNumber(String number) {
+        String numberRegex = "[0-9]|[1-9][0-9]|[1-9][0-9][0-9]";
+        return number.matches(numberRegex);
+    }
 }

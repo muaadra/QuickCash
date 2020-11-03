@@ -69,4 +69,16 @@ public class InputValidationTest {
         assertTrue(input.isEmailFormatValid("!@%.5"));
         assertTrue(input.isEmailFormatValid("jojo@me.com"));
     }
+    /**
+     * This test checks if user enter number.
+     */
+    @Test
+    public void numberEnterTest() {
+        InputValidation input = new InputValidation();
+        assertTrue(input.isNumber("5"));
+        assertTrue(input.isNumber("50"));
+        assertTrue(input.isNumber("500"));
+        assertFalse(input.isNumber("aaaaa"));
+    }
+
 }
