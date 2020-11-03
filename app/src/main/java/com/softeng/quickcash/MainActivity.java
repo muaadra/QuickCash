@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         new DbRead<DataSnapshot>(path, DataSnapshot.class, db) {
             @Override
             public void getReturnedDbData(DataSnapshot dataFromDb) {
-               extractTaskPostsFromDBSnapShot(dataFromDb);
+                extractTaskPostsFromDBSnapShot(dataFromDb);
             }
         };
     }

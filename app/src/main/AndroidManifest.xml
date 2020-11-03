@@ -30,6 +30,7 @@
         </activity>
         <activity android:name=".CreateProfile" />
         <activity android:name=".GuestViewActivity" />
+        <activity android:name=".FilterActivity" />
     </application>
 
 </manifest>
