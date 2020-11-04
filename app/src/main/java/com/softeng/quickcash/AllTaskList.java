@@ -42,15 +42,10 @@ public abstract class AllTaskList<T> implements ValueEventListener {
                         TaskPost temp = new TaskPost();
                         temp.setTaskTitle(taskPost.get("taskTitle").toString());
                         temp.setTaskCost(taskPost.get("taskCost").toString());
-                        if(taskPost.get("postDeleted").toString().equals("true")) {
-                            break;
+                        if(taskPost.get("postDeleted") == null || taskPost.get("postDeleted").toString().equals("true")) {
+                            continue;
                         } else {
                             temp.setPostDeleted(taskPost.get("postDeleted").toString().equals("true"));
-                        }
-                        if(taskPost.get("postAccepted").toString().equals("true")) {
-                            break;
-                        } else {
-                            temp.setPostAccepted(taskPost.get("postAccepted").toString().equals("true"));
                         }
                         HashMap<String, Long> expectedDate  = (HashMap<String, Long>) taskPost.get("expectedDate");
                         Date date  = new Date();

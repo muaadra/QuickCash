@@ -21,11 +21,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Array;
+import java.sql.SQLOutput;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -90,12 +92,15 @@ public class FilterActivity extends AppCompatActivity implements DatePickerDialo
         });
         btn_apply = (Button) findViewById(R.id.btn_filter_apply);
 
+
         btn_apply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 HashSet<String> categories = new HashSet<>();
-                int[] price = new int[2];
-                long[] date = new long[2];
+                ArrayList<Integer> price = new ArrayList<>();
+                ArrayList<Long> date = new ArrayList<>();
+                Button dateFrom = (Button) findViewById(R.id.datePickerPostAtask);
+                Button dateTo = (Button) findViewById(R.id.datePickerPostAtask);
                 if (toggleButton1.isChecked()) {
                     categories.add(toggleButton1.getText().toString().toLowerCase());
                 }
@@ -112,21 +117,24 @@ public class FilterActivity extends AppCompatActivity implements DatePickerDialo
                     params.put("categories", categories);
                 }
                 if (!priceMinText.getText().toString().equals("")) {
-                    price[0] = Integer.parseInt(priceMinText.getText().toString());
+                    price.add(Integer.parseInt(priceMinText.getText().toString()));
                 }
                 if (!priceMaxText.getText().toString().equals("")) {
-                    price[1] = Integer.parseInt(priceMaxText.getText().toString());
+                    price.add(Integer.parseInt(priceMaxText.getText().toString()));
                 }
-                if (price.length > 0) {
+                if (price.size() > 0) {
                     params.put("price", price);
                 }
-                if (expectedDateFrom != null) {
-                    date[0] = expectedDateFrom.getTimeInMillis();
+                if (!dateFrom.getText().toString().equals("Pick A date")) {
+                    date.add(expectedDateFrom.getTimeInMillis());
                 }
-                if (expectedDateTo != null) {
-                    date[1] = expectedDateFrom.getTimeInMillis();
+                if (!dateTo.getText().toString().equals("Pick A date")) {
+                    date.add(expectedDateTo.getTimeInMillis());
                 }
+                if (date.size() > 0) {
                     params.put("expected", date);
+                }
+
                 AllTaskList<TaskList> taskLists = new AllTaskList<TaskList>("/users", db) {
                     @Override
                     public void getReturnedDbData(TaskList taskList) {
@@ -139,35 +147,38 @@ public class FilterActivity extends AppCompatActivity implements DatePickerDialo
     }
 
     public void filterList(TaskList allList) {
-        for (int i = 0; i < allList.getTaskPosts().size(); i++) {
-            boolean isTaskTitle = false;
-            boolean isTaskCost = false;
-            boolean isExpectedDate = false;
-            if (params.get("categories") != null) {
-                for (String category : (HashSet<String>) params.get("categories")) {
-                    if (category.equals(allList.getTaskPosts().get(i).getTaskTitle())) {
-                        isTaskTitle = true;
-                        break;
-                    }
-                }
+        int taskSize = allList.getTaskPosts().size();
+        ArrayList <Integer> removeItem = new ArrayList<>();
+        for (int i = 0; i < taskSize ; i++) {
+            boolean isTaskTitle = true;
+            boolean isTaskCost = true;
+            boolean isExpectedDate = true;
+            if (params.get("categories") != null && !((HashSet<String>) params.get("categories")).contains(allList.getTaskPosts().get(i).getTaskTitle())) {
+                    isTaskTitle = false;
             }
             if (params.get("price") != null) {
                 int taskCost = Integer.parseInt(allList.getTaskPosts().get(i).getTaskCost());
-                if (((int []) params.get("price"))[0]<= taskCost &&
-                        ((int []) params.get("price"))[1] >= taskCost) {
-                    isTaskCost = true;
+                if (((ArrayList<Integer>) params.get("price")).get(0) > taskCost || ((ArrayList<Integer>) params.get("price")).get(1) < taskCost) {
+                    isTaskCost = false;
                 }
             }
             if (params.get("expected") != null) {
                 long time = allList.getTaskPosts().get(i).getExpectedDate().getTime();
-                if (((long []) params.get("expected"))[0] <= time && time <= ((long []) params.get("expected"))[1]) {
-                    isExpectedDate = true;
+                if (((ArrayList<Long>) params.get("expected")).get(0) > time || ((ArrayList<Long>) params.get("expected")).get(1) < time) {
+                    isTaskCost = false;
                 }
             }
-            if (!isTaskTitle && !isTaskCost && !isExpectedDate) {
-                allList.getTaskPosts().remove(i);
+
+            if ((!isTaskTitle || !isTaskCost || !isExpectedDate)) {
+                removeItem.add(i);
             }
+
         }
+        Collections.reverse(removeItem);
+        for(int i : removeItem) {
+            allList.getTaskPosts().remove(i);
+        }
+        System.out.println(allList.getTaskPosts().size());
     }
 
     /**
