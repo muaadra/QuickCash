@@ -3,6 +3,7 @@ package com.softeng.quickcash;
 import android.content.Intent;
 import android.widget.Spinner;
 
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.assertion.ViewAssertions;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -24,6 +25,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.fail;
 
 
 public class MainActivityTest {
@@ -150,7 +152,6 @@ public class MainActivityTest {
     @Test
     public void sortBySpinnerIsNotEmpty_Test() {
         final int[] count = {-1};
-        final List<String>[] taskTypes = new List[]{new ArrayList<>()};
 
         activityScenarioRule.getScenario().onActivity(
                 new ActivityScenario.ActivityAction<MainActivity>() {
@@ -163,6 +164,22 @@ public class MainActivityTest {
         assertNotEquals(0, count[0]);
     }
 
+    @Test
+    public void recyclerViewIsCreated_Test() {
+        final boolean[] exists = {false};
+
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<MainActivity>() {
+                    @Override
+                    public void perform(MainActivity activity) {
+                        exists[0] =
+                                (((RecyclerView) activity.findViewById(R.id.TaskPostsList))
+                                        .getAdapter() != null);
+                    }
+                });
+
+        assertEquals(true, exists[0]);
+    }
 
     /**
      * clear all data from SharedPreferences
