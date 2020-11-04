@@ -98,27 +98,7 @@ public class FilterActivityTest {
         onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard());
         onView(withId(R.id.err_msg_price)).check(matches(isDisplayed()));
     }
-    /**
-     * this Ui test if user input correct duration.
-     */
-    @Test
-    public void filter_duration_correct() {
-        onView(withId(R.id.duration_minText)).perform(typeText("50"));
-        onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.duration_maxText)).perform(typeText("60"));
-        onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard());
-    }
-    /**
-     * this Ui test if user input incorrect duration.
-     */
-    @Test
-    public void filter_duration_incorrect() {
-        onView(withId(R.id.duration_minText)).perform(typeText("50"));
-        onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.duration_maxText)).perform(typeText("40"));
-        onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.err_msg_duration)).check(matches(isDisplayed()));
-    }
+
 //    /**
 //     * this Ui test if user click filter cancel.
 //     */
