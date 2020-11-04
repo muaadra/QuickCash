@@ -1,6 +1,7 @@
 package com.softeng.quickcash;
 
 import android.content.Intent;
+import android.widget.Spinner;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.assertion.ViewAssertions;
@@ -10,6 +11,10 @@ import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
@@ -17,6 +22,8 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 
 public class MainActivityTest {
@@ -139,6 +146,24 @@ public class MainActivityTest {
         onView(withId(R.id.SignInActivity_Layout)).check(matches(isDisplayed()));
 
     }
+
+    @Test
+    public void sortBySpinnerIsNotEmpty_Test() {
+        final int[] count = {-1};
+        final List<String>[] taskTypes = new List[]{new ArrayList<>()};
+
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<MainActivity>() {
+                    @Override
+                    public void perform(MainActivity activity) {
+                        count[0] = ((Spinner) activity.findViewById(R.id.sortBySpinner_PostATask)).getCount();
+                    }
+                });
+
+        assertNotEquals(0, count[0]);
+    }
+
+
     /**
      * clear all data from SharedPreferences
      */
