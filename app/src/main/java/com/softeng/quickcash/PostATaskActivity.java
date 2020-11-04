@@ -80,7 +80,7 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
         String userId = UserStatusData.getEmail(this).replace(".", ";");
         String dBPath = "users/"+ userId +"/TaskPosts/" + postId ;
 
-         new DbRead<TaskPost>(dBPath,TaskPost.class, db) {
+        new DbRead<TaskPost>(dBPath,TaskPost.class, db) {
             @Override
             public void getReturnedDbData(TaskPost dataFromDb) {
                 //after data is received from db call checkDbData
@@ -92,11 +92,11 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
 
     private void showDbDataOnUi(TaskPost dataFromDb){
         List<String> tempTypes = Arrays.asList(taskTypes);
-       int spinnerIndex = tempTypes.indexOf(dataFromDb.getTaskTitle());
+        int spinnerIndex = tempTypes.indexOf(dataFromDb.getTaskTitle());
 
         ((Spinner) findViewById(R.id.tasksTypeSpinner_PostATask)).setSelection(spinnerIndex);
         ((TextView) findViewById(R.id.taskDescEditTxt)).setText(dataFromDb.getTaskDescription());
-        ((TextView) findViewById(R.id.costEditTxt)).setText(dataFromDb.getTaskCost());
+        ((TextView) findViewById(R.id.costEditTxt)).setText(dataFromDb.getTaskCost() + "");
         expectedDate = Calendar.getInstance();
         expectedDate.setTime(dataFromDb.getExpectedDate());
         String date = DateFormat.getDateInstance().format(expectedDate.getTime());
@@ -272,14 +272,16 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
                 .getSelectedItem().toString();
         String description =  ((TextView) findViewById(R.id.taskDescEditTxt)).getText().toString();
         Date date = expectedDate.getTime();
-        String cost =  ((TextView) findViewById(R.id.costEditTxt)).getText().toString();
+        float cost =  Float.parseFloat(((TextView) findViewById(R.id.costEditTxt)).getText().toString());
         String latLonLocation = myLocation.getLastLocation().getLatitude()+ "," +
                 myLocation.getLastLocation().getLongitude();
 
 
+        String userId = UserStatusData.getEmail(this).replace(".", ";");
+
         //creating new task object
-        return new TaskPost(postId, taskTitle,description,cost,false,false
-                ,date, latLonLocation);
+        return new TaskPost(userId, postId, taskTitle, description, cost,false,
+                "",new Date(),date, latLonLocation);
     }
 
     private void writeTaskToDB(TaskPost taskPost){
