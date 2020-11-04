@@ -70,7 +70,7 @@ public class PostATaskTest {
                 new ActivityScenario.ActivityAction<PostATaskActivity>() {
                     @Override
                     public void perform(PostATaskActivity activity) {
-                        taskTypes[0] = Arrays.asList(activity.taskTypes);
+                        taskTypes[0] = Arrays.asList(TaskTypes.getTaskTypes());
                         count[0] = ((Spinner) activity.findViewById(R.id.tasksTypeSpinner_PostATask)).getCount();
                     }
                 });
@@ -85,7 +85,7 @@ public class PostATaskTest {
                 new ActivityScenario.ActivityAction<PostATaskActivity>() {
                     @Override
                     public void perform(PostATaskActivity activity) {
-                        activity.taskTypes[1] = "Task 1";
+                        TaskTypes.getTaskTypes()[1] = "Task 1";
                         activity.spinnerSetup();
                     }
                 });
@@ -115,7 +115,7 @@ public class PostATaskTest {
                 new ActivityScenario.ActivityAction<PostATaskActivity>() {
                     @Override
                     public void perform(PostATaskActivity activity) {
-                        activity.taskTypes[1] = "Task 1";
+                        TaskTypes.getTaskTypes()[1] = "Task 1";
                         activity.spinnerSetup();
                         activity.expectedDate = Calendar.getInstance();
                     }
@@ -169,7 +169,7 @@ public class PostATaskTest {
                 new ActivityScenario.ActivityAction<PostATaskActivity>() {
                     @Override
                     public void perform(PostATaskActivity activity) {
-                        activity.taskTypes[1] = "Task 1";
+                        TaskTypes.getTaskTypes()[1] = "Task 1";
                         activity.spinnerSetup();
                         activity.expectedDate = Calendar.getInstance();
                     }

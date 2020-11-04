@@ -31,8 +31,6 @@ import java.util.List;
 
 public class PostATaskActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
-    public String[] taskTypes = {"Select A Category"
-            , "lawn mowing", "dog walking","baby sitting", "computer repairs"};
 
     private MyLocation myLocation;
     final FirebaseDatabase db = FirebaseDatabase.getInstance();
@@ -46,7 +44,7 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
         setContentView(R.layout.activity_post_a_task);
 
         String selectACategory = getResources().getString(R.string.selectATask);
-        taskTypes[0] = selectACategory;
+        TaskTypes.getTaskTypes()[0] = selectACategory;
 
 
         spinnerSetup();
@@ -80,7 +78,7 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
         String userId = UserStatusData.getEmail(this).replace(".", ";");
         String dBPath = "users/"+ userId +"/TaskPosts/" + postId ;
 
-         new DbRead<TaskPost>(dBPath,TaskPost.class, db) {
+        new DbRead<TaskPost>(dBPath,TaskPost.class, db) {
             @Override
             public void getReturnedDbData(TaskPost dataFromDb) {
                 //after data is received from db call checkDbData
@@ -91,12 +89,12 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
     }
 
     private void showDbDataOnUi(TaskPost dataFromDb){
-        List<String> tempTypes = Arrays.asList(taskTypes);
-       int spinnerIndex = tempTypes.indexOf(dataFromDb.getTaskTitle());
+        List<String> tempTypes = Arrays.asList(TaskTypes.getTaskTypes());
+        int spinnerIndex = tempTypes.indexOf(dataFromDb.getTaskTitle());
 
         ((Spinner) findViewById(R.id.tasksTypeSpinner_PostATask)).setSelection(spinnerIndex);
         ((TextView) findViewById(R.id.taskDescEditTxt)).setText(dataFromDb.getTaskDescription());
-        ((TextView) findViewById(R.id.costEditTxt)).setText(dataFromDb.getTaskCost());
+        ((TextView) findViewById(R.id.costEditTxt)).setText(dataFromDb.getTaskCost() + "");
         expectedDate = Calendar.getInstance();
         expectedDate.setTime(dataFromDb.getExpectedDate());
         String date = DateFormat.getDateInstance().format(expectedDate.getTime());
@@ -194,7 +192,7 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
 
         // Create an ArrayAdapter
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (this, android.R.layout.simple_spinner_item, taskTypes);
+                (this, android.R.layout.simple_spinner_item, TaskTypes.getTaskTypes());
 
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -272,14 +270,16 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
                 .getSelectedItem().toString();
         String description =  ((TextView) findViewById(R.id.taskDescEditTxt)).getText().toString();
         Date date = expectedDate.getTime();
-        String cost =  ((TextView) findViewById(R.id.costEditTxt)).getText().toString();
+        float cost =  Float.parseFloat(((TextView) findViewById(R.id.costEditTxt)).getText().toString());
         String latLonLocation = myLocation.getLastLocation().getLatitude()+ "," +
                 myLocation.getLastLocation().getLongitude();
 
 
+        String userId = UserStatusData.getEmail(this).replace(".", ";");
+
         //creating new task object
-        return new TaskPost(postId, taskTitle,description,cost,false,false
-                ,date, latLonLocation);
+        return new TaskPost(userId, postId, taskTitle, description, cost,false,
+                "",new Date(),date, latLonLocation);
     }
 
     private void writeTaskToDB(TaskPost taskPost){
