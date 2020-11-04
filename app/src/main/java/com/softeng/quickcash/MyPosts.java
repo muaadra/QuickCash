@@ -127,7 +127,7 @@ public class MyPosts extends AppCompatActivity {
             ((TextView)findViewById(R.id.emptyStatusMyPosts)).setText(R.string.noDeletedPosts);
             showDeletedPosts();
         }else {
-            ((Button)findViewById(R.id.deletedPosts)).setText("show All posts");
+            ((Button)findViewById(R.id.deletedPosts)).setText(R.string.showDeletedPosts);
             ((TextView)findViewById(R.id.emptyStatusMyPosts)).setText(R.string.emptyStringMessage);
             showActivePosts();
 
@@ -138,7 +138,7 @@ public class MyPosts extends AppCompatActivity {
 
     private void resetToggle(){
         toggle = false;
-        ((Button)findViewById(R.id.deletedPosts)).setText("show All posts");
+        ((Button)findViewById(R.id.deletedPosts)).setText(R.string.showDeletedPosts);
     }
 
     private void showDeletedPosts(){

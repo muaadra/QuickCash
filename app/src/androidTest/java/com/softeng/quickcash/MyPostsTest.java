@@ -62,10 +62,10 @@ public class MyPostsTest {
                 });
 
         final ArrayList<TaskPost> posts = new ArrayList<>();
-        TaskPost taskPost1 = new TaskPost("1","t","d"
-                ,"5",false,false, Calendar.getInstance().getTime(),"hh");
-        TaskPost taskPost2 = new TaskPost("1","t","d"
-                ,"5",false,false, Calendar.getInstance().getTime(),"hh");
+        TaskPost taskPost1 = new TaskPost("","1","t","d"
+                ,5f,false,"", new Date(), Calendar.getInstance().getTime(),"hh");
+        TaskPost taskPost2 = new TaskPost("","1","t","d"
+                ,5f,false,"", new Date(), Calendar.getInstance().getTime(),"hh");
         posts.add(taskPost1);
         posts.add(taskPost2);
 
