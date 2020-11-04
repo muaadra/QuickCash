@@ -24,6 +24,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setContentView(R.layout.activity_main);
 
 
+        spinnerSetup();
+    }
+
+    /**
+     * generates the spinner
+     */
+    public void spinnerSetup() {
         Spinner spinner = (Spinner) findViewById(R.id.sortBySpinner_PostATask);
 
         // Create an ArrayAdapter
