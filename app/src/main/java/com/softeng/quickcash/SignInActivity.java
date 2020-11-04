@@ -81,7 +81,7 @@ public class SignInActivity extends AppCompatActivity {
     private void checkDbData(UserSignUpData dataFromDb){
         try {
             if (userData.getPassword().equals(dataFromDb.getPassword())) {
-                Intent intent = new Intent(this, MainActivity.class);
+                Intent intent = new Intent(this, ViewMasterTaskList.class);
                 startActivity(intent);
                 UserSignUpData signUpData = new UserSignUpData(userData.getEmail(),"password");
                 UserStatusData.setUserSignInToTrue(this,signUpData);

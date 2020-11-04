@@ -8,6 +8,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -86,6 +87,7 @@ public class MyPosts extends AppCompatActivity {
                     if(taskPost != null){
                         posts.add(taskPost);
                     }
+                    Log.d("post",posts.get(posts.size()-1).getPostId());
                 }
                 taskPosts = posts;
 
@@ -96,6 +98,8 @@ public class MyPosts extends AppCompatActivity {
 
     private void showActivePosts() {
         ArrayList<TaskPost> activePosts = new ArrayList<>();
+
+
         for (TaskPost task: taskPosts) {
             if(!task.isPostDeleted()){
                 activePosts.add(task);
