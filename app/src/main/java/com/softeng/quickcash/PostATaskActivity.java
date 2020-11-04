@@ -31,8 +31,6 @@ import java.util.List;
 
 public class PostATaskActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
-    public String[] taskTypes = {"Select A Category"
-            , "lawn mowing", "dog walking","baby sitting", "computer repairs"};
 
     private MyLocation myLocation;
     final FirebaseDatabase db = FirebaseDatabase.getInstance();
@@ -46,7 +44,7 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
         setContentView(R.layout.activity_post_a_task);
 
         String selectACategory = getResources().getString(R.string.selectATask);
-        taskTypes[0] = selectACategory;
+        TaskTypes.getTaskTypes()[0] = selectACategory;
 
 
         spinnerSetup();
@@ -91,7 +89,7 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
     }
 
     private void showDbDataOnUi(TaskPost dataFromDb){
-        List<String> tempTypes = Arrays.asList(taskTypes);
+        List<String> tempTypes = Arrays.asList(TaskTypes.getTaskTypes());
         int spinnerIndex = tempTypes.indexOf(dataFromDb.getTaskTitle());
 
         ((Spinner) findViewById(R.id.tasksTypeSpinner_PostATask)).setSelection(spinnerIndex);
@@ -194,7 +192,7 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
 
         // Create an ArrayAdapter
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (this, android.R.layout.simple_spinner_item, taskTypes);
+                (this, android.R.layout.simple_spinner_item, TaskTypes.getTaskTypes());
 
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
