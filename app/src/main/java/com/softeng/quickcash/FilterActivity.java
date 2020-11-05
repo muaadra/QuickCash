@@ -2,6 +2,7 @@ package com.softeng.quickcash;
 
 import android.app.DatePickerDialog;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,24 +15,14 @@ import android.widget.ToggleButton;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
-import java.sql.SQLOutput;
 import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 
 public class FilterActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     Calendar expectedDateFrom, expectedDateTo;
@@ -43,6 +34,7 @@ public class FilterActivity extends AppCompatActivity implements DatePickerDialo
     ToggleButton toggleButton1, toggleButton2, toggleButton3, toggleButton4;
     HashMap<String, Object> params = new HashMap<String, Object>();
     int date_type;
+    private MyLocation myLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +50,12 @@ public class FilterActivity extends AppCompatActivity implements DatePickerDialo
         priceMaxText = (EditText) findViewById(R.id.price_maxText);
         textView = (TextView) findViewById(R.id.distance_text);
         seekBar = (SeekBar) findViewById(R.id.seekBar);
+        seekBar.setMax(1000);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress,
                                           boolean fromUser) {
-                textView.setText(progress + "m");
+                textView.setText(progress + "km");
             }
 
             @Override
@@ -75,84 +68,101 @@ public class FilterActivity extends AppCompatActivity implements DatePickerDialo
 
             }
         });
-
-        btn_cancel = (Button) findViewById(R.id.btn_filter_cancel);
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
+        myLocation = new MyLocation(this) {
             @Override
-            public void onClick(View v) {
-                seekBar.setProgress(0);
-                textView.setText("0m");
-                toggleButton1.setChecked(false);
-                toggleButton2.setChecked(false);
-                toggleButton3.setChecked(false);
-                toggleButton4.setChecked(false);
-                priceMinText.setText("");
-                priceMaxText.setText("");
-            }
-        });
-        btn_apply = (Button) findViewById(R.id.btn_filter_apply);
-
-
-        btn_apply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                HashSet<String> categories = new HashSet<>();
-                ArrayList<Integer> price = new ArrayList<>();
-                ArrayList<Long> date = new ArrayList<>();
-                Button dateFrom = (Button) findViewById(R.id.datePickerPostAtask);
-                Button dateTo = (Button) findViewById(R.id.datePickerPostAtask);
-                if (toggleButton1.isChecked()) {
-                    categories.add(toggleButton1.getText().toString().toLowerCase());
-                }
-                if (toggleButton2.isChecked()) {
-                    categories.add(toggleButton2.getText().toString().toLowerCase());
-                }
-                if (toggleButton3.isChecked()) {
-                    categories.add(toggleButton3.getText().toString().toLowerCase());
-                }
-                if (toggleButton4.isChecked()) {
-                    categories.add(toggleButton4.getText().toString().toLowerCase());
-                }
-                if (categories.size() > 0) {
-                    params.put("categories", categories);
-                }
-                if (!priceMinText.getText().toString().equals("")) {
-                    price.add(Integer.parseInt(priceMinText.getText().toString()));
-                }
-                if (!priceMaxText.getText().toString().equals("")) {
-                    price.add(Integer.parseInt(priceMaxText.getText().toString()));
-                }
-                if (price.size() > 0) {
-                    params.put("price", price);
-                }
-                if (!dateFrom.getText().toString().equals("Pick A date")) {
-                    date.add(expectedDateFrom.getTimeInMillis());
-                }
-                if (!dateTo.getText().toString().equals("Pick A date")) {
-                    date.add(expectedDateTo.getTimeInMillis());
-                }
-                if (date.size() > 0) {
-                    params.put("expected", date);
-                }
-
-                AllTaskList<TaskList> taskLists = new AllTaskList<TaskList>("/users", db) {
+            public void LocationResult(final Location location) {
+                btn_cancel = (Button) findViewById(R.id.btn_filter_cancel);
+                btn_cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void getReturnedDbData(TaskList taskList) {
-                        filterList(taskList);
+                    public void onClick(View v) {
+                        seekBar.setProgress(0);
+                        textView.setText("0m");
+                        toggleButton1.setChecked(false);
+                        toggleButton2.setChecked(false);
+                        toggleButton3.setChecked(false);
+                        toggleButton4.setChecked(false);
+                        priceMinText.setText("");
+                        priceMaxText.setText("");
+                        ((Button) findViewById(R.id.datePickerPostAtask)).setText("Pick A date");
+                        ((Button) findViewById(R.id.datePickerPostAtask2)).setText("Pick A date");
+                        expectedDateFrom = Calendar.getInstance();
+                        expectedDateTo = Calendar.getInstance();
+
                     }
-                };
+                });
+                btn_apply = (Button) findViewById(R.id.btn_filter_apply);
+
+                btn_apply.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        HashSet<String> categories = new HashSet<>();
+                        ArrayList<Integer> price = new ArrayList<>();
+                        ArrayList<Long> date = new ArrayList<>();
+                        Button dateFrom = (Button) findViewById(R.id.datePickerPostAtask);
+                        Button dateTo = (Button) findViewById(R.id.datePickerPostAtask);
+                        if (toggleButton1.isChecked()) {
+                            categories.add(toggleButton1.getText().toString().toLowerCase());
+                        }
+                        if (toggleButton2.isChecked()) {
+                            categories.add(toggleButton2.getText().toString().toLowerCase());
+                        }
+                        if (toggleButton3.isChecked()) {
+                            categories.add(toggleButton3.getText().toString().toLowerCase());
+                        }
+                        if (toggleButton4.isChecked()) {
+                            categories.add(toggleButton4.getText().toString().toLowerCase());
+                        }
+                        if (categories.size() > 0) {
+                            params.put("categories", categories);
+                        }
+                        if (!priceMinText.getText().toString().equals("")) {
+                            price.add(Integer.parseInt(priceMinText.getText().toString()));
+                        }
+                        if (!priceMaxText.getText().toString().equals("")) {
+                            price.add(Integer.parseInt(priceMaxText.getText().toString()));
+                        }
+                        if (price.size() > 0) {
+                            params.put("price", price);
+                        }
+                        if (!dateFrom.getText().toString().equals("Pick A date")) {
+                            date.add(expectedDateFrom.getTimeInMillis());
+                        }
+                        if (!dateTo.getText().toString().equals("Pick A date")) {
+                            date.add(expectedDateTo.getTimeInMillis());
+                        }
+                        if (date.size() > 0) {
+                            params.put("expected", date);
+                        }
+
+                        AllTaskList<TaskList> taskLists = new AllTaskList<TaskList>("/users", db) {
+                            @Override
+                            public void getReturnedDbData(TaskList taskList) {
+                                filterList(taskList, location);
+                            }
+                        };
+                    }
+                });
             }
-        });
+        };
+
+
+
 
     }
+    /**
+     * implement filter option.
+     *
+     */
+    public void filterList(TaskList allList, Location location) {
 
-    public void filterList(TaskList allList) {
         int taskSize = allList.getTaskPosts().size();
         ArrayList <Integer> removeItem = new ArrayList<>();
         for (int i = 0; i < taskSize ; i++) {
             boolean isTaskTitle = true;
             boolean isTaskCost = true;
             boolean isExpectedDate = true;
+            boolean isDistance = true;
+
             if (params.get("categories") != null && !((HashSet<String>) params.get("categories")).contains(allList.getTaskPosts().get(i).getTaskTitle())) {
                     isTaskTitle = false;
             }
@@ -168,8 +178,23 @@ public class FilterActivity extends AppCompatActivity implements DatePickerDialo
                     isTaskCost = false;
                 }
             }
+            if (seekBar.getProgress() > 0  && seekBar.getProgress() < 1000) {
+                MyLocation userLocation = new MyLocation(this) {
+                    @Override
+                    public void LocationResult(Location location) {
 
-            if ((!isTaskTitle || !isTaskCost || !isExpectedDate)) {
+                    }
+                };
+                LongLatLocation tempLocation = new LongLatLocation(location.getLatitude(), location.getLatitude());
+                userLocation.setLastLocation(tempLocation);
+                String[] taskLocation = allList.getTaskPosts().get(i).getLatLonLocation().split(",");
+                LongLatLocation location1 = new LongLatLocation(Double.parseDouble(taskLocation[0]),Double.parseDouble(taskLocation[1]));
+                float distance = userLocation.calcDistanceToLocation(location1);
+                if (Math.abs(distance) >= seekBar.getProgress() * 1000) {
+                    isDistance = false;
+                }
+            }
+            if ((!isTaskTitle || !isTaskCost || !isExpectedDate || !isDistance)) {
                 removeItem.add(i);
             }
 
@@ -178,7 +203,9 @@ public class FilterActivity extends AppCompatActivity implements DatePickerDialo
         for(int i : removeItem) {
             allList.getTaskPosts().remove(i);
         }
-        System.out.println(allList.getTaskPosts().size());
+        // --
+        //  It need to implement return main lists view.
+        //
     }
 
     /**
@@ -225,4 +252,5 @@ public class FilterActivity extends AppCompatActivity implements DatePickerDialo
                     , Toast.LENGTH_SHORT).show();
         }
     }
+
 }
