@@ -2,6 +2,7 @@ package com.softeng.quickcash;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -144,7 +145,8 @@ public class RVAdapterMainActivity extends RecyclerView.Adapter<RVAdapterMainAct
                 public void imageGetResult(Bitmap dbProfileImage) {
                     //set image on screen to image retrieved from db
                     if(dbProfileImage != null){
-                        profileImage.setImageBitmap(dbProfileImage);
+                        BitmapDrawable ob = new BitmapDrawable(mainView.getResources(),dbProfileImage);
+                        profileImage.setBackground(ob);
                     }else {
                         System.out.println("error getting image");
                     }

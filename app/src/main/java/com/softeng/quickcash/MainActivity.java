@@ -30,9 +30,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private RecyclerView.LayoutManager layoutManager;
     private MyLocation myLocation;
 
-    public String[] sortBy = {"latest Post", "test1",
-            "Test2", "Test3"};
-
+    public String[] sortBy = {LatestDateSort.sortName, DistanceSort.sortName,
+            CostSort.sortName, ExpectedDateSort.sortName};
+    Spinner sortSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,8 +89,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
                 }
 
+                sortAndRecreateRecyclerView(sortSpinner.getFirstVisiblePosition());
                 taskPosts = posts;
-                createRecyclerView(taskPosts);
             }
         };
     }
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
      * generates the spinner
      */
     public void spinnerSetup() {
-        Spinner spinner = (Spinner) findViewById(R.id.sortBySpinner_PostATask);
+        sortSpinner = (Spinner) findViewById(R.id.sortBySpinner_PostATask);
 
         // Create an ArrayAdapter
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
@@ -120,8 +120,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(this);
+        sortSpinner.setAdapter(adapter);
+        sortSpinner.setOnItemSelectedListener(this);
     }
 
 
@@ -215,10 +215,35 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         startActivity(intent);
     }
 
+    private void sortAndRecreateRecyclerView(int sortByListPosition){
+        if(taskPosts == null){
+            return;
+        }
+        String selectedSort = sortBy[sortByListPosition];
+        if(selectedSort.equals(DistanceSort.sortName)){
 
+            Collections.sort(taskPosts,new DistanceSort(true));
+
+        }else if(selectedSort.equals(CostSort.sortName)){
+
+            Collections.sort(taskPosts,new CostSort(true));
+
+        }else if(selectedSort.equals(ExpectedDateSort.sortName)){
+
+            Collections.sort(taskPosts,new ExpectedDateSort(false));
+
+        }else if(selectedSort.equals(LatestDateSort.sortName)){
+
+            Collections.sort(taskPosts,new LatestDateSort(false));
+
+        }
+
+        createRecyclerView(taskPosts);
+    }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        sortAndRecreateRecyclerView(position);
     }
 
     @Override

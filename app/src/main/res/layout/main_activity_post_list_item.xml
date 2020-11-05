@@ -27,7 +27,7 @@
                 android:id="@+id/profileImageJobPost"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:background="@drawable/ic_launcher_background" />
+                android:background="@drawable/prifile_placeholder" />
         </LinearLayout>
 
 
