@@ -39,15 +39,16 @@
                     android:layout_height="wrap_content"
                     android:textColor="#3A3A3A"
                     android:text="Profile"/>
+
                 <Button
                     android:id="@+id/goToProfile"
                     android:layout_width="35dp"
-                    android:onClick="goToProfileOnClickButton"
                     android:layout_height="35dp"
-                    android:text="M"
-                    android:textColor="#FFFFFF"
+                    android:layout_gravity="center"
                     android:background="@drawable/circle1"
-                    android:layout_gravity="center" />
+                    android:onClick="goToProfileOnClickButton"
+                    android:text="!"
+                    android:textColor="#FFFFFF" />
 
             </LinearLayout>
 

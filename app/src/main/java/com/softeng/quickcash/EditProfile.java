@@ -248,4 +248,18 @@ public class EditProfile extends AppCompatActivity {
         //go to next activity
         goToMain();
     }
+
+
+    /**
+     * runs when sigIn/out button is clicked
+     */
+    public void signInOrOutOnClickButton(View view) {
+        if(UserStatusData.isUserSignIn(this)){
+            //set user status to signed out
+            UserStatusData.setUserSignInToFalse(this);
+        }
+        //go to next activity
+        Intent intent = new Intent(this, WelcomeActivity.class);
+        startActivity(intent);
+    }
 }

@@ -75,4 +75,16 @@ public class EditProfileTest {
                 .check(ViewAssertions.matches(isDisplayed()));
     }
 
+    /**
+     * This will test that welcome activity is shown when user signs out
+     */
+    @Test
+    public void signOutTest(){
+
+        onView(withId(R.id.signOut)).perform(click());
+
+        onView(withId(R.id.welcomeLayout)).check(matches(isDisplayed()));
+
+    }
+
 }
