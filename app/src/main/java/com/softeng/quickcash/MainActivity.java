@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,9 +27,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private FirebaseStorage fbStorage;
 
     ArrayList<TaskPost> taskPosts;
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
     private MyLocation myLocation;
 
     public String[] sortBy = {LatestDateSort.sortName, DistanceSort.sortName,
@@ -49,61 +47,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         myLocation = new MyLocation(this) {
             @Override
             public void LocationResult(Location location) {
+                //update ui based on location data
                 getDataFromDbAndShowOnUI();
             }
         };
+
+        showUserFirstLetterOnProfileIcon();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
+        //refresh UI after returning to activity
         getDataFromDbAndShowOnUI();
-    }
-
-
-    private void getDataFromDbAndShowOnUI() {
-        final ArrayList<TaskPost> posts = new ArrayList<>();
-
-        //path to database object
-        String path = "users/";
-
-        new DbRead<DataSnapshot>(path, DataSnapshot.class, db) {
-            @Override
-            public void getReturnedDbData(DataSnapshot dataFromDb) {
-                //loop through all children in path
-                for (DataSnapshot userdata : dataFromDb.getChildren()) {
-                    String author = userdata.getKey();
-
-                    for (DataSnapshot post : userdata.child("TaskPosts").getChildren()) {
-                        TaskPost taskPost = post.getValue(TaskPost.class);
-                        if(taskPost != null){
-                            taskPost.setAuthor(author);
-                            float distance = getDistance(taskPost.getLatLonLocation());
-                            if(distance <= MAX_LOCAL_DISTANCE){
-                                taskPost.setDistance(getDistance(taskPost.getLatLonLocation()));
-                                posts.add(taskPost);
-                            }
-
-                        }
-                    }
-
-                }
-
-                sortAndRecreateRecyclerView(sortSpinner.getFirstVisiblePosition());
-                taskPosts = posts;
-            }
-        };
-    }
-
-
-
-    private float getDistance(String latitudeLongitude){
-        Double lat = Double.parseDouble(latitudeLongitude.split(",")[0]);
-        Double lon = Double.parseDouble(latitudeLongitude.split(",")[1]);
-
-        LongLatLocation myLoc = new LongLatLocation(lat,lon);
-        return myLocation.calcDistanceToLocation(myLoc);
     }
 
 
@@ -126,19 +83,61 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
 
+    private void getDataFromDbAndShowOnUI() {
+        //path to database object
+        String path = "users/";
+
+        new DbRead<DataSnapshot>(path, DataSnapshot.class, db) {
+            @Override
+            public void getReturnedDbData(DataSnapshot dataFromDb) {
+               extractTaskPostsFromDBSnapShot(dataFromDb);
+            }
+        };
+    }
+
+    private void extractTaskPostsFromDBSnapShot(DataSnapshot dataFromDb) {
+        final ArrayList<TaskPost> posts = new ArrayList<>();
+        //loop through all children in path
+        for (DataSnapshot userdata : dataFromDb.getChildren()) {
+
+            for (DataSnapshot post : userdata.child("TaskPosts").getChildren()) {
+                TaskPost taskPost = post.getValue(TaskPost.class);
+                if(taskPost != null){
+                    float distance = getDistance(taskPost.getLatLonLocation());
+                    if(distance <= MAX_LOCAL_DISTANCE){
+                        taskPost.setDistance(getDistance(taskPost.getLatLonLocation()));
+                        posts.add(taskPost);
+                    }
+                }
+            }
+        }
+
+        taskPosts = posts;
+        sortAndRecreateRecyclerView(sortSpinner.getFirstVisiblePosition());
+    }
+
+
+    private float getDistance(String latitudeLongitude){
+        Double lat = Double.parseDouble(latitudeLongitude.split(",")[0]);
+        Double lon = Double.parseDouble(latitudeLongitude.split(",")[1]);
+
+        LongLatLocation myLoc = new LongLatLocation(lat,lon);
+        return myLocation.calcDistanceToLocation(myLoc);
+    }
+
 
     /**
      * creates a RecyclerView view for main task posts
      * @param posts list of posts
      */
     public void createRecyclerView(ArrayList<TaskPost> posts) {
-        recyclerView = (RecyclerView) findViewById(R.id.TaskPostsList);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.TaskPostsList);
 
         // using a linear layout manager
-        layoutManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new RVAdapterMainActivity(posts,fbStorage);
+        RecyclerView.Adapter mAdapter = new RVAdapterMainActivity(posts, fbStorage);
         recyclerView.setAdapter(mAdapter);
 
     }
@@ -206,6 +205,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         };
 
     }
+
     private void goToMyPostsActivity(){
         Intent intent = new Intent(this, MyPosts.class);
         startActivity(intent);
@@ -240,6 +240,36 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
 
         createRecyclerView(taskPosts);
+    }
+
+    private void showUserFirstLetterOnProfileIcon(){
+        String userId = UserStatusData.getEmail(this).replace(".", ";");
+        //path to database object
+        String path = "users/"+ userId +"/Profile";
+
+        //read data from database
+        DbRead<userProfile> dbRead = new DbRead<userProfile>(path,
+                userProfile.class, db) {
+            @Override
+            public void getReturnedDbData(userProfile dataFromDb) {
+                setUserFirstLetterOnProfileIcon(dataFromDb);
+            }
+        };
+    }
+
+    private void setUserFirstLetterOnProfileIcon(userProfile dataFromDb){
+        if(dataFromDb == null){
+            return;
+        }
+        String userFirstChar = "!";
+
+        if(UserStatusData.isUserSignIn(this)){
+            userFirstChar = dataFromDb.getfName();
+            if(userFirstChar.length() > 0){
+                userFirstChar = userFirstChar.substring(0,1);
+            }
+        }
+        ((TextView)findViewById(R.id.goToProfile)).setText(userFirstChar);
     }
 
     @Override

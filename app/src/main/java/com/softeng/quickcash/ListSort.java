@@ -29,7 +29,7 @@ class DistanceSort extends ListSort {
 
 
 class CostSort extends ListSort {
-    public static String sortName = "cost per hour";
+    public static String sortName = "hourly pay";
     private int ascending;
 
     public CostSort(boolean ascending) {
