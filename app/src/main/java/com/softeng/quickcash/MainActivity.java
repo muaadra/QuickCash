@@ -21,6 +21,7 @@ import java.util.Collections;
 
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+    public static final int MAX_LOCAL_DISTANCE = 50000; //local is defined as 50km max in this app
     final FirebaseDatabase db = FirebaseDatabase.getInstance();
     private FirebaseStorage fbStorage;
 
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         if(taskPost != null){
                             taskPost.setAuthor(author);
                             float distance = getDistance(taskPost.getLatLonLocation());
-                            if(distance <= 50000){//local is defined as 50km max in this app
+                            if(distance <= MAX_LOCAL_DISTANCE){
                                 taskPost.setDistance(getDistance(taskPost.getLatLonLocation()));
                                 posts.add(taskPost);
                             }
