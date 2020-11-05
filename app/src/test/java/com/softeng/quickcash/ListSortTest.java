@@ -25,7 +25,7 @@ public class ListSortTest {
         posts.add(taskPost1);
         posts.add(taskPost2);
 
-        DistanceSort distanceSort = new DistanceSort();
+        DistanceSort distanceSort = new DistanceSort(true);
         Collections.sort(posts,distanceSort);
 
         assertEquals("id_1",posts.get(0).getPostId());
