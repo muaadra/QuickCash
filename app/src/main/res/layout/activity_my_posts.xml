@@ -41,7 +41,7 @@
             android:layout_gravity="center"
             android:layout_marginRight="20dp"
             android:background="#CFCFCF"
-            android:onClick="showAllPostsOnClickButton"
+            android:onClick="showDeletedPostsOnClickButton"
             android:text="Show Deleted"
             android:textColor="#FFFFFF"
             android:textSize="16sp" />

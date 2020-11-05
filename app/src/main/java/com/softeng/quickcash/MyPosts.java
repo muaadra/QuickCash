@@ -17,6 +17,12 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
+/**
+ * this class represents the "My posts" activity, it displays all user's posts
+ * (i.e active and deleted posts) into a toggleable Recycler view
+ *
+ * @author Muaad Alrawhani
+ */
 public class MyPosts extends AppCompatActivity {
     final FirebaseDatabase db = FirebaseDatabase.getInstance();
     int emptyListTextViewOriginalHeight = -1; // to store original height of the TextView
@@ -56,7 +62,7 @@ public class MyPosts extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
 
-        RecyclerView.Adapter mAdapter = new MyAdapter(posts);
+        RecyclerView.Adapter mAdapter = new MyPostsAdapter(posts);
         recyclerView.setAdapter(mAdapter);
 
         if(posts != null && posts.size() > 0){
