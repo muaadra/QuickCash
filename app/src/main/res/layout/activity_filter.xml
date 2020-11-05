@@ -158,13 +158,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/distance_text"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_alignParentRight="true"
                         android:layout_gravity="right"
-                        android:text="0m" />
+                        android:text="0km" />
                 </LinearLayout>
                 <SeekBar
                     android:id="@+id/seekBar"

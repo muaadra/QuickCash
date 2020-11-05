@@ -69,11 +69,11 @@ public class FilterActivityTest {
     @Test
     public void filter_distance_test() {
         onView(withId(R.id.seekBar)).perform(new GeneralClickAction(Tap.SINGLE, GeneralLocation.CENTER_LEFT, Press.FINGER));
-        onView(withId(R.id.distance_text)).check(matches(withText("0m")));
+        onView(withId(R.id.distance_text)).check(matches(withText("0km")));
         onView(withId(R.id.seekBar)).perform(new GeneralClickAction(Tap.SINGLE, GeneralLocation.CENTER, Press.FINGER));
-        onView(withId(R.id.distance_text)).check(matches(withText("50m")));
+        onView(withId(R.id.distance_text)).check(matches(withText("500km")));
         onView(withId(R.id.seekBar)).perform(new GeneralClickAction(Tap.SINGLE, GeneralLocation.CENTER_RIGHT, Press.FINGER));
-        onView(withId(R.id.distance_text)).check(matches(withText("100m")));
+        onView(withId(R.id.distance_text)).check(matches(withText("1000km")));
     }
     /**
      * this Ui test if user input correct number.
@@ -98,28 +98,5 @@ public class FilterActivityTest {
         onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard());
         onView(withId(R.id.err_msg_price)).check(matches(isDisplayed()));
     }
-
-//    /**
-//     * this Ui test if user click filter cancel.
-//     */
-//    @Test
-//    public void filter_cancel_click() {
-//        onView(withId(R.id.btn_filter_cancel)).perform(scrollTo())
-//                .perform(click());
-//        onView(withId(R.id.duration_minText)).check(matches(withText("")));
-//        onView(withId(R.id.duration_maxText)).check(matches(withText("")));
-//        onView(withId(R.id.price_minText)).check(matches(withText("")));
-//        onView(withId(R.id.price_maxText)).check(matches(withText("")));
-//        onView(withId(R.id.seekBar)).perform(new GeneralClickAction(Tap.SINGLE, GeneralLocation.CENTER_LEFT, Press.FINGER));
-//        onView(withId(R.id.distance_text)).check(matches(withText("0m")));
-//        onView(withId(R.id.btn_categories_1)).perform(click())
-//                .check(matches(isNotChecked()));
-//        onView(withId(R.id.btn_categories_2)).perform(click())
-//                .check(matches(isNotChecked()));
-//        onView(withId(R.id.btn_categories_3)).perform(click())
-//                .check(matches(isNotChecked()));
-//        onView(withId(R.id.btn_categories_4)).perform(click())
-//                .check(matches(isNotChecked()));
-//    }
 
 }

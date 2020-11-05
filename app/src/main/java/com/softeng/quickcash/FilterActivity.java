@@ -76,7 +76,7 @@ public class FilterActivity extends AppCompatActivity implements DatePickerDialo
                     @Override
                     public void onClick(View v) {
                         seekBar.setProgress(0);
-                        textView.setText("0m");
+                        textView.setText("0Km");
                         toggleButton1.setChecked(false);
                         toggleButton2.setChecked(false);
                         toggleButton3.setChecked(false);
