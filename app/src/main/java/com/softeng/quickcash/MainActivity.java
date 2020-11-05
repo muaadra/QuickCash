@@ -8,12 +8,20 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     final FirebaseDatabase db = FirebaseDatabase.getInstance();
+    private RecyclerView recyclerView;
+
+    private RecyclerView.LayoutManager layoutManager;
+    private RecyclerView.Adapter mAdapter;
 
     public String[] sortBy = {"latest Post", "test1",
             "Test2", "Test3"};
@@ -25,6 +33,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
         spinnerSetup();
+
+
+        recyclerView = (RecyclerView) findViewById(R.id.TaskPostsList);
+
+        // using a linear layout manager
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        ArrayList<TaskPost> posts = new ArrayList<>();
+        mAdapter = new MyAdapter(posts);
+        recyclerView.setAdapter(mAdapter);
     }
 
     /**
@@ -44,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
     }
+
+
 
     /**
      * runs when sigIn/out button is clicked
