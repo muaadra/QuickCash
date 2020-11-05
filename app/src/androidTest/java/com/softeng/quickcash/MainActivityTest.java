@@ -65,31 +65,6 @@ public class MainActivityTest {
 
 
     /**
-     * testing sign out button
-     */
-    @Test
-    public void signOutTest(){
-        //setup, making sure user is signed in
-        activityScenarioRule.getScenario().onActivity(
-                new ActivityScenario.ActivityAction<MainActivity>() {
-                    @Override
-                    public void perform(MainActivity activity) {
-                        UserStatusData.removeAllUserPreferences(activity);
-                        UserStatusData.saveUserData("email","jojo@mo.com", activity);
-                        //restarting activity
-                        Intent intent = new Intent(activity, MainActivity.class);
-                        activity.startActivity(intent);
-                    }
-                });
-
-        onView(withId(R.id.signOutIn)).perform(click());
-
-        //check screen is displayed
-        onView(withId(R.id.mainActivityLayOut)).check(doesNotExist());
-
-    }
-
-    /**
      * testing go to profile button
      */
     @Test
@@ -211,6 +186,8 @@ public class MainActivityTest {
 
         assertEquals(2, count[0]);
     }
+
+
 
     /**
      * clear all data from SharedPreferences
