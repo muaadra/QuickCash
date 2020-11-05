@@ -2,6 +2,9 @@ package com.softeng.quickcash;
 
 import java.util.Comparator;
 
+/**
+ * this collection of classes, define how Job/Task posts are to be sorted
+ */
 public class ListSort implements Comparator<TaskPost> {
     @Override
     public int compare(TaskPost o1, TaskPost o2) {
@@ -10,7 +13,7 @@ public class ListSort implements Comparator<TaskPost> {
 }
 
 class DistanceSort extends ListSort {
-    public static String sortName = "Distance";
+    public static String sortName = "Distance"; //displayed to user on "sort by" spinner
     private int ascending;
 
     public DistanceSort(boolean ascending) {
@@ -29,7 +32,7 @@ class DistanceSort extends ListSort {
 
 
 class CostSort extends ListSort {
-    public static String sortName = "hourly pay";
+    public static String sortName = "hourly pay";//displayed to user on "sort by" spinner
     private int ascending;
 
     public CostSort(boolean ascending) {
@@ -47,7 +50,7 @@ class CostSort extends ListSort {
 }
 
 class ExpectedDateSort extends ListSort {
-    public static String sortName = "Expected Date";
+    public static String sortName = "Expected Date";//displayed to user on "sort by" spinner
     private int ascending;
 
     public ExpectedDateSort(boolean ascending) {
@@ -61,6 +64,7 @@ class ExpectedDateSort extends ListSort {
     @Override
     public int compare(TaskPost t1, TaskPost t2) {
         int comResult = 0;
+
         if(ascending == 1){
             comResult = Double.compare(t1.getExpectedDate().getTime(),
                     t2.getExpectedDate().getTime());
@@ -68,12 +72,13 @@ class ExpectedDateSort extends ListSort {
             comResult = Double.compare(t2.getExpectedDate().getTime(),
                     t1.getExpectedDate().getTime());
         }
+
         return comResult;
     }
 }
 
 class LatestDateSort extends ListSort {
-    public static String sortName = "Latest Posted";
+    public static String sortName = "Latest Posted";//displayed to user on "sort by" spinner
     private int ascending;
 
     public LatestDateSort(boolean ascending) {
