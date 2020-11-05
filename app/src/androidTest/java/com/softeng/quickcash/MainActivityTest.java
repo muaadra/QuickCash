@@ -1,7 +1,11 @@
 package com.softeng.quickcash;
 
 import android.content.Intent;
+import android.view.View;
+import android.widget.Spinner;
+import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.assertion.ViewAssertions;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -10,13 +14,23 @@ import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.fail;
 
 
 public class MainActivityTest {
@@ -50,31 +64,6 @@ public class MainActivityTest {
 
     }
 
-
-    /**
-     * testing sign out button
-     */
-    @Test
-    public void signOutTest(){
-        //setup, making sure user is signed in
-        activityScenarioRule.getScenario().onActivity(
-                new ActivityScenario.ActivityAction<MainActivity>() {
-                    @Override
-                    public void perform(MainActivity activity) {
-                        UserStatusData.removeAllUserPreferences(activity);
-                        UserStatusData.saveUserData("email","jojo@mo.com", activity);
-                        //restarting activity
-                        Intent intent = new Intent(activity, MainActivity.class);
-                        activity.startActivity(intent);
-                    }
-                });
-
-        onView(withId(R.id.signOutIn)).perform(click());
-
-        //check screen is displayed
-        onView(withId(R.id.mainActivityLayOut)).check(doesNotExist());
-
-    }
 
     /**
      * testing go to profile button
@@ -139,6 +128,67 @@ public class MainActivityTest {
         onView(withId(R.id.SignInActivity_Layout)).check(matches(isDisplayed()));
 
     }
+
+    @Test
+    public void sortBySpinnerIsNotEmpty_Test() {
+        final int[] count = {-1};
+
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<MainActivity>() {
+                    @Override
+                    public void perform(MainActivity activity) {
+                        count[0] = ((Spinner) activity.findViewById(R.id.sortBySpinner_PostATask)).getCount();
+                    }
+                });
+
+        assertNotEquals(0, count[0]);
+    }
+
+    @Test
+    public void recyclerViewIsCreated_Test() {
+        final boolean[] exists = {false};
+
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<MainActivity>() {
+                    @Override
+                    public void perform(MainActivity activity) {
+                        exists[0] =
+                                (((RecyclerView) activity.findViewById(R.id.TaskPostsList))
+                                        .getAdapter() != null);
+                    }
+                });
+
+        assertEquals(true, exists[0]);
+    }
+
+
+    @Test
+    public void MyRecyclerViewCount_Test() {
+
+        final ArrayList<TaskPost> posts = new ArrayList<>();
+        TaskPost taskPost1 = new TaskPost("","1","t","d"
+                ,5f,false,"", new Date(), Calendar.getInstance().getTime(),"hh");
+        TaskPost taskPost2 = new TaskPost("","1","t","d"
+                ,5f,false,"", new Date(), Calendar.getInstance().getTime(),"hh");
+        posts.add(taskPost1);
+        posts.add(taskPost2);
+
+        final int[] count = {-1};
+
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<MainActivity>() {
+                    @Override
+                    public void perform(MainActivity activity) {
+                        activity.createRecyclerView(posts);
+                        count[0] =  ((RecyclerView) activity.findViewById(R.id.TaskPostsList))
+                                .getAdapter().getItemCount();
+                    }
+                });
+
+        assertEquals(2, count[0]);
+    }
+
+
     /**
      * clear all data from SharedPreferences
      */

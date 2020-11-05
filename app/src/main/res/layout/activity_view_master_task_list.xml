@@ -23,7 +23,7 @@
             android:layout_margin="20dp"
             android:fontFamily="sans-serif-black"
             android:gravity="center"
-            android:text="My Posts"
+            android:text="Tasks"
             android:textColor="#673AB7"
             android:textSize="35dp" />
 
@@ -35,16 +35,11 @@
         android:gravity="right">
 
         <Button
-            android:id="@+id/deletedPosts"
-            android:layout_width="150dp"
-            android:layout_height="35dp"
-            android:layout_gravity="center"
-            android:layout_marginRight="20dp"
-            android:background="#CFCFCF"
-            android:onClick="showAllPostsOnClickButton"
-            android:text="Show Deleted"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp" />
+            android:id="@+id/ButtonFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Filter Search" />
     </LinearLayout>
     <LinearLayout
 
@@ -60,15 +55,15 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/emptyStatusMyPosts"
+            android:id="@+id/emptyStatusTasks"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="20dp"
-            android:text="@string/emptyStringMessage"
+            android:text="@string/emptyTaskMessage"
             android:textSize="16sp" />
         <androidx.recyclerview.widget.RecyclerView
             android:padding="10dp"
-            android:id="@+id/TaskPostsList"
+            android:id="@+id/postsList_Tasks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
