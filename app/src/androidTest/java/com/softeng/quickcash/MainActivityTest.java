@@ -22,6 +22,7 @@ import java.util.List;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -187,7 +188,23 @@ public class MainActivityTest {
         assertEquals(2, count[0]);
     }
 
+    @Test
+    public void UserFirstLetterIsDisplayedOnProfileTest() {
+        //setup
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<MainActivity>() {
+                    @Override
+                    public void perform(MainActivity activity) {
+                        UserSignUpData signUpData = new UserSignUpData("jojo@mo.com","password");
+                        UserStatusData.setUserSignInToTrue(activity,signUpData);
+                        //restart the activity
+                        Intent intent = new Intent(activity, MainActivity.class);
+                        activity.startActivity(intent);
+                    }
+                });
 
+        onView(withId(R.id.goToProfile)).check(matches(withText("J")));
+    }
 
     /**
      * clear all data from SharedPreferences
