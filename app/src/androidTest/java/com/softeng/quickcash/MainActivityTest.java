@@ -188,23 +188,6 @@ public class MainActivityTest {
         assertEquals(2, count[0]);
     }
 
-    @Test
-    public void UserFirstLetterIsDisplayedOnProfileTest() {
-        //setup
-        activityScenarioRule.getScenario().onActivity(
-                new ActivityScenario.ActivityAction<MainActivity>() {
-                    @Override
-                    public void perform(MainActivity activity) {
-                        UserSignUpData signUpData = new UserSignUpData("jojo@mo.com","password");
-                        UserStatusData.setUserSignInToTrue(activity,signUpData);
-                        //restart the activity
-                        Intent intent = new Intent(activity, MainActivity.class);
-                        activity.startActivity(intent);
-                    }
-                });
-
-        onView(withId(R.id.goToProfile)).check(matches(withText("J")));
-    }
 
     /**
      * clear all data from SharedPreferences
