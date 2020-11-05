@@ -1,28 +1,20 @@
 package com.softeng.quickcash;
 
 import android.content.Intent;
-import android.widget.Spinner;
 
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ActivityScenario;
-import androidx.test.espresso.action.ViewActions;
-import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -76,7 +68,7 @@ public class MyPostsTest {
                     @Override
                     public void perform(MyPosts activity) {
                         activity.createRecyclerView(posts);
-                        count[0] =  ((RecyclerView) activity.findViewById(R.id.postsList_MyPosts))
+                        count[0] =  ((RecyclerView) activity.findViewById(R.id.TaskPostsList))
                                 .getAdapter().getItemCount();
                     }
                 });
@@ -94,7 +86,7 @@ public class MyPostsTest {
                     @Override
                     public void perform(MyPosts activity) {
                         activity.createRecyclerView(posts);
-                        count[0] =  ((RecyclerView) activity.findViewById(R.id.postsList_MyPosts))
+                        count[0] =  ((RecyclerView) activity.findViewById(R.id.TaskPostsList))
                                 .getAdapter().getItemCount();
                     }
                 });

@@ -31,20 +31,27 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         spinnerSetup();
 
+        ArrayList<TaskPost> posts = new ArrayList<>();
+        createRecyclerView(posts);
+    }
 
+    /**
+     * creates a RecyclerView view for main task posts
+     * @param posts list of posts
+     */
+    public void createRecyclerView(ArrayList<TaskPost> posts) {
         recyclerView = (RecyclerView) findViewById(R.id.TaskPostsList);
 
         // using a linear layout manager
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        ArrayList<TaskPost> posts = new ArrayList<>();
+
         mAdapter = new MyAdapter(posts);
         recyclerView.setAdapter(mAdapter);
-    }
 
+    }
     /**
      * generates the spinner
      */

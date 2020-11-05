@@ -94,7 +94,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:padding="10dp"
-            android:id="@+id/postsList_MyPosts"
+            android:id="@+id/TaskPostsList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
