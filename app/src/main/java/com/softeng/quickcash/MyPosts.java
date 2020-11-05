@@ -20,10 +20,6 @@ import java.util.ArrayList;
 public class MyPosts extends AppCompatActivity {
     final FirebaseDatabase db = FirebaseDatabase.getInstance();
 
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
-
     ArrayList<TaskPost> taskPosts;
 
     @Override
@@ -39,14 +35,14 @@ public class MyPosts extends AppCompatActivity {
             emptyListTextViewOriginalHeight = emptyListTV.getHeight();
         }
 
-        recyclerView = (RecyclerView) findViewById(R.id.TaskPostsList);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.TaskPostsList);
 
         // using a linear layout manager
-        layoutManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
 
-        mAdapter = new MyAdapter(posts);
+        RecyclerView.Adapter mAdapter = new MyAdapter(posts);
         recyclerView.setAdapter(mAdapter);
 
         if(posts != null && posts.size() > 0){
