@@ -167,7 +167,7 @@ public class FilterActivity extends AppCompatActivity implements DatePickerDialo
                     isTaskTitle = false;
             }
             if (params.get("price") != null) {
-                int taskCost = Integer.parseInt(allList.getTaskPosts().get(i).getTaskCost());
+                Float taskCost = Float.valueOf(allList.getTaskPosts().get(i).getTaskCost());
                 if (((ArrayList<Integer>) params.get("price")).get(0) > taskCost || ((ArrayList<Integer>) params.get("price")).get(1) < taskCost) {
                     isTaskCost = false;
                 }

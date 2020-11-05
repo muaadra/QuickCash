@@ -41,7 +41,7 @@ public abstract class AllTaskList<T> implements ValueEventListener {
                     for (HashMap<String, Object> taskPost : taskPosts.values()) {
                         TaskPost temp = new TaskPost();
                         temp.setTaskTitle(taskPost.get("taskTitle").toString());
-                        temp.setTaskCost(taskPost.get("taskCost").toString());
+                        temp.setTaskCost(Float.valueOf(taskPost.get("taskCost").toString()));
                         if(taskPost.get("postDeleted") == null || taskPost.get("postDeleted").toString().equals("true")) {
                             continue;
                         } else {
