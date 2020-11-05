@@ -17,13 +17,15 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
+/**
+ * this class represents the "My posts" activity, it displays all user's posts
+ * (i.e active and deleted posts) into a toggleable Recycler view
+ *
+ * @author Muaad Alrawhani
+ */
 public class MyPosts extends AppCompatActivity {
     final FirebaseDatabase db = FirebaseDatabase.getInstance();
-
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
-
+    int emptyListTextViewOriginalHeight = -1; // to store original height of the TextView
     ArrayList<TaskPost> taskPosts;
 
     @Override
@@ -32,31 +34,7 @@ public class MyPosts extends AppCompatActivity {
         setContentView(R.layout.activity_my_posts);
     }
 
-    int emptyListTextViewOriginalHeight = -1;
-    public void createRecyclerView(ArrayList<TaskPost> posts) {
-        TextView emptyListTV = (TextView)findViewById(R.id.emptyStatusMyPosts);
-        if(emptyListTextViewOriginalHeight == -1){
-            emptyListTextViewOriginalHeight = emptyListTV.getHeight();
-        }
 
-        recyclerView = (RecyclerView) findViewById(R.id.TaskPostsList);
-
-        // using a linear layout manager
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-
-
-        mAdapter = new MyAdapter(posts);
-        recyclerView.setAdapter(mAdapter);
-
-        if(posts != null && posts.size() > 0){
-            //hide message saying that the list is empty
-            emptyListTV.setHeight(0);
-        }else {
-            emptyListTV.setHeight(emptyListTextViewOriginalHeight);
-        }
-
-    }
 
     @Override
     protected void onResume() {
@@ -65,9 +43,41 @@ public class MyPosts extends AppCompatActivity {
         getDataFromDbAndShowOnUI();
     }
 
+    /**
+     * creates the Recycler view for all my task posts
+     * @param posts list of all my posts
+     */
+    public void createRecyclerView(ArrayList<TaskPost> posts) {
+
+        //a message shows/expands in the recycleView if it's empty and collapses otherwise
+        TextView emptyListTV = (TextView)findViewById(R.id.emptyStatusMyPosts);
+        if(emptyListTextViewOriginalHeight == -1){
+            emptyListTextViewOriginalHeight = emptyListTV.getHeight();
+        }
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.TaskPostsList);
+
+        // using a linear layout manager
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+
+        RecyclerView.Adapter mAdapter = new MyPostsAdapter(posts);
+        recyclerView.setAdapter(mAdapter);
+
+        if(posts != null && posts.size() > 0){
+            //hide message that says the list is empty
+            emptyListTV.setHeight(0);
+        }else {
+            emptyListTV.setHeight(emptyListTextViewOriginalHeight);
+        }
+
+    }
 
     private void getDataFromDbAndShowOnUI() {
+        // to toggle between the "deleted posts" and active posts button
         resetToggle();
+
         final ArrayList<TaskPost> posts = new ArrayList<>();
 
         String userId = UserStatusData.getEmail(this).replace(".", ";");
@@ -95,7 +105,6 @@ public class MyPosts extends AppCompatActivity {
     private void showActivePosts() {
         ArrayList<TaskPost> activePosts = new ArrayList<>();
 
-
         for (TaskPost task: taskPosts) {
             if(!task.isPostDeleted()){
                 activePosts.add(task);
@@ -112,11 +121,12 @@ public class MyPosts extends AppCompatActivity {
         Intent intent = new Intent(this, PostATaskActivity.class);
         startActivity(intent);
     }
+
     /**
-     * runs when "show all posts" button is clicked
+     * runs when "show deleted posts" button is clicked
      */
     boolean toggle;
-    public void showAllPostsOnClickButton(View view) {
+    public void showDeletedPostsOnClickButton(View view) {
         if(taskPosts == null){
             Toast.makeText(this,"There are no posts to show",Toast.LENGTH_SHORT).show();
             return;
@@ -132,8 +142,8 @@ public class MyPosts extends AppCompatActivity {
             showActivePosts();
 
         }
-        toggle = !toggle;
 
+        toggle = !toggle;
     }
 
     private void resetToggle(){

@@ -47,7 +47,7 @@ public class ViewMasterTaskList extends  AppCompatActivity{
             recyclerView.setLayoutManager(layoutManager);
 
 
-            mAdapter = new MyAdapter(posts);
+            mAdapter = new MyPostsAdapter(posts);
             recyclerView.setAdapter(mAdapter);
 
             if(posts != null && posts.size() > 0){
