@@ -71,7 +71,7 @@ public class SignInActivityTest {
 
                     }
                 });
-        onView(withId(R.id.SignInStatus)).check(matches(isDisplayed()));
+        onView(withId(R.id.mainActivityLayOut)).check(matches(isDisplayed()));
 
     }
 
