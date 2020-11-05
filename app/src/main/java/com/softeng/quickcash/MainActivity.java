@@ -1,6 +1,7 @@
 package com.softeng.quickcash;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,47 +12,100 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     final FirebaseDatabase db = FirebaseDatabase.getInstance();
-    private RecyclerView recyclerView;
+    private FirebaseStorage fbStorage;
 
-    private RecyclerView.LayoutManager layoutManager;
+    ArrayList<TaskPost> taskPosts;
+    private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
+    private MyLocation myLocation;
 
     public String[] sortBy = {"latest Post", "test1",
             "Test2", "Test3"};
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //create instance of FirebaseStorage
+        fbStorage = FirebaseStorage.getInstance();
+
         spinnerSetup();
 
-        ArrayList<TaskPost> posts = new ArrayList<>();
-        createRecyclerView(posts);
+        //location setup
+        myLocation = new MyLocation(this) {
+            @Override
+            public void LocationResult(Location location) {
+                getDataFromDbAndShowOnUI();
+            }
+        };
     }
 
-    /**
-     * creates a RecyclerView view for main task posts
-     * @param posts list of posts
-     */
-    public void createRecyclerView(ArrayList<TaskPost> posts) {
-        recyclerView = (RecyclerView) findViewById(R.id.TaskPostsList);
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-        // using a linear layout manager
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-
-        mAdapter = new MyAdapter(posts);
-        recyclerView.setAdapter(mAdapter);
-
+        getDataFromDbAndShowOnUI();
     }
+
+
+    private void getDataFromDbAndShowOnUI() {
+        final ArrayList<TaskPost> posts = new ArrayList<>();
+
+        //path to database object
+        String path = "users/";
+
+        new DbRead<DataSnapshot>(path, DataSnapshot.class, db) {
+            @Override
+            public void getReturnedDbData(DataSnapshot dataFromDb) {
+                //loop through all children in path
+                for (DataSnapshot userdata : dataFromDb.getChildren()) {
+                    String author = userdata.getKey();
+
+                    for (DataSnapshot post : userdata.child("TaskPosts").getChildren()) {
+                        TaskPost taskPost = post.getValue(TaskPost.class);
+                        if(taskPost != null){
+                            taskPost.setAuthor(author);
+                            float distance = getDistance(taskPost.getLatLonLocation());
+                            if(distance <= 50000){//local is defined as 50km max in this app
+                                taskPost.setDistance(getDistance(taskPost.getLatLonLocation()));
+                                posts.add(taskPost);
+                            }
+
+                        }
+                    }
+
+                }
+
+                taskPosts = posts;
+                createRecyclerView(taskPosts);
+            }
+        };
+    }
+
+
+
+    private float getDistance(String latitudeLongitude){
+        Double lat = Double.parseDouble(latitudeLongitude.split(",")[0]);
+        Double lon = Double.parseDouble(latitudeLongitude.split(",")[1]);
+
+        LongLatLocation myLoc = new LongLatLocation(lat,lon);
+        return myLocation.calcDistanceToLocation(myLoc);
+    }
+
+
     /**
      * generates the spinner
      */
@@ -71,6 +125,22 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
 
+
+    /**
+     * creates a RecyclerView view for main task posts
+     * @param posts list of posts
+     */
+    public void createRecyclerView(ArrayList<TaskPost> posts) {
+        recyclerView = (RecyclerView) findViewById(R.id.TaskPostsList);
+
+        // using a linear layout manager
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        mAdapter = new RVAdapterMainActivity(posts,fbStorage);
+        recyclerView.setAdapter(mAdapter);
+
+    }
 
     /**
      * runs when sigIn/out button is clicked
@@ -144,6 +214,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Intent intent = new Intent(this, EditProfile.class);
         startActivity(intent);
     }
+
 
 
     @Override

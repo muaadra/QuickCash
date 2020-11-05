@@ -212,30 +212,6 @@ public class MainActivityTest {
         assertEquals(2, count[0]);
     }
 
-    @Test
-    public void MyRecyclerViewItemContentCheck_Test() {
-
-        final ArrayList<TaskPost> posts = new ArrayList<>();
-        TaskPost taskPost1 = new TaskPost("","1","PostTile","d"
-                ,5f,false,"", new Date(), Calendar.getInstance().getTime(),"hh");
-        posts.add(taskPost1);
-
-        final String[] title = {""};
-
-        activityScenarioRule.getScenario().onActivity(
-                new ActivityScenario.ActivityAction<MainActivity>() {
-                    @Override
-                    public void perform(MainActivity activity) {
-                        activity.createRecyclerView(posts);
-                        View listIem =  ((RecyclerView) activity.findViewById(R.id.TaskPostsList))
-                                .getLayoutManager().findViewByPosition(0);
-                        title[0] = ((TextView)listIem.findViewById(R.id.postCost))
-                        .getText().toString();
-                    }
-                });
-
-        assertEquals("PostTile", title[0]);
-    }
     /**
      * clear all data from SharedPreferences
      */
