@@ -188,6 +188,11 @@ public class MainActivityTest {
         assertEquals(2, count[0]);
     }
 
+    @Test
+    public void userGoesToMainActivityAfterApplyFilterTest() {
+        onView(withId(R.id.goToFilters)).perform(click());
+        onView(withId(R.id.filterLayout)).check(matches(isDisplayed()));
+    }
 
     /**
      * clear all data from SharedPreferences

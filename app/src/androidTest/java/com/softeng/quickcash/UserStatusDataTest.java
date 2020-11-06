@@ -85,6 +85,33 @@ public class UserStatusDataTest {
     }
 
     /**
+     * tests if signed-in user goes to mainActivity
+     */
+    @Test
+    public void checkIfUserPrefsObjectCanBeSavedAndRetrievedLocallyTest(){
+        final FilterPreferences[] userPrefs = {new FilterPreferences()};
+
+        //restarting activity
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<MainActivity>() {
+                    @Override
+                    public void perform(MainActivity activity) {
+                        FilterPreferences fp = new FilterPreferences();
+                        fp.setMinPay(20);
+                        fp.setMaxDistance(30);
+                        UserStatusData.saveUserFilterPrefsData(fp,activity);
+                        Intent intent = new Intent(activity, MainActivity.class);
+                        activity.startActivity(intent);
+
+                        userPrefs[0] = UserStatusData.getUserFilterPrefs(activity);
+                    }
+                });
+
+        assertEquals(30, (int)userPrefs[0].maxDistance);
+        assertEquals(20, (int)userPrefs[0].minPay);
+    }
+
+    /**
      * clear all data from SharedPreferences
      */
     @After

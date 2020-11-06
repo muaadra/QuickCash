@@ -55,6 +55,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         showUserFirstLetterOnProfileIcon();
     }
 
+    /**
+     * runs when Filter button is clicked
+     */
+    public void goToFilterActivity(View v){
+        Intent intent = new Intent(this, FilterActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -90,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         new DbRead<DataSnapshot>(path, DataSnapshot.class, db) {
             @Override
             public void getReturnedDbData(DataSnapshot dataFromDb) {
-               extractTaskPostsFromDBSnapShot(dataFromDb);
+                extractTaskPostsFromDBSnapShot(dataFromDb);
             }
         };
     }
