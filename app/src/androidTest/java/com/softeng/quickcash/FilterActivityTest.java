@@ -77,4 +77,10 @@ public class FilterActivityTest {
         onView(withId(R.id.err_msg_price)).check(matches(isDisplayed()));
     }
 
+    @Test
+    public void userGoesToMainActivityAfterApplyFilterTest() {
+        onView(withId(R.id.ApplyFilter)).perform(click());
+        onView(withId(R.id.mainActivityLayOut)).check(matches(isDisplayed()));
+    }
+
 }
