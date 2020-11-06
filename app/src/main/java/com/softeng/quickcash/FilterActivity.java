@@ -17,9 +17,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class FilterActivity extends AppCompatActivity  {
-    SeekBar seekBar;
-    TextView textView;
-    EditText minPayTextView;
+    private SeekBar seekBar;
+    private TextView textView;
+    private EditText minPayTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +30,12 @@ public class FilterActivity extends AppCompatActivity  {
 
         createRecyclerView(TaskTypes.getTaskTypes());
 
+        setupSeekBar();
+
+        loadAndApplyUserFilterPreferences();
+    }
+
+    private void setupSeekBar(){
         seekBar = (SeekBar) findViewById(R.id.seekBar);
         seekBar.setMax(MainActivity.MAX_LOCAL_DISTANCE/1000);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -47,51 +53,6 @@ public class FilterActivity extends AppCompatActivity  {
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
-
-        loadAndApplyUserFilterPreferences();
-    }
-
-
-    /**
-     * implement filter option.
-     *
-     */
-    public void filterList(TaskList allList, Location location) {
-
-        int taskSize = allList.getTaskPosts().size();
-        ArrayList <Integer> removeItem = new ArrayList<>();
-        for (int i = 0; i < taskSize ; i++) {
-            boolean isTaskTitle = true;
-            boolean isTaskCost = true;
-            boolean isExpectedDate = true;
-            boolean isDistance = true;
-
-
-            if (seekBar.getProgress() > 0  && seekBar.getProgress() < 1000) {
-                MyLocation userLocation = new MyLocation(this) {
-                    @Override
-                    public void LocationResult(Location location) {
-
-                    }
-                };
-                LongLatLocation tempLocation = new LongLatLocation(location.getLatitude(), location.getLatitude());
-                userLocation.setLastLocation(tempLocation);
-                String[] taskLocation = allList.getTaskPosts().get(i).getLatLonLocation().split(",");
-                LongLatLocation location1 = new LongLatLocation(Double.parseDouble(taskLocation[0]),Double.parseDouble(taskLocation[1]));
-                float distance = userLocation.calcDistanceToLocation(location1);
-                if (Math.abs(distance) >= seekBar.getProgress() * 1000) {
-                    isDistance = false;
-                }
-            }
-            if ((!isTaskTitle || !isTaskCost || !isExpectedDate || !isDistance)) {
-                removeItem.add(i);
-            }
-
-        }
-        Collections.reverse(removeItem);
-        for(int i : removeItem) {
-            allList.getTaskPosts().remove(i);
-        }
     }
 
     /**
