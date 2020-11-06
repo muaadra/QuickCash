@@ -2,6 +2,7 @@ package com.softeng.quickcash;
 
 import android.content.Intent;
 
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.action.GeneralClickAction;
 import androidx.test.espresso.action.GeneralLocation;
@@ -15,6 +16,10 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
@@ -23,6 +28,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.junit.Assert.assertEquals;
 
 public class FilterActivityTest {
     @Rule
@@ -77,6 +83,23 @@ public class FilterActivityTest {
         onView(withId(R.id.err_msg_price)).check(matches(isDisplayed()));
     }
 
+    @Test
+    public void RecyclerViewContent_Test() {
+
+
+        final int[] count = {-1};
+
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<FilterActivity>() {
+                    @Override
+                    public void perform(FilterActivity activity) {
+                        count[0] =  ((RecyclerView) activity.findViewById(R.id.FilterRV))
+                                .getAdapter().getItemCount();
+                    }
+                });
+
+        assertEquals(TaskTypes.getTaskTypes().length, count[0]);
+    }
     @Test
     public void userGoesToMainActivityAfterApplyFilterTest() {
         onView(withId(R.id.ApplyFilter)).perform(click());
