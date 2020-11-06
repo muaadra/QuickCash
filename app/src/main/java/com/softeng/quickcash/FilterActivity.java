@@ -37,10 +37,8 @@ public class FilterActivity extends AppCompatActivity  {
         loadAndApplyUserFilterPreferences();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     private void setupSeekBar(){
         seekBar = (SeekBar) findViewById(R.id.seekBar);
-        seekBar.setMin(1);
         seekBar.setMax(MainActivity.MAX_LOCAL_DISTANCE/1000);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
