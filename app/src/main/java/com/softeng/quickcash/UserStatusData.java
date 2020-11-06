@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 
+import com.google.gson.Gson;
+
 import static android.content.Context.MODE_PRIVATE;
 
 public class UserStatusData {
@@ -78,6 +80,36 @@ public class UserStatusData {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(key, value);
         editor.apply();
+    }
+
+    /**
+     * save user data in SharedPreferences as a key and value set
+     */
+    public static void saveUserFilterPrefsData(FilterPreferences filterPrefs, Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                "UserPreferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        Gson gson = new Gson();
+        String json = gson.toJson(filterPrefs);
+        editor.putString("UserPrefs", json);
+        editor.apply();
+    }
+
+    public static FilterPreferences getUserFilterPrefs(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                "UserPreferences", MODE_PRIVATE);
+
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("UserPrefs", null);
+
+        FilterPreferences userPrefs = null;
+
+        if(json != null){
+            userPrefs = gson.fromJson(json, FilterPreferences.class);
+        }
+
+        return userPrefs;
     }
 
     /**
