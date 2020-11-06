@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/postTasksLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center|top"
     android:orientation="vertical"
     tools:context=".FilterActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="90dp"
         android:background="#f9ca24"
         android:orientation="vertical">
         <TextView
@@ -42,104 +41,39 @@
                 android:text="CATEGORIES"
                 android:textColor="#2E2D2D"
                 android:textSize="15sp" />
-            <TableLayout
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/FilterRV"
                 android:layout_width="match_parent"
-                android:layout_height="150dp">
-                <TableRow
-                    android:layout_width="fill_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.5"
-                    android:weightSum="1">
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5">
-                        <ToggleButton
-                            android:id="@+id/btn_categories_1"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:background="@drawable/custom_toggle"
-                            android:paddingBottom="10dp"
-                            android:textColor="@color/toggle_text"
-                            android:textOff="Baby Sitting"
-                            android:textOn="Baby Sitting" />
-                    </RelativeLayout>
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5">
-                        <ToggleButton
-                            android:id="@+id/btn_categories_2"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:gravity="center"
-                            android:paddingBottom="10dp"
-                            android:background="@drawable/custom_toggle"
-                            android:textColor="@color/toggle_text"
-                            android:textOff="Computer Repairs"
-                            android:textOn="Computer Repairs" />
+                android:layout_height="wrap_content" />
 
-                    </RelativeLayout>
-                </TableRow>
 
-                <TableRow
-                    android:layout_width="fill_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.5"
-                    android:weightSum="1">
 
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5">
-                        <ToggleButton
-                            android:id="@+id/btn_categories_3"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:gravity="center"
-                            android:paddingBottom="10dp"
-                            android:background="@drawable/custom_toggle"
-                            android:textColor="@color/toggle_text"
-                            android:textOff="Dog Walking"
-                            android:textOn="Dog Walking" />
-                    </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="bottom"
+                android:orientation="horizontal">
 
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5">
-                        <ToggleButton
-                            android:id="@+id/btn_categories_4"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_marginBottom="10dp"
-                            android:gravity="center"
-                            android:paddingBottom="10dp"
-                            android:background="@drawable/custom_toggle"
-                            android:textColor="@color/toggle_text"
-                            android:textOff="Lawn Mowing"
-                            android:textOn="Lawn Mowing" />
-                    </RelativeLayout>
-                </TableRow>
-            </TableLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom"
+                    android:layout_marginRight="15dp"
+                    android:text="Minimum Hourly Pay:"
+                    android:paddingBottom="5dp"
+                    android:textColor="#2E2D2D"
+                    android:textSize="15sp" />
+                <EditText
+                    android:id="@+id/minPayTV"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom"
+                    android:inputType="number"/>
+
+            </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -179,40 +113,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:text="PRICE"
-                    android:textColor="#2E2D2D"
-                    android:textSize="15sp" />
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-                    <EditText
-                        android:id="@+id/price_minText"
-                        android:layout_width="100dp"
-                        android:layout_height="50dp"
-                        android:ems="10"
-                        android:inputType="number"
-                        android:nextFocusDown="@+id/price_maxText" />
-                    <TextView
-                        android:layout_width="58dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="To"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-                    <EditText
-                        android:id="@+id/price_maxText"
-                        android:layout_width="100dp"
-                        android:layout_height="50dp"
-                        android:ems="10"
-                        android:inputType="number" />
-                </LinearLayout>
+
 
                 <TextView
                     android:id="@+id/err_msg_price"
@@ -222,47 +123,7 @@
                     android:textColor="#F44336" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:text="EXPECTED DATE"
-                    android:textColor="#2E2D2D"
-                    android:textSize="15sp" />
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-                    <Button
-                        android:id="@+id/datePickerPostAtask"
-                        android:onClick="openCalenderOnClickButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingRight="10dp"
-                        android:text="Pick A date" />
-                    <TextView
-                        android:layout_width="58dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="To"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-                    <Button
-                        android:id="@+id/datePickerPostAtask2"
-                        android:onClick="openCalenderOnClickButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingRight="10dp"
-                        android:text="Pick A date" />
-                </LinearLayout>
-            </LinearLayout>
             <TextView
                 android:id="@+id/err_msg_duration"
                 android:layout_width="match_parent"
@@ -286,17 +147,19 @@
                     android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/btn_filter_apply"
-                        android:layout_width="137dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:text="apply" />
-
-                    <Button
-                        android:id="@+id/btn_filter_cancel"
+                        android:id="@+id/ApplyFilter"
                         android:layout_width="137dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:onClick="applyFilterOnButtonClick"
+                        android:text="apply" />
+
+                    <Button
+                        android:id="@+id/filterCancel"
+                        android:layout_width="137dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="cancel"
                         android:text="Cancel" />
                 </LinearLayout>
             </LinearLayout>

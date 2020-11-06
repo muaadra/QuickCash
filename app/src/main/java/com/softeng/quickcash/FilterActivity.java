@@ -28,6 +28,7 @@ public class FilterActivity extends AppCompatActivity  {
         minPayTextView = (EditText) findViewById(R.id.minPayTV);
         textView = (TextView) findViewById(R.id.distance_text);
 
+        createRecyclerView(TaskTypes.getTaskTypes());
 
         seekBar = (SeekBar) findViewById(R.id.seekBar);
         seekBar.setMax(MainActivity.MAX_LOCAL_DISTANCE/1000);
@@ -47,6 +48,7 @@ public class FilterActivity extends AppCompatActivity  {
             }
         });
 
+        loadAndApplyUserFilterPreferences();
     }
 
 
@@ -92,16 +94,57 @@ public class FilterActivity extends AppCompatActivity  {
         }
     }
 
+    /**
+     * creates a RecyclerView view for main task posts
+     * @param posts list of posts
+     */
+    public void createRecyclerView(String[] posts) {
+        RecyclerView recyclerView = findViewById(R.id.FilterRV);
 
+        // using a linear layout manager
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        RecyclerView.Adapter mAdapter = new FilterRVListAdapter(posts,
+                UserStatusData.getUserFilterPrefs(this));
+
+        recyclerView.setAdapter(mAdapter);
+    }
 
     /**
      * runs when Apply button is clicked
      */
     public void applyFilterOnButtonClick(View v){
+
+        UserStatusData.saveUserFilterPrefsData(getUserPreferences(),this);
         goToMain();
     }
 
+    private FilterPreferences getUserPreferences() {
+        FilterPreferences prefs = new FilterPreferences();
+        prefs.setCategories(getSelectedItems());
+        prefs.setMaxDistance(seekBar.getProgress());
+        if(minPayTextView.getText().toString().length() > 0){
+            prefs.setMinPay(Float.parseFloat(minPayTextView.getText().toString()));
+        }
 
+        return prefs;
+    }
+
+    private ArrayList<String> getSelectedItems(){
+        ArrayList<String> checkedItems = new ArrayList<>();
+        RecyclerView recyclerView = findViewById(R.id.FilterRV);
+
+        int itemsCount = recyclerView.getChildCount();
+        for(int i = 0; i < itemsCount ; i++){
+            View view = recyclerView.getLayoutManager().getChildAt(i);
+            boolean selected = ((CheckBox)view.findViewById(R.id.listCheckBox)).isChecked();
+            if(selected){
+                checkedItems.add(TaskTypes.getTaskTypes()[i]);
+            }
+        }
+        return checkedItems;
+    }
 
 
     private void goToMain() {
@@ -110,6 +153,16 @@ public class FilterActivity extends AppCompatActivity  {
     }
 
 
+    private void loadAndApplyUserFilterPreferences() {
+        FilterPreferences filterPrefs = UserStatusData.getUserFilterPrefs(this);
+        if(filterPrefs == null){
+            return;
+        }
+        minPayTextView.setText(filterPrefs.minPay + "");
+        textView.setText(filterPrefs.maxDistance + " km");
+        seekBar.setProgress(filterPrefs.maxDistance);
+
+    }
 
     /**
      * runs when cancel button is clicked
