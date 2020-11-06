@@ -55,6 +55,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         showUserFirstLetterOnProfileIcon();
     }
 
+    /**
+     * runs when Filter button is clicked
+     */
+    public void goToFilterActivity(View v){
+        Intent intent = new Intent(this, FilterActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
