@@ -15,9 +15,20 @@ public class PostsFilter {
     }
 
     public ArrayList<TaskPost> applyFilters(ArrayList<TaskPost> posts){
-        ArrayList<TaskPost> payFilter = filterByMinHourlyPay(posts);
+        ArrayList<TaskPost> deletedPostsFilter = filterDeletedPosts(posts);
+        ArrayList<TaskPost> payFilter = filterByMinHourlyPay(deletedPostsFilter);
         ArrayList<TaskPost> DistFilter = filterByDistance(payFilter);
         return filterByCategory(DistFilter);
+    }
+
+    private ArrayList<TaskPost> filterDeletedPosts(ArrayList<TaskPost> posts){
+        ArrayList<TaskPost> filteredPosts = new ArrayList<>();
+        for (TaskPost post: posts) {
+            if(!post.isPostDeleted()){
+                filteredPosts.add(post);
+            }
+        }
+        return filteredPosts;
     }
 
     private ArrayList<TaskPost> filterByMinHourlyPay(ArrayList<TaskPost> posts){

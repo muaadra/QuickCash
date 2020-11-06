@@ -250,7 +250,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         }else if(selectedSort.equals(CostSort.sortName)){
 
-            Collections.sort(taskPosts,new CostSort(true));
+            Collections.sort(taskPosts,new CostSort(false));
 
         }else if(selectedSort.equals(ExpectedDateSort.sortName)){
 
