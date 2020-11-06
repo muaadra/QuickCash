@@ -15,6 +15,9 @@ public class PostsFilter {
     }
 
     public ArrayList<TaskPost> applyFilters(ArrayList<TaskPost> posts){
+        if(FilterPrefs == null){
+            return null;
+        }
         ArrayList<TaskPost> deletedPostsFilter = filterDeletedPosts(posts);
         ArrayList<TaskPost> payFilter = filterByMinHourlyPay(deletedPostsFilter);
         ArrayList<TaskPost> DistFilter = filterByDistance(payFilter);

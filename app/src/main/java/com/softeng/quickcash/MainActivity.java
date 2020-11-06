@@ -45,6 +45,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         spinnerSetup();
 
         //location setup
+        setupLocation();
+
+        showUserFirstLetterOnProfileIcon();
+    }
+
+    private void setupLocation() {
         myLocation = new MyLocation(this) {
             @Override
             public void LocationResult(Location location) {
@@ -52,8 +58,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 getDataFromDbAndShowOnUI();
             }
         };
-
-        showUserFirstLetterOnProfileIcon();
     }
 
     /**
@@ -70,9 +74,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setFilterPrefsToDefaultsIfNeeded();
 
         //refresh UI after returning to activity
-        getDataFromDbAndShowOnUI();
-
-
+        if(myLocation.getLastLocation()!= null){
+            getDataFromDbAndShowOnUI();
+        }else {
+            setupLocation();
+        }
     }
 
 
@@ -102,6 +108,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 filterPrefs.getCategories().addAll(Arrays.asList(TaskTypes.getTaskTypes()));
                 UserStatusData.saveUserFilterPrefsData(filterPrefs,this);
             }
+        }else {
+            filterPrefs = new FilterPreferences();
+            filterPrefs.getCategories().addAll(Arrays.asList(TaskTypes.getTaskTypes()));
+            filterPrefs.setMaxDistance(MAX_LOCAL_DISTANCE/1000);
+            UserStatusData.saveUserFilterPrefsData(filterPrefs,this);
         }
     }
 
