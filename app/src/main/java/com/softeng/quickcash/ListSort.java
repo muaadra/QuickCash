@@ -5,14 +5,8 @@ import java.util.Comparator;
 /**
  * this collection of classes, define how Job/Task posts are to be sorted
  */
-public class ListSort implements Comparator<TaskPost> {
-    @Override
-    public int compare(TaskPost o1, TaskPost o2) {
-        return 0;
-    }
-}
 
-class DistanceSort extends ListSort {
+class DistanceSort implements Comparator<TaskPost> {
     public static String sortName = "Distance"; //displayed to user on "sort by" spinner
     private int ascending;
 
@@ -30,8 +24,7 @@ class DistanceSort extends ListSort {
     }
 }
 
-
-class CostSort extends ListSort {
+class CostSort implements Comparator<TaskPost>  {
     public static String sortName = "hourly pay";//displayed to user on "sort by" spinner
     private int ascending;
 
@@ -49,7 +42,7 @@ class CostSort extends ListSort {
     }
 }
 
-class ExpectedDateSort extends ListSort {
+class ExpectedDateSort implements Comparator<TaskPost> {
     public static String sortName = "Expected Date";//displayed to user on "sort by" spinner
     private int ascending;
 
@@ -77,7 +70,7 @@ class ExpectedDateSort extends ListSort {
     }
 }
 
-class LatestDateSort extends ListSort {
+class LatestDateSort implements Comparator<TaskPost>  {
     public static String sortName = "Latest Posted";//displayed to user on "sort by" spinner
     private int ascending;
 

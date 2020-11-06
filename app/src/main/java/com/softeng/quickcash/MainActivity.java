@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 
@@ -44,6 +45,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         spinnerSetup();
 
         //location setup
+        setupLocation();
+
+        showUserFirstLetterOnProfileIcon();
+    }
+
+    private void setupLocation() {
         myLocation = new MyLocation(this) {
             @Override
             public void LocationResult(Location location) {
@@ -51,8 +58,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 getDataFromDbAndShowOnUI();
             }
         };
-
-        showUserFirstLetterOnProfileIcon();
     }
 
     /**
@@ -66,9 +71,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     protected void onResume() {
         super.onResume();
+        setFilterPrefsToDefaultsIfNeeded();
 
         //refresh UI after returning to activity
-        getDataFromDbAndShowOnUI();
+        if(myLocation.getLastLocation()!= null){
+            getDataFromDbAndShowOnUI();
+        }else {
+            setupLocation();
+        }
     }
 
 
@@ -90,6 +100,21 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         sortSpinner.setOnItemSelectedListener(this);
     }
 
+    private void setFilterPrefsToDefaultsIfNeeded() {
+        FilterPreferences filterPrefs = UserStatusData.getUserFilterPrefs(this);
+
+        if(filterPrefs != null){
+            if(filterPrefs.getCategories().size() == 0){
+                filterPrefs.getCategories().addAll(Arrays.asList(TaskTypes.getTaskTypes()));
+                UserStatusData.saveUserFilterPrefsData(filterPrefs,this);
+            }
+        }else {
+            filterPrefs = new FilterPreferences();
+            filterPrefs.getCategories().addAll(Arrays.asList(TaskTypes.getTaskTypes()));
+            filterPrefs.setMaxDistance(MAX_LOCAL_DISTANCE/1000);
+            UserStatusData.saveUserFilterPrefsData(filterPrefs,this);
+        }
+    }
 
     private void getDataFromDbAndShowOnUI() {
         //path to database object
@@ -228,6 +253,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if(taskPosts == null){
             return;
         }
+
         String selectedSort = sortBy[sortByListPosition];
         if(selectedSort.equals(DistanceSort.sortName)){
 
@@ -235,7 +261,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         }else if(selectedSort.equals(CostSort.sortName)){
 
-            Collections.sort(taskPosts,new CostSort(true));
+            Collections.sort(taskPosts,new CostSort(false));
 
         }else if(selectedSort.equals(ExpectedDateSort.sortName)){
 
@@ -247,7 +273,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         }
 
-        createRecyclerView(taskPosts);
+
+        PostsFilter postsFilter = new PostsFilter(this);
+        createRecyclerView(postsFilter.applyFilters(taskPosts));
+    }
+
+    private void loadAndApplyUserFilterPreferences(){
+        FilterPreferences filterPrefs = UserStatusData.getUserFilterPrefs(this);
+        if(filterPrefs == null){
+            return;
+        }
+
     }
 
     private void showUserFirstLetterOnProfileIcon(){
