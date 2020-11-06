@@ -101,10 +101,5 @@ public class FilterActivityTest {
         assertEquals(TaskTypes.getTaskTypes().length, count[0]);
     }
 
-    @Test
-    public void userGoesToMainActivityAfterApplyFilterTest() {
-        onView(withId(R.id.ApplyFilter)).perform(click());
-        onView(withId(R.id.mainActivityLayOut)).check(matches(isDisplayed()));
-    }
 
 }
