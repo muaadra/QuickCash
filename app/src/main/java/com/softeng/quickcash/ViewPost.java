@@ -27,8 +27,11 @@ public class ViewPost extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_post);
+        getTaskPostFromDP();
+    }
 
 
+    private void getTaskPostFromDP(){
         Bundle bundle = getIntent().getExtras();
         postID = bundle.getString("postID");
         authorID = bundle.getString("authorID");
@@ -47,17 +50,22 @@ public class ViewPost extends AppCompatActivity {
                         dataFromDb);
             }
         };
-    }
 
+    }
 
     private void showPostDataOnUI(TaskPost task, DataSnapshot dataSnapshot){
         ((TextView)findViewById(R.id.taskTile)).setText(task.getTaskTitle().toUpperCase());
+
         ((TextView)findViewById(R.id.TaskLocation)).setText(
                 getAddressFromLonLatOnUI(task.getLatLonLocation()));
+
         String date = DateFormat.getDateInstance().format(task.getExpectedDate().getTime());
         ((TextView)findViewById(R.id.expectedDateTView)).setText(date);
+
         ((TextView)findViewById(R.id.taskDescEditTxt)).setText(task.getTaskDescription());
+
         ((TextView)findViewById(R.id.payPerHourTV)).setText(task.getTaskCost() + "");
+
         ((TextView)findViewById(R.id.authorTV)).setText(dataSnapshot.child("/Profile/fName").getValue(String.class));
     }
 
@@ -67,6 +75,7 @@ public class ViewPost extends AppCompatActivity {
         double lon = Double.parseDouble(latLon.split(",")[1]);
 
         try {
+            //get the address
             Geocoder geocoder = new Geocoder(this);
             List<Address> addresses = geocoder.getFromLocation(lat,lon,1);
             String address = addresses.get(0).getAddressLine(0);
