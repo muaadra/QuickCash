@@ -96,6 +96,9 @@ public class ViewPost extends AppCompatActivity {
 
     public void applyToTask(View v){
         String email = UserStatusData.getEmail(this);
+        if(email.equals("")){
+            return;
+        }
         String userId = email.replace(".", ";");
         //path to database object
         String path = "users/"+ authorID +"/TaskPosts/" + postID + "/Applicants/" + userId;
