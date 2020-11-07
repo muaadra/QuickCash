@@ -202,6 +202,30 @@ public class MainActivityTest {
         onView(withId(R.id.filterLayout)).check(matches(isDisplayed()));
     }
 
+    @Test
+    public void recyclerViewClickOnPostGoesToViewPostActivity() {
+
+        final ArrayList<TaskPost> posts = new ArrayList<>();
+        TaskPost taskPost1 = new TaskPost("","1","t","d"
+                ,5f,false,"", new Date(), Calendar.getInstance().getTime(),"hh");
+        TaskPost taskPost2 = new TaskPost("","1","t","d"
+                ,5f,false,"", new Date(), Calendar.getInstance().getTime(),"hh");
+        posts.add(taskPost1);
+        posts.add(taskPost2);
+
+
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<MainActivity>() {
+                    @Override
+                    public void perform(MainActivity activity) {
+                        activity.createRecyclerView(posts);
+                    }
+                });
+
+        onView(withId(R.id.TaskPostsList)).perform(click());
+        onView(withId(R.id.ViewPostLayout)).check(matches(isDisplayed()));
+    }
+
      /**
      * clear all data from SharedPreferences
      */
