@@ -33,8 +33,10 @@ public class ViewPost extends AppCompatActivity {
 
     private void getTaskPostFromDP(){
         Bundle bundle = getIntent().getExtras();
-        postID = bundle.getString("postID");
-        authorID = bundle.getString("authorID");
+        if(bundle != null){
+            postID = bundle.getString("postID");
+            authorID = bundle.getString("authorID");
+        }
 
         //path to database object
         String path = "users/"+ authorID ;
@@ -54,6 +56,10 @@ public class ViewPost extends AppCompatActivity {
     }
 
     private void showPostDataOnUI(TaskPost task, DataSnapshot dataSnapshot){
+        if(task == null || dataSnapshot == null){
+            return;
+        }
+
         ((TextView)findViewById(R.id.taskTile)).setText(task.getTaskTitle().toUpperCase());
 
         ((TextView)findViewById(R.id.TaskLocation)).setText(
@@ -112,6 +118,13 @@ public class ViewPost extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
-
+    /**
+     * runs when author name button is clicked
+     */
+    public void goToViewProfile(View view) {
+        Intent intent = new Intent(this, ViewProfile.class);
+        intent.putExtra("userID",authorID);
+        startActivity(intent);
+    }
 
 }
