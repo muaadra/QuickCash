@@ -19,7 +19,7 @@ public class ViewProfile extends AppCompatActivity {
 
     private ImageView profileImage;
     private FirebaseStorage fbStorage;
-    String userId;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,21 +39,7 @@ public class ViewProfile extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         userId = bundle.getString("userID");
 
-        String imagePathAndName = "Images/user_ProfileImages/" + userId;
-
-        DbGetImage dbGetImage = new DbGetImage(fbStorage,imagePathAndName) {
-            @Override
-            public void imageGetResult(Bitmap dbProfileImage) {
-                //set image on screen to image retrieved from db
-                if(dbProfileImage != null){
-                    profileImage.setImageBitmap(dbProfileImage);
-                }else {
-                    System.out.println("error getting image");
-                }
-
-            }
-        };
-        dbGetImage.getImage();
+        getProfileImage();
 
         //path to database object
         String path = "users/"+ userId +"/Profile";
@@ -82,6 +68,25 @@ public class ViewProfile extends AppCompatActivity {
 
     }
 
+    /**
+     * get image to firebase
+     */
+    public void getProfileImage() {
+        String imagePathAndName = "Images/user_ProfileImages/" + userId;
 
+        DbGetImage dbGetImage = new DbGetImage(fbStorage,imagePathAndName) {
+            @Override
+            public void imageGetResult(Bitmap dbProfileImage) {
+                //set image on screen to image retrieved from db
+                if(dbProfileImage != null){
+                    profileImage.setImageBitmap(dbProfileImage);
+                }else {
+                    System.out.println("error getting image");
+                }
+
+            }
+        };
+        dbGetImage.getImage();
+    }
 
 }
