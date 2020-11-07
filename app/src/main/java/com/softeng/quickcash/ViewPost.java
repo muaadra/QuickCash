@@ -33,10 +33,11 @@ public class ViewPost extends AppCompatActivity {
 
     private void getTaskPostFromDP(){
         Bundle bundle = getIntent().getExtras();
-        if(bundle != null){
-            postID = bundle.getString("postID");
-            authorID = bundle.getString("authorID");
+        if(bundle == null || bundle.getString("postID") ==null){
+           return;
         }
+        postID = bundle.getString("postID");
+        authorID = bundle.getString("authorID");
 
         //path to database object
         String path = "users/"+ authorID ;
@@ -95,6 +96,9 @@ public class ViewPost extends AppCompatActivity {
 
     public void applyToTask(View v){
         String email = UserStatusData.getEmail(this);
+        if(email.equals("")){
+            return;
+        }
         String userId = email.replace(".", ";");
         //path to database object
         String path = "users/"+ authorID +"/TaskPosts/" + postID + "/Applicants/" + userId;

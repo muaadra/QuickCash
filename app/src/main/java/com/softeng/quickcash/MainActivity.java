@@ -151,6 +151,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
 
     private float getDistance(String latitudeLongitude){
+        if(latitudeLongitude == null){
+            return -1;
+        }
+
         Double lat = Double.parseDouble(latitudeLongitude.split(",")[0]);
         Double lon = Double.parseDouble(latitudeLongitude.split(",")[1]);
 
@@ -252,7 +256,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void sortAndRecreateRecyclerView(int sortByListPosition){
-        if(taskPosts == null){
+        if(taskPosts == null || taskPosts.size() == 0){
             return;
         }
 
