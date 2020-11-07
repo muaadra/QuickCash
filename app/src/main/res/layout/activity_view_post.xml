@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/postTasksLayout"
+    android:id="@+id/ViewPostLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -30,9 +30,11 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/gotoProfileT"
         android:layout_width="match_parent"
         android:paddingLeft="20dp"
         android:paddingTop="5dp"
+        android:onClick="goToViewProfile"
         android:paddingRight="20dp"
         android:background="#E8E8EC"
         android:paddingBottom="5dp"
@@ -46,13 +48,15 @@
             android:textSize="20sp"
             android:text="Task by :" />
 
-        <TextView
+        <Button
             android:id="@+id/authorTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingRight="10dp"
             android:textColor="#0054FB"
-
+            android:background="@drawable/rounded_edit_text"
+            android:padding="10dp"
+            android:onClick="goToViewProfile"
             android:textSize="20sp"
             android:text="name of author" />
     </LinearLayout>
@@ -194,7 +198,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:paddingLeft="10dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:gravity="center"
             android:layout_height="wrap_content">
 
