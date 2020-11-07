@@ -18,12 +18,6 @@ public class ViewPostTest {
             new ActivityScenarioRule<>(ViewPost.class);
 
     @Test
-    public void returnToMainActivityAfterApply() {
-        onView(withId(R.id.postATaskButton)).perform(click());
-        onView(withId(R.id.mainActivityLayOut)).check(matches(isDisplayed()));
-    }
-
-    @Test
     public void goToUserProfileTest() {
         onView(withId(R.id.authorTV)).perform(click());
         onView(withId(R.id.viewProfileLayout)).check(matches(isDisplayed()));
