@@ -164,12 +164,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
      * @param posts list of posts
      */
     public void createRecyclerView(ArrayList<TaskPost> posts) {
+        if(posts == null){
+            return;
+        }
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.TaskPostsList);
 
         // using a linear layout manager
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-
         RecyclerView.Adapter mAdapter = new RVAdapterMainActivity(posts, fbStorage);
         recyclerView.setAdapter(mAdapter);
 

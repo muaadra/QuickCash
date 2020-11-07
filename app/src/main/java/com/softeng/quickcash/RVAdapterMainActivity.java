@@ -117,15 +117,19 @@ public class RVAdapterMainActivity extends RecyclerView.Adapter<RVAdapterMainAct
                 @Override
                 public void onClick(View v) {
                     // get position
-                    goToNextActivity();
+                    gotToViewPost();
                 }
             });
 
         }
 
 
-        private void goToNextActivity(){
 
+        private void gotToViewPost(){
+            Intent intent = new Intent(mainView.getContext(), ViewPost.class);
+            intent.putExtra("postID",mPosts.get(getAdapterPosition()).getPostId());
+            intent.putExtra("authorID",mPosts.get(getAdapterPosition()).getAuthor());
+            mainView.getContext().startActivity(intent);
         }
 
 
