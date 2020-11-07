@@ -84,7 +84,9 @@ class LatestDateSort implements Comparator<TaskPost>  {
 
     @Override
     public int compare(TaskPost t1, TaskPost t2) {
-
+        if(t1.getTimeStamp() == null){
+            return 0;
+        }
         return Double.compare(t1.getTimeStamp().getTime(),
                 t2.getTimeStamp().getTime()) * ascending;
     }
