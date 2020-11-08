@@ -43,10 +43,6 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_a_task);
 
-        String selectACategory = getResources().getString(R.string.selectATask);
-        TaskTypes.getTaskTypes()[0] = selectACategory;
-
-
         spinnerSetup();
 
         showDataOnUI();
