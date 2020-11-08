@@ -288,14 +288,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         createRecyclerView(postsFilter.applyFilters(taskPosts));
     }
 
-    private void loadAndApplyUserFilterPreferences(){
-        FilterPreferences filterPrefs = UserStatusData.getUserFilterPrefs(this);
-        if(filterPrefs == null){
-            return;
-        }
-
-    }
-
     private void showUserFirstLetterOnProfileIcon(){
         String userId = UserStatusData.getEmail(this).replace(".", ";");
         //path to database object
@@ -334,8 +326,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     void getAndSetSpinnerPrefs(int position){
-        if(resumedActivity){
-            FilterPreferences filterPrefs = UserStatusData.getUserFilterPrefs(this);
+        FilterPreferences filterPrefs = UserStatusData.getUserFilterPrefs(this);
+
+        if(resumedActivity){ //when activity first starts or resumes
             if(filterPrefs != null){
                 if(filterPrefs.getSortMethodIndex() != -1){
                     position = filterPrefs.getSortMethodIndex();
@@ -345,7 +338,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             sortAndRecreateRecyclerView(position);
             resumedActivity = false;
         }else {
-            FilterPreferences filterPrefs = UserStatusData.getUserFilterPrefs(this);
             if(filterPrefs == null){
                 filterPrefs = new FilterPreferences();
             }
