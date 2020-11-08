@@ -7,7 +7,9 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.assertion.ViewAssertions;
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
 import org.junit.After;
@@ -20,6 +22,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
@@ -28,8 +31,12 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 
@@ -224,6 +231,26 @@ public class MainActivityTest {
 
         onView(withId(R.id.TaskPostsList)).perform(click());
         onView(withId(R.id.ViewPostLayout)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void sortPreferencesAreStoredTest() {
+        final MainActivity[] activity = new MainActivity[1];
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<MainActivity>() {
+                    @Override
+                    public void perform(MainActivity mainActivity) {
+                        activity[0] = mainActivity;
+                    }
+                });
+
+        onView(withId(R.id.sortBySpinner_PostATask)).perform(click());
+        onData(allOf(is(instanceOf(String.class)), is(CostSort.sortName))).perform(click());
+
+
+      assertEquals(activity[0].sortSpinner.getFirstVisiblePosition(),
+              UserStatusData.getUserFilterPrefs(activity[0]).getSortMethodIndex());
+
     }
 
      /**
