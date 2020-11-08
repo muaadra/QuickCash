@@ -94,21 +94,6 @@ public class SignInActivityTest {
     }
 
     /**
-     * this Ui test if entered password is invalid.
-     */
-    @Test
-    public void test_user_wrong_credential() {
-
-        onView(withId(R.id.input_email)).perform(typeText("signUp@test.com"));
-        onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.input_password)).perform(typeText("testPassword1111"));
-        onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.btn_login)).perform(click());
-
-        onView(withId(R.id.err_msg_pw)).check(matches(isDisplayed()));
-    }
-
-    /**
      * this Ui test if user not found.
      */
     @Test
