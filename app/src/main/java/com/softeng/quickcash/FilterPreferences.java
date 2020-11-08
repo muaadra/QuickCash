@@ -6,6 +6,7 @@ public class FilterPreferences {
     ArrayList<String> categories = new ArrayList<>();
     int maxDistance;
     float minPay;
+    int sortMethodIndex = -1;
 
     public FilterPreferences() {
     }
@@ -38,5 +39,13 @@ public class FilterPreferences {
 
     public void setMinPay(float minPay) {
         this.minPay = minPay;
+    }
+
+    public int getSortMethodIndex() {
+        return sortMethodIndex;
+    }
+
+    public void setSortMethodIndex(int sortMethodIndex) {
+        this.sortMethodIndex = sortMethodIndex;
     }
 }

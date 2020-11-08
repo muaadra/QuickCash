@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             CostSort.sortName, ExpectedDateSort.sortName};
     Spinner sortSpinner;
 
+    boolean resumedActivity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     protected void onResume() {
         super.onResume();
+        resumedActivity = true;
         setFilterPrefsToDefaultsIfNeeded();
 
         //refresh UI after returning to activity
@@ -147,6 +150,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         taskPosts = posts;
         sortAndRecreateRecyclerView(sortSpinner.getFirstVisiblePosition());
+
     }
 
 
@@ -260,6 +264,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             return;
         }
 
+
         String selectedSort = sortBy[sortByListPosition];
         if(selectedSort.equals(DistanceSort.sortName)){
 
@@ -278,7 +283,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             Collections.sort(taskPosts,new LatestDateSort(false));
 
         }
-
 
         PostsFilter postsFilter = new PostsFilter(this);
         createRecyclerView(postsFilter.applyFilters(taskPosts));
@@ -324,7 +328,33 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        sortAndRecreateRecyclerView(position);
+
+        getAndSetSpinnerPrefs(position);
+
+    }
+
+    void getAndSetSpinnerPrefs(int position){
+        if(resumedActivity){
+            FilterPreferences filterPrefs = UserStatusData.getUserFilterPrefs(this);
+            if(filterPrefs != null){
+                if(filterPrefs.getSortMethodIndex() != -1){
+                    position = filterPrefs.getSortMethodIndex();
+                }
+            }
+            sortSpinner.setSelection(position);
+            sortAndRecreateRecyclerView(position);
+            resumedActivity = false;
+        }else {
+            FilterPreferences filterPrefs = UserStatusData.getUserFilterPrefs(this);
+            if(filterPrefs == null){
+                filterPrefs = new FilterPreferences();
+            }
+
+            filterPrefs.setSortMethodIndex(position);
+            UserStatusData.saveUserFilterPrefsData(filterPrefs,this);
+            sortAndRecreateRecyclerView(position);
+
+        }
     }
 
     @Override

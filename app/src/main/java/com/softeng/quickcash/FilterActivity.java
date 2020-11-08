@@ -84,7 +84,12 @@ public class FilterActivity extends AppCompatActivity  {
     }
 
     private FilterPreferences getUserPreferences() {
-        FilterPreferences prefs = new FilterPreferences();
+        FilterPreferences prefs = UserStatusData.getUserFilterPrefs(this);
+
+        if(prefs == null){
+            prefs = new FilterPreferences();
+        }
+
         prefs.setCategories(getSelectedItems());
         prefs.setMaxDistance(seekBar.getProgress());
         if(minPayTextView.getText().toString().length() > 0){
