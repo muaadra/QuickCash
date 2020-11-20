@@ -79,7 +79,7 @@ public class ViewPost extends AppCompatActivity {
         ((TextView)findViewById(R.id.authorTV)).setText(dataSnapshot.child(task.getAuthor() + "/Profile/fName").getValue(String.class));
 
 
-        if(haveAppliedToTask(task)){
+        if(haveIAppliedToThisTask(task)){
             ((Button)findViewById(R.id.applyToTask)).setText("Cancel My Application");
         }
     }
@@ -101,17 +101,21 @@ public class ViewPost extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * runs when apply button is clicked
+     */
     public void applyToTask(View v){
         if(((Button)findViewById(R.id.applyToTask)).getText()
                 .toString().equals("Cancel My Application")){
             cancelMyApplication();
             return;
         }
+
         String email = UserStatusData.getEmail(this);
         if(email.equals("")){
             return;
         }
+
         String userId = email.replace(".", ";");
         //path to database object
         String path = "users/"+ authorID +"/TaskPosts/" + postID + "/Applicants/" + userId;
@@ -185,7 +189,7 @@ public class ViewPost extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private boolean haveAppliedToTask(TaskPost task){
+    private boolean haveIAppliedToThisTask(TaskPost task){
 
         DataSnapshot applicationsSnapShot =  root.child(UserStatusData.getUserID(this)
                 + "/MyApplications/");
