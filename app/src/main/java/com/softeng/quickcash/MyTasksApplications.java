@@ -30,13 +30,85 @@ import java.util.List;
  * @author Muaad Alrawhani
  */
 public class MyTasksApplications extends AppCompatActivity {
+    final FirebaseDatabase db = FirebaseDatabase.getInstance();
+    int emptyListTextViewOriginalHeight = -1; // to store original height of the TextView
+    ArrayList<TaskPost> taskPosts;
+    private FirebaseStorage fbStorage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_tasks_applications);
 
+        //create instance of FirebaseStorage
+        fbStorage = FirebaseStorage.getInstance();
     }
+
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        final ArrayList<TaskPost> posts = new ArrayList<>();
+
+        final String userId = UserStatusData.getEmail(this).replace(".", ";");
+        //path to database object
+        String path = "users/";
+
+        new DbRead<DataSnapshot>(path, DataSnapshot.class, db) {
+            @Override
+            public void getReturnedDbData(DataSnapshot dataFromDb) {
+                //loop through all children in path
+                DataSnapshot applicationsSnapShot = dataFromDb.child(userId + "/MyApplications");
+
+                List<TaskApplication> applicationsList = DataSnapShotToArrayList.getArrayList(applicationsSnapShot,
+                        TaskApplication.class);
+
+                for (TaskApplication application : applicationsList) {
+                    String taskPath = application.getTaskAuthor() + "/TaskPosts/" + application.getTaskId();
+                    posts.add(dataFromDb.child(taskPath).getValue(TaskPost.class));
+                }
+
+                taskPosts = posts;
+                createRecyclerView(taskPosts);
+            }
+        };
+    }
+
+    /**
+     * creates the Recycler view for all posts I applied to
+     * @param posts list of all my posts
+     */
+    public void createRecyclerView(ArrayList<TaskPost> posts) {
+
+        TextView emptyListTV = (TextView)findViewById(R.id.emptyStatusMyPosts);
+        if(emptyListTextViewOriginalHeight == -1){
+            emptyListTextViewOriginalHeight = emptyListTV.getHeight();
+        }
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.TaskPostsList);
+
+        // using a linear layout manager
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+
+        RecyclerView.Adapter mAdapter = new RVAdapterMainActivity(posts, fbStorage);
+        recyclerView.setAdapter(mAdapter);
+
+        if(posts != null && posts.size() > 0){
+            emptyListTV.setHeight(0);
+        }else {
+            emptyListTV.setHeight(emptyListTextViewOriginalHeight);
+        }
+
+    }
+
+
+
+
+
 
 
 }

@@ -18,6 +18,16 @@ public class UserStatusData {
         return getUserPreferenceData("email", context);
     }
 
+
+    /**
+     * get userId
+     */
+    public static String getUserID(Context context) {
+        if(!getUserPreferenceData("email", context).equals("")){
+            return getUserPreferenceData("email", context).replace(".", ";");
+        }
+        return null;
+    }
     /**
      * set user first run status/flag; if it's not user's firs run set to false
      */
