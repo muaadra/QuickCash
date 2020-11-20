@@ -2,7 +2,6 @@ package com.softeng.quickcash;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 
 import android.app.DatePickerDialog;
 import android.content.pm.PackageManager;
@@ -18,12 +17,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -102,7 +99,7 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
         ((TextView)findViewById(R.id.GPSLocation)).setText(address);
 
         if(dataFromDb.isPostDeleted()){
-            ((Button) findViewById(R.id.postATaskButton)).setWidth(0);
+            ((Button) findViewById(R.id.applyToTask)).setWidth(0);
             ((LinearLayout)findViewById(R.id.deleteButtonParent)).getLayoutParams().width = 0;
             ((LinearLayout)findViewById(R.id.postButtonParent)).getLayoutParams().width = 0;
             ((TextView) findViewById(R.id.postATaskStatus)).setText("can't post, view only");

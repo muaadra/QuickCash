@@ -204,7 +204,7 @@
 
 
             <Button
-                android:id="@+id/postATaskButton"
+                android:id="@+id/applyToTask"
                 android:layout_width="230dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_button"
