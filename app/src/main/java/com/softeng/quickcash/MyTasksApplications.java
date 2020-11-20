@@ -45,14 +45,50 @@ public class MyTasksApplications extends AppCompatActivity {
     }
 
 
-
     @Override
     protected void onResume() {
         super.onResume();
 
-        final ArrayList<TaskPost> posts = new ArrayList<>();
+        getDataFromDbAndShowOnUI();
+    }
 
+    /**
+     * creates the Recycler view for all posts I applied to
+     * @param posts list of all my posts
+     */
+    public void createRecyclerView(ArrayList<TaskPost> posts) {
+
+        //a message shows/expands in the recycleView if it's empty and collapses otherwise
+        TextView emptyListTV = (TextView)findViewById(R.id.emptyStatusMyPosts);
+        if(emptyListTextViewOriginalHeight == -1){
+            emptyListTextViewOriginalHeight = emptyListTV.getHeight();
+        }
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.TaskPostsList);
+
+        // using a linear layout manager
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+
+        RecyclerView.Adapter mAdapter = new RVAdapterMainActivity(posts, fbStorage);
+        recyclerView.setAdapter(mAdapter);
+
+        if(posts != null && posts.size() > 0){
+            //hide message that says the list is empty
+            emptyListTV.setHeight(0);
+        }else {
+            emptyListTV.setHeight(emptyListTextViewOriginalHeight);
+        }
+
+    }
+
+
+    private void getDataFromDbAndShowOnUI() {
+
+        final ArrayList<TaskPost> posts = new ArrayList<>();
         final String userId = UserStatusData.getEmail(this).replace(".", ";");
+
         //path to database object
         String path = "users/";
 
@@ -75,40 +111,6 @@ public class MyTasksApplications extends AppCompatActivity {
             }
         };
     }
-
-    /**
-     * creates the Recycler view for all posts I applied to
-     * @param posts list of all my posts
-     */
-    public void createRecyclerView(ArrayList<TaskPost> posts) {
-
-        TextView emptyListTV = (TextView)findViewById(R.id.emptyStatusMyPosts);
-        if(emptyListTextViewOriginalHeight == -1){
-            emptyListTextViewOriginalHeight = emptyListTV.getHeight();
-        }
-
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.TaskPostsList);
-
-        // using a linear layout manager
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-
-
-        RecyclerView.Adapter mAdapter = new RVAdapterMainActivity(posts, fbStorage);
-        recyclerView.setAdapter(mAdapter);
-
-        if(posts != null && posts.size() > 0){
-            emptyListTV.setHeight(0);
-        }else {
-            emptyListTV.setHeight(emptyListTextViewOriginalHeight);
-        }
-
-    }
-
-
-
-
-
 
 
 }
