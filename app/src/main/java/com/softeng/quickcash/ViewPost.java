@@ -186,6 +186,7 @@ public class ViewPost extends AppCompatActivity {
     private void goToMyApplicationsAndShowStatus(String status) {
         Toast.makeText(this,status,Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, MyTasksApplications.class);
+        finish();
         startActivity(intent);
     }
 
