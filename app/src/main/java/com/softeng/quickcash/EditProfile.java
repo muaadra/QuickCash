@@ -249,6 +249,13 @@ public class EditProfile extends AppCompatActivity {
         goToMain();
     }
 
+    /**
+     * runs when a user clicks on "My Applications" button
+     */
+    public void gotToMyApplications(View view) {
+        Intent intent = new Intent(this, MyTasksApplications.class);
+        startActivity(intent);
+    }
 
     /**
      * runs when sigIn/out button is clicked

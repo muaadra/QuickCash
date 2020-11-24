@@ -1,9 +1,7 @@
 package com.softeng.quickcash;
 
-import android.content.Intent;
 import android.widget.Spinner;
 
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.matcher.ViewMatchers;
@@ -23,7 +21,6 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
@@ -101,7 +98,7 @@ public class PostATaskTest {
                 .perform(typeText("30"));
         onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard());
 
-        onView(withId(R.id.postATaskButton)).perform(click());
+        onView(withId(R.id.applyToTask)).perform(click());
 
         onView(withId(R.id.postATaskStatus))
                 .check(matches(withText(R.string.ExpectedDateError)));
@@ -128,7 +125,7 @@ public class PostATaskTest {
 
         onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard());
 
-        onView(withId(R.id.postATaskButton)).perform(click());
+        onView(withId(R.id.applyToTask)).perform(click());
 
         onView(withId(R.id.postATaskStatus))
                 .check(matches(withText(R.string.costMissingPostATask)));
@@ -157,7 +154,7 @@ public class PostATaskTest {
                 .perform(typeText("30"));
         onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard());
 
-        onView(withId(R.id.postATaskButton)).perform(click());
+        onView(withId(R.id.applyToTask)).perform(click());
 
         onView(withId(R.id.postATaskStatus))
                 .check(matches(withText(R.string.missingDescPostATask)));

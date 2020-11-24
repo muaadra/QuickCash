@@ -7,6 +7,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
 import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class ViewPost extends AppCompatActivity {
@@ -22,6 +24,7 @@ public class ViewPost extends AppCompatActivity {
     final FirebaseDatabase db = FirebaseDatabase.getInstance();
     private String postID;
     private String authorID;
+    DataSnapshot root;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,22 +37,22 @@ public class ViewPost extends AppCompatActivity {
     private void getTaskPostFromDP(){
         Bundle bundle = getIntent().getExtras();
         if(bundle == null || bundle.getString("postID") ==null){
-           return;
+            return;
         }
         postID = bundle.getString("postID");
         authorID = bundle.getString("authorID");
 
         //path to database object
-        String path = "users/"+ authorID ;
+        String path = "users";
 
 
         //read data from database
-        new DbRead<DataSnapshot>(path,
-                DataSnapshot.class, db) {
+        new DbRead<DataSnapshot>(path, DataSnapshot.class, db) {
             @Override
             public void getReturnedDbData(DataSnapshot dataFromDb) {
+                root = dataFromDb;
                 //after data is received from db call checkDbData
-                showPostDataOnUI(dataFromDb.child("/TaskPosts/" + postID).getValue(TaskPost.class),
+                showPostDataOnUI(dataFromDb.child(authorID + "/TaskPosts/" + postID).getValue(TaskPost.class),
                         dataFromDb);
             }
         };
@@ -73,7 +76,12 @@ public class ViewPost extends AppCompatActivity {
 
         ((TextView)findViewById(R.id.payPerHourTV)).setText(task.getTaskCost() + "");
 
-        ((TextView)findViewById(R.id.authorTV)).setText(dataSnapshot.child("/Profile/fName").getValue(String.class));
+        ((TextView)findViewById(R.id.authorTV)).setText(dataSnapshot.child(task.getAuthor() + "/Profile/fName").getValue(String.class));
+
+
+        if(haveIAppliedToThisTask(task)){
+            ((Button)findViewById(R.id.applyToTask)).setText("Cancel My Application");
+        }
     }
 
 
@@ -93,35 +101,114 @@ public class ViewPost extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * runs when apply button is clicked
+     */
     public void applyToTask(View v){
+        if(((Button)findViewById(R.id.applyToTask)).getText()
+                .toString().equals("Cancel My Application")){
+            cancelMyApplication();
+            return;
+        }
+
         String email = UserStatusData.getEmail(this);
         if(email.equals("")){
             return;
         }
+
         String userId = email.replace(".", ";");
         //path to database object
         String path = "users/"+ authorID +"/TaskPosts/" + postID + "/Applicants/" + userId;
 
-        // 1 indicates new applicant (for notification purposes)
         new DbWrite<Integer>(path,1,db) {
             @Override
             public void writeResult(Integer userdata) {
                 if(userdata != null){
-                    goToMainAndShowStatus("application was successful");
+                    goToMyApplicationsAndShowStatus("application was successful");
                 }else {
-                    goToMainAndShowStatus("couldn't send application");
+                    goToMyApplicationsAndShowStatus("couldn't send application");
                 }
 
             }
         };
+
+        addToMyApplications();
     }
 
-    private void goToMainAndShowStatus(String status) {
+    private void cancelMyApplication(){
+
+        //delete application from employer side
+        String path = "users/"+ authorID +"/TaskPosts/" + postID + "/Applicants/" +
+                UserStatusData.getUserID(this);
+
+        new DbWrite<Object>(path,null,db) {
+            @Override
+            public void writeResult(Object userdata) {
+
+            }
+        };
+
+        //delete application from my side
+        path = "users/"+ UserStatusData.getUserID(this) + "/MyApplications/"
+                + postID;
+
+        new DbWrite<Object>(path,null,db) {
+            @Override
+            public void writeResult(Object userdata) {
+                endActivityWithToast("Application canceled");
+            }
+        };
+    }
+
+    private void endActivityWithToast(String message){
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+
+    private void addToMyApplications() {
+        String email = UserStatusData.getEmail(this);
+        if(email.equals("")){
+            return;
+        }
+
+        String userId = email.replace(".", ";");
+        //path to database object
+        String path = "users/"+ userId +"/MyApplications/" + postID;
+        TaskApplication application = new TaskApplication(postID, authorID, (new Date()).getTime());
+
+        new DbWrite<TaskApplication>(path,application,db) {
+            @Override
+            public void writeResult(TaskApplication userdata) {}
+        };
+    }
+
+    private void goToMyApplicationsAndShowStatus(String status) {
         Toast.makeText(this,status,Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, MyTasksApplications.class);
+        finish();
         startActivity(intent);
     }
+
+    private boolean haveIAppliedToThisTask(TaskPost task){
+
+        DataSnapshot applicationsSnapShot =  root.child(UserStatusData.getUserID(this)
+                + "/MyApplications/");
+        if(applicationsSnapShot.getValue() == null){
+            return false ;
+        }
+        List<TaskApplication> applicationsList = DataSnapShotToArrayList.getArrayList(applicationsSnapShot,
+                TaskApplication.class);
+
+        for (TaskApplication application : applicationsList) {
+            if(application.getTaskId().equals(task.getPostId())){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * runs when author name button is clicked
      */

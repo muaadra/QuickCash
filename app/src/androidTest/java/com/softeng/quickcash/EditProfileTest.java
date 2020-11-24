@@ -76,6 +76,19 @@ public class EditProfileTest {
     }
 
     /**
+     * tests that the main activity is showing after user canceled editing a profile
+     */
+    @Test
+    public void goToMyApplications(){
+
+        onView(withId(R.id.myApplications)).perform(click());
+
+        //check if screen is displayed
+        onView(withId(R.id.myApplicationsLayout))
+                .check(ViewAssertions.matches(isDisplayed()));
+    }
+
+    /**
      * This will test that welcome activity is shown when user signs out
      */
     @Test
