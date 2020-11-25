@@ -260,6 +260,13 @@ public class MainActivityTest {
         onView(withId(R.id.notificationMenu)).check(matches(isDisplayed()));
     }
 
+    @Test
+    public void goToNewTaskActivity(){
+        onView(withId(R.id.bell)).perform(click());
+        onView(withId(R.id.goToNewTasks)).perform(click());
+        onView(withId(R.id.newTaskNotificationLayout)).check(matches(isDisplayed()));
+    }
+
      /**
      * clear all data from SharedPreferences
      */
