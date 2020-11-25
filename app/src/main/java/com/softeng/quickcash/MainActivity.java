@@ -3,9 +3,12 @@ package com.softeng.quickcash;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -316,6 +319,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         }
         ((TextView)findViewById(R.id.goToProfile)).setText(userFirstChar);
+    }
+
+    /**
+     * runs when bell notification button is clicked
+     */
+    public void bellOnClick(View v){
+        RelativeLayout notificationMenu = (RelativeLayout) findViewById(R.id.notificationMenu);
+        int isVisible = notificationMenu.getVisibility();
+        if(isVisible == View.VISIBLE){
+            notificationMenu.setVisibility(View.INVISIBLE);
+        }else {
+            notificationMenu.setVisibility(View.VISIBLE);
+        }
+
     }
 
     @Override
