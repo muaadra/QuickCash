@@ -253,6 +253,13 @@ public class MainActivityTest {
 
     }
 
+    @Test
+    public void showNotificationTest(){
+        onView(withId(R.id.bell)).perform(click());
+
+        onView(withId(R.id.notificationMenu)).check(matches(isDisplayed()));
+    }
+
      /**
      * clear all data from SharedPreferences
      */
