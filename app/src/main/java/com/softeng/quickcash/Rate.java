@@ -14,7 +14,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class Rate extends AppCompatActivity {
     int rating;
     ImageView stars[] = new ImageView[5];
-    String userIDToBeRated = "m@m;m"; ///**********place holder, keep it for now
+    String userIDToBeRated = "m@m;m"; ///**********place holder
     userProfile userToBeRatedProfile;
     String postID;
     final FirebaseDatabase db = FirebaseDatabase.getInstance();
@@ -25,16 +25,7 @@ public class Rate extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rate);
         getPassedArgs();
-        //read data from database
-        String path = "users/"+ userIDToBeRated +"/Profile";
-
-        new DbRead<userProfile>(path, userProfile.class, db) {
-            @Override
-            public void getReturnedDbData(userProfile dataFromDb) {
-                userToBeRatedProfile = dataFromDb;
-                ((TextView)findViewById(R.id.userToBeRated)).setText(userToBeRatedProfile.getfName());
-            }
-        };
+        getUserInfoFromDB();
         findStarViews();
     }
 
@@ -89,5 +80,23 @@ public class Rate extends AppCompatActivity {
         Toast.makeText(this,"Rating submitted",Toast.LENGTH_SHORT).show();
         finish();
     }
+
+    private void getUserInfoFromDB(){
+        //read data from database
+        String path = "users/"+ userIDToBeRated +"/Profile";
+
+        new DbRead<userProfile>(path, userProfile.class, db) {
+            @Override
+            public void getReturnedDbData(userProfile dataFromDb) {
+                showOnUI(dataFromDb);
+            }
+        };
+    }
+
+    private void showOnUI(userProfile dataFromDb){
+        userToBeRatedProfile = dataFromDb;
+        ((TextView)findViewById(R.id.userToBeRated)).setText(userToBeRatedProfile.getfName());
+    }
+
 
 }
