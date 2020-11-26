@@ -22,6 +22,7 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".SignInActivity" />
+        <activity android:name=".Applicants" />
         <activity android:name=".WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
