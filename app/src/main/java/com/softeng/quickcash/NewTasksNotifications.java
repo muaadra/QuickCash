@@ -15,9 +15,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class NewTasksNotifications extends AppCompatActivity {
-    final FirebaseDatabase db = FirebaseDatabase.getInstance();
+    private final FirebaseDatabase db = FirebaseDatabase.getInstance();
     private FirebaseStorage fbStorage;
-    ArrayList<TaskPost> taskPosts;
+    private ArrayList<TaskPost> taskPosts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +32,7 @@ public class NewTasksNotifications extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
         getNotifications();
     }
 
@@ -49,6 +50,7 @@ public class NewTasksNotifications extends AppCompatActivity {
                 for (DataSnapshot item : userShot.getChildren()) {
                     tasks.add(item.getValue(TaskNotification.class));
                 }
+
                 getPostsFromDBSnapShot(tasks, dataFromDb);
             }
         };
@@ -79,6 +81,7 @@ public class NewTasksNotifications extends AppCompatActivity {
         taskPosts = new ArrayList<>();
         final ArrayList<String> postIds = new ArrayList<>();
         final ArrayList<String> newPostIds = new ArrayList<>();
+
         for (TaskNotification t: taskNotifications) {
             if(t.isNew()){
                 newPostIds.add(t.getPostID());
@@ -98,15 +101,15 @@ public class NewTasksNotifications extends AppCompatActivity {
                 }
             }
         }
+
+        //sort list to show latest first
         Collections.sort(taskPosts,new LatestDateSort(false));
+
         createRecyclerView(taskPosts, newPostIds);
         setNotificationStatusToViewed(taskNotifications);
     }
 
     private void setNotificationStatusToViewed(ArrayList<TaskNotification> taskNotifications){
-        //path where you want to write data to
-
-
         for (TaskNotification t :taskNotifications) {
             String path = "users/" + UserStatusData.getUserID(this) +
                     "/Notifications/NewTasks/" + t.getPostID() ;
