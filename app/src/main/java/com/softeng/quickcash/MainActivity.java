@@ -1,18 +1,22 @@
 package com.softeng.quickcash;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.text.Layout;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     Spinner sortSpinner;
 
     boolean resumedActivity;
+    Thread notificationThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +90,84 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }else {
             setupLocation();
         }
+
+        startNotificationThread();
+
+    }
+
+    private void startNotificationThread(){
+        if (notificationThread != null) return;
+
+        notificationThread = new Thread(){
+            @Override
+            public void run() {
+                while (getName().equals("run")){
+
+                    checkNotifications();
+                    try {
+                        sleep(3000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        };
+        notificationThread.setName("run");
+        notificationThread.start();
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(notificationThread != null){
+            notificationThread.setName("stop");
+            notificationThread = null;
+        }
+    }
+
+    private void checkNotifications() {
+        String userID = UserStatusData.getUserID(this);
+        final Button bell = ((Button)findViewById(R.id.bell));
+        if(userID == null){
+            bell.setVisibility(View.INVISIBLE);
+            return;
+        }
+        String path = "users/" + userID + "/Notifications/NewTasksNotification";
+
+        final Drawable bellOn = ContextCompat.getDrawable(this, R.drawable.bell_on);
+        final Drawable bellOff = ContextCompat.getDrawable(this, R.drawable.bell);
+        final Button newTasks = ((Button)findViewById(R.id.goToNewTasks));
+
+
+        new DbRead<Integer>(path, Integer.class, db) {
+            @Override
+            public void getReturnedDbData(Integer dataFromDb) {
+                if(dataFromDb != null && dataFromDb != 0){
+                    bell.setBackground(bellOn);
+                    newTasks.setTextColor(Color.parseColor("#02ad2d"));
+                }else {
+                    bell.setBackground(bellOff);
+                    newTasks.setTextColor(Color.BLACK);
+                }
+            }
+        };
+    }
+
+    private void SetNotificationsOff() {
+        ((RelativeLayout)findViewById(R.id.notificationMenu)).setVisibility(View.INVISIBLE);
+
+        String userID = UserStatusData.getUserID(this);
+        if(userID == null){
+            return;
+        }
+        String path = "users/" + userID + "/Notifications/NewTasksNotification";
+
+        new DbWrite<Integer>(path,0,db) {
+            @Override
+            public void writeResult(Integer userdata) {}
+        };
     }
 
 
@@ -334,6 +417,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
 
     }
+
+    /**
+     * runs when new Task notification button is clicked
+     */
+    public void goToNewTaskNotificationActivity(View v){
+        SetNotificationsOff();
+        Intent intent = new Intent(this, NewTasksNotifications.class);
+        startActivity(intent);
+    }
+
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

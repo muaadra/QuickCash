@@ -211,11 +211,13 @@
             android:gravity="center"
             android:layout_height="wrap_content">
             <Button
+                android:id="@+id/goToNewTasks"
                 android:layout_width="wrap_content"
                 android:padding="15dp"
                 android:layout_margin="5dp"
                 android:background="@drawable/rounded_edit_text"
                 android:layout_height="wrap_content"
+                android:onClick="goToNewTaskNotificationActivity"
                 android:text="New posted Task(s)"/>
             <Button
                 android:layout_width="match_parent"

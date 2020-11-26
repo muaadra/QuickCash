@@ -1,6 +1,7 @@
 package com.softeng.quickcash;
 
 import java.util.Date;
+import java.util.HashMap;
 
 public class TaskPost {
     private String author;
@@ -14,6 +15,8 @@ public class TaskPost {
     private Date expectedDate;
     private String latLonLocation;
     private float distance;
+    private boolean isCompleted;
+    private HashMap<String,Integer> Applicants;
 
     public TaskPost() {
     }
@@ -120,5 +123,21 @@ public class TaskPost {
 
     public void setDistance(float distance) {
         this.distance = distance;
+    }
+
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
+    }
+
+    public HashMap<String, Integer> getApplicants() {
+        return Applicants;
+    }
+
+    public void setApplicants(HashMap<String, Integer> applicants) {
+        this.Applicants = applicants;
     }
 }
