@@ -12,12 +12,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class Rate extends AppCompatActivity {
-    int rating;
-    ImageView stars[] = new ImageView[5];
-    String userIDToBeRated = "m@m;m"; ///**********place holder
-    userProfile userToBeRatedProfile;
-    String postID;
-    final FirebaseDatabase db = FirebaseDatabase.getInstance();
+    private int rating;
+    private ImageView stars[] = new ImageView[5];
+    private String userIDToBeRated = "m@m;m"; ///**********place holder, keep it for now
+    private userProfile userToBeRatedProfile;
+    private String postID;
+    private final FirebaseDatabase db = FirebaseDatabase.getInstance();
 
 
     @Override
@@ -46,7 +46,9 @@ public class Rate extends AppCompatActivity {
         stars[4] = findViewById(R.id.r5);
     }
 
-
+    /**
+     * runs when a start is clicked
+     */
     public void starOnClick(View v){
 
         rating = Integer.parseInt(v.getTag().toString());
@@ -63,6 +65,9 @@ public class Rate extends AppCompatActivity {
         }
     }
 
+    /**
+     * runs when "submit rating" button is clicked
+     */
     public void submitRating(View v){
         //delete application from employer side
         String path = "users/"+ userIDToBeRated + "/Ratings/" +
