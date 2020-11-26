@@ -24,4 +24,11 @@ public class RateTest {
         onView(withId(R.id.ratingLabel))
                 .check(matches(withText("1")));
     }
+
+    @Test
+    public void rateTest2() {
+        onView(withId(R.id.r2)).perform(click());
+        onView(withId(R.id.ratingLabel))
+                .check(matches(withText("2")));
+    }
 }
