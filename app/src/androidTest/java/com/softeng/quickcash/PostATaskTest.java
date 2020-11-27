@@ -209,4 +209,21 @@ public class PostATaskTest {
         onView(withId(R.id.applicantsButton)).perform(click());
         onView(withId(R.id.applicantsLayout)).check(matches(isDisplayed()));
     }
+
+    @Test
+    public void goToPayPalPayment()  {
+        //setup, making sure user is signed in
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<PostATaskActivity>() {
+                    @Override
+                    public void perform(PostATaskActivity activity) {
+                        ((Button)activity.findViewById(R.id.payEmployee)).setVisibility(View.VISIBLE);
+                    }
+                });
+
+        onView(withId(R.id.payEmployee)).perform(click());
+
+        //check screen is displayed
+        onView(withId(R.id.paymentLayout)).check(matches(isDisplayed()));
+    }
 }
