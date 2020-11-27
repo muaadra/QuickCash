@@ -1,6 +1,8 @@
 package com.softeng.quickcash;
 
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Spinner;
 
 import androidx.test.core.app.ActivityScenario;
@@ -194,22 +196,17 @@ public class PostATaskTest {
 
     }
     @Test
-    public void goToApplicantsActivity(){
-        //onView()
-        TaskPost taskPost1 = new TaskPost("","1","t","d"
-                ,5f,false,"", new Date(), Calendar.getInstance().getTime(),"hh");
+    public void goToApplicantsActivity() throws InterruptedException {
 
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<PostATaskActivity>() {
+                    @Override
+                    public void perform(PostATaskActivity activity) {
+                        ((Button)activity.findViewById(R.id.applicantsButton)).setVisibility(View.VISIBLE);
+                    }
+                });
 
-        try {
-            onView(withId(R.id.applicantsButton)).perform(click());
-            Log.d("IN HERE","ASJD");
-            System.out.println(" in");
-        }catch(NoMatchingViewException e){
-            System.out.println(" NO CLICKY " + e);
-        }
-
+        onView(withId(R.id.applicantsButton)).perform(click());
         onView(withId(R.id.applicantsLayout)).check(matches(isDisplayed()));
-
-
     }
 }

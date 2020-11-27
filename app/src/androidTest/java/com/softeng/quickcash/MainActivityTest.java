@@ -2,6 +2,7 @@ package com.softeng.quickcash;
 
 import android.content.Intent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -68,33 +69,6 @@ public class MainActivityTest {
         //check sign-up screen is displayed
         onView(withId(R.id.mainActivityLayOut))
                 .check(ViewAssertions.matches(isDisplayed()));
-
-    }
-
-
-    /**
-     * testing go to profile button
-     */
-    @Test
-    public void goToProfileTest(){
-        //setup, making sure user is signed in
-        activityScenarioRule.getScenario().onActivity(
-                new ActivityScenario.ActivityAction<MainActivity>() {
-                    @Override
-                    public void perform(MainActivity activity) {
-                        UserStatusData.removeAllUserPreferences(activity);
-                        UserSignUpData signUpData = new UserSignUpData("email","jojo@mo.com");
-                        UserStatusData.setUserSignInToTrue(activity,signUpData);
-                        //restarting activity
-                        Intent intent = new Intent(activity, MainActivity.class);
-                        activity.startActivity(intent);
-                    }
-                });
-
-        onView(withId(R.id.goToProfile)).perform(click());
-
-        //check screen is displayed
-        onView(withId(R.id.editProfileLayout)).check(matches(isDisplayed()));
 
     }
 
@@ -260,12 +234,7 @@ public class MainActivityTest {
                 new ActivityScenario.ActivityAction<MainActivity>() {
                     @Override
                     public void perform(MainActivity activity) {
-                        UserStatusData.removeAllUserPreferences(activity);
-                        UserSignUpData signUpData = new UserSignUpData("email","jojo@mo.com");
-                        UserStatusData.setUserSignInToTrue(activity,signUpData);
-                        //restarting activity
-                        Intent intent = new Intent(activity, MainActivity.class);
-                        activity.startActivity(intent);
+                        ((Button)activity.findViewById(R.id.bell)).setVisibility(View.VISIBLE);
                     }
                 });
         onView(withId(R.id.bell)).perform(click());
@@ -277,6 +246,14 @@ public class MainActivityTest {
 
     @Test
     public void showNotificationTest(){
+        //setup, making sure user is signed in
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<MainActivity>() {
+                    @Override
+                    public void perform(MainActivity activity) {
+                        ((Button)activity.findViewById(R.id.bell)).setVisibility(View.VISIBLE);
+                    }
+                });
         onView(withId(R.id.bell)).perform(click());
 
         onView(withId(R.id.notificationMenu)).check(matches(isDisplayed()));
@@ -284,6 +261,15 @@ public class MainActivityTest {
 
     @Test
     public void goToNewTaskActivity(){
+        //setup, making sure user is signed in
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<MainActivity>() {
+                    @Override
+                    public void perform(MainActivity activity) {
+                      ((Button)activity.findViewById(R.id.bell)).setVisibility(View.VISIBLE);
+                    }
+                });
+
         onView(withId(R.id.bell)).perform(click());
         onView(withId(R.id.goToNewTasks)).perform(click());
         onView(withId(R.id.newTaskNotificationLayout)).check(matches(isDisplayed()));

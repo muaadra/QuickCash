@@ -27,6 +27,7 @@ import java.util.Map;
 public class ApplicantNotificationAdapter extends RecyclerView.Adapter<ApplicantNotificationAdapter.ListItem> {
     private ArrayList<TaskPost> posts;
     final FirebaseDatabase db;
+    private String myID;
 
     /**
      * constructor
@@ -51,6 +52,11 @@ public class ApplicantNotificationAdapter extends RecyclerView.Adapter<Applicant
 
     @Override
     public void onBindViewHolder(ListItem listItem, int position) {
+        if(myID == null){
+            if((myID = UserStatusData.getUserID(listItem.mainView.getContext())) == null) {
+                return;
+            }
+        }
         // - replace the contents of the view with that element
         int pos = posts.size() - (position + 1);//to reverse order
 

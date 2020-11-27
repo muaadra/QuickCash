@@ -47,35 +47,7 @@ public class SignInActivityTest {
         onView(withId(R.id.signInButton)).perform(click());
     }
 
-    /**
-     * this UI test checks if email entered is valid
-     */
-    @Test
-    public void test_user_correct_credential() {
-
-        onView(withId(R.id.input_email)).perform(typeText("signUp@test.com"));
-        onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.input_password)).perform(typeText("testPassword"));
-        onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.btn_login)).perform(click());
-        activityScenarioRule.getScenario().onActivity(
-                new ActivityScenario.ActivityAction<MainActivity>() {
-                    @Override
-                    public void perform(MainActivity activity) {
-                        UserStatusData.saveUserData("email","signUp@test.com", activity);
-                        UserSignUpData signUpData = new UserSignUpData("email","signUp@test.com");
-                        UserStatusData.setUserSignInToTrue(activity,signUpData);
-                        //restart the activity
-                        Intent intent = new Intent(activity, MainActivity.class);
-                        activity.startActivity(intent);
-
-                    }
-                });
-        onView(withId(R.id.mainActivityLayOut)).check(matches(isDisplayed()));
-
-    }
-
-    /**
+     /**
      * this Junit test if email and password are valid
      */
     @Test
