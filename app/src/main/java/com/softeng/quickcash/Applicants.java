@@ -15,9 +15,9 @@ import java.util.ArrayList;
 
 public class Applicants extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
-    final FirebaseDatabase db = FirebaseDatabase.getInstance();
-    ArrayList<String> applicantNames;
-    ArrayList<userProfile> applicantProfiles;
+    private final FirebaseDatabase db = FirebaseDatabase.getInstance();
+    private ArrayList<String> applicantNames;
+    private ArrayList<userProfile> applicantProfiles;
     private String postID;
     private String userID;
 
@@ -26,7 +26,6 @@ public class Applicants extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_job_applicants);
-
     }
 
     /*
@@ -56,16 +55,11 @@ public class Applicants extends AppCompatActivity {
                 }
                 applicantNames = applicantProfilesHere;
 
-                if (applicantNames != null) {
-                    getDataFromDb();
-                }
-
+                getDataFromDb();
 
             }
 
-
         };
-
 
     }
 
@@ -115,6 +109,7 @@ public class Applicants extends AppCompatActivity {
         super.onResume();
         getApplicantsFromDB();
     }
+
     /*
      * This method will create the recycler view of user Profiles or Applicants to the job in which have profiles.
      */
