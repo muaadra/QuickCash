@@ -16,6 +16,7 @@
         <activity android:name=".NewTasksNotifications"></activity>
         <activity android:name=".Rate"></activity>
         <activity android:name=".MyTasksApplications" />
+        <activity android:name=".Applicants" />
         <activity android:name=".ViewProfile" />
         <activity android:name=".ViewPost" />
         <activity android:name=".PostATaskActivity" />

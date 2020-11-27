@@ -18,11 +18,33 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:background="#E8E8E7"
-            android:padding="5dp"
             android:layout_gravity="end"
-            android:gravity="right"
+            android:gravity="right|center"
             >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="2dp"
+                android:gravity="center|left"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/myApplicationsMainButton"
+                    android:layout_width="wrap_content"
+                    android:padding="15dp"
+                    android:layout_gravity="left"
+                    android:background="@drawable/rounded_edit_text"
+                    android:layout_height="wrap_content"
+                    android:onClick="gotToMyApplications"
+                    android:text="My Applications"/>
+
+
+            </LinearLayout>
+
+
             <Button
                 android:id="@+id/bell"
                 android:layout_width="32dp"
@@ -219,13 +241,17 @@
                 android:layout_height="wrap_content"
                 android:onClick="goToNewTaskNotificationActivity"
                 android:text="New posted Task(s)"/>
+
             <Button
+                android:id="@+id/newApplicantsButton"
                 android:layout_width="match_parent"
                 android:padding="15dp"
                 android:layout_margin="5dp"
                 android:background="@drawable/rounded_edit_text"
                 android:layout_height="wrap_content"
+                android:onClick="gotToMyPostsOnButtonClick"
                 android:text="New Applicants"/>
+
         </LinearLayout>
 
     </RelativeLayout>

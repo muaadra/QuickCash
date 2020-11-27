@@ -71,7 +71,7 @@ public class MyTasksApplications extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
 
-        RecyclerView.Adapter mAdapter = new RVAdapterMainActivity(posts, fbStorage);
+        RecyclerView.Adapter mAdapter = new MyTasksApplicationsAdapter(posts, fbStorage);
         recyclerView.setAdapter(mAdapter);
 
         if(posts != null && posts.size() > 0){
@@ -103,7 +103,10 @@ public class MyTasksApplications extends AppCompatActivity {
 
                 for (TaskApplication application : applicationsList) {
                     String taskPath = application.getTaskAuthor() + "/TaskPosts/" + application.getTaskId();
-                    posts.add(dataFromDb.child(taskPath).getValue(TaskPost.class));
+                    TaskPost tP = dataFromDb.child(taskPath).getValue(TaskPost.class);
+                    if(tP != null){
+                        posts.add(tP);
+                    }
                 }
 
                 taskPosts = posts;

@@ -24,9 +24,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -104,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 while (getName().equals("run")){
 
                     checkNotifications();
+                    checkIfMyApplicationIsAccepted();
                     try {
                         sleep(3000);
                     } catch (InterruptedException e) {
@@ -116,6 +119,46 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         notificationThread.setName("run");
         notificationThread.start();
 
+    }
+
+    private void checkIfMyApplicationIsAccepted() {
+        String path = "users/";
+        final String userId = UserStatusData.getUserID(this);
+
+
+        new DbRead<DataSnapshot>(path, DataSnapshot.class, db) {
+            @Override
+            public void getReturnedDbData(DataSnapshot dataFromDb) {
+                //find all posts in which I am accepted and is not completed
+
+                final ArrayList<String> acceptedApplications = new ArrayList<>();
+
+                for (DataSnapshot userdata : dataFromDb.getChildren()) {
+
+                    for (DataSnapshot taskPost : userdata.child("TaskPosts").getChildren()) {
+                        TaskPost dbTaskPost = taskPost.getValue(TaskPost.class);
+                        if (dbTaskPost != null) {
+                            if(dbTaskPost.getAssignedEmployee().equals(userId)
+                            && !dbTaskPost.isCompleted() && !dbTaskPost.isPostDeleted()){
+                                acceptedApplications.add(dbTaskPost.getPostId());
+                            }
+                        }
+                    }
+                }
+
+                if(acceptedApplications.size() > 0){
+                    applicationAcceptedNotification(Color.parseColor("#02ad2d"));
+                }else {
+                    applicationAcceptedNotification(Color.BLACK);
+                }
+
+            }
+        };
+
+    }
+
+    private void applicationAcceptedNotification(int color){
+        ((Button)findViewById(R.id.myApplicationsMainButton)).setTextColor(color);
     }
 
     @Override
@@ -402,6 +445,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         }
         ((TextView)findViewById(R.id.goToProfile)).setText(userFirstChar);
+    }
+
+    /**
+     * runs when a user clicks on "My Applications" button
+     */
+    public void gotToMyApplications(View view) {
+        Intent intent = new Intent(this, MyTasksApplications.class);
+        startActivity(intent);
     }
 
     /**
