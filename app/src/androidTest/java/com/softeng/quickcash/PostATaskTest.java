@@ -1,8 +1,10 @@
 package com.softeng.quickcash;
 
+import android.util.Log;
 import android.widget.Spinner;
 
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -13,6 +15,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import static androidx.test.espresso.Espresso.onData;
@@ -21,6 +24,7 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
@@ -187,6 +191,25 @@ public class PostATaskTest {
                 });
 
         onView(withId(R.id.deletedPosts)).check(doesNotExist());
+
+    }
+    @Test
+    public void goToApplicantsActivity(){
+        //onView()
+        TaskPost taskPost1 = new TaskPost("","1","t","d"
+                ,5f,false,"", new Date(), Calendar.getInstance().getTime(),"hh");
+
+
+        try {
+            onView(withId(R.id.applicantsButton)).perform(click());
+            Log.d("IN HERE","ASJD");
+            System.out.println(" in");
+        }catch(NoMatchingViewException e){
+            System.out.println(" NO CLICKY " + e);
+        }
+
+        onView(withId(R.id.applicantsLayout)).check(matches(isDisplayed()));
+
 
     }
 }

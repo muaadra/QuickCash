@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -47,6 +48,7 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
         spinnerSetup();
 
         showDataOnUI();
+
     }
 
     private void showDataOnUI() {
@@ -57,6 +59,7 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
             postID = bundle.getString("postID");
             if(postID != null){
                 retrieveDataFromDbAndDisplay(postID);
+                showApplicantsButton();
             }
 
 
@@ -67,6 +70,10 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
 
             ((LinearLayout)findViewById(R.id.deleteButtonParent)).getLayoutParams().width = 0;
         }
+    }
+
+    private void showApplicantsButton() {
+        ((Button) findViewById(R.id.applicantsButton)).setVisibility(View.VISIBLE);
     }
 
     private void retrieveDataFromDbAndDisplay(String postId) {
@@ -100,6 +107,11 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
         String address = latLongStringToAddress(dataFromDb);
 
         ((TextView)findViewById(R.id.GPSLocation)).setText(address);
+
+        if(dataFromDb.getAssignedEmployee() != null
+                && !dataFromDb.getAssignedEmployee().equals("")){
+            ((Button) findViewById(R.id.payEmployee)).setVisibility(View.VISIBLE);
+        }
 
         if(dataFromDb.isPostDeleted()){
             ((Button) findViewById(R.id.applyToTask)).setWidth(0);
@@ -301,6 +313,16 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
 
             }
         };
+    }
+
+    public void goToApplicantsList(View view) {
+        Intent intent = new Intent(this, Applicants.class);
+        intent.putExtra("postID", postID);
+        startActivity(intent);
+    }
+
+    public void goToPayEmployee(View view) {
+
     }
 
     public void taskCompleted(View v){

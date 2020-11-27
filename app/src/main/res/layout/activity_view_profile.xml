@@ -128,9 +128,19 @@
                         android:layout_height="wrap_content"
                         android:textColor="#FF0000"
                         android:layout_gravity="center"/>
+
                 </LinearLayout>
 
 
+                <Button
+                    android:id="@+id/acceptApplicant"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Accept Applicant"
+                    android:onClick="acceptApplicant"
+                    android:visibility="invisible" />
 
             </LinearLayout>
         </LinearLayout>
