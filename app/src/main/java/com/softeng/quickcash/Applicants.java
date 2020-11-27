@@ -28,10 +28,7 @@ public class Applicants extends AppCompatActivity {
         setContentView(R.layout.activity_job_applicants);
     }
 
-    /*
-     * This method will compile the user Email ids to an arraylist of strings.
-     * It will check the path of users > userID* > TaskPosts > postID* > Applicants
-     */
+
     private void getApplicantsFromDB() {
 
         final ArrayList<String> applicantProfilesHere = new ArrayList<>();
@@ -78,16 +75,18 @@ public class Applicants extends AppCompatActivity {
      */
     private void extractUserProfile(DataSnapshot dataFromDb) {
         final ArrayList<userProfile> profiles = new ArrayList<>();
+
         applicantProfiles = new ArrayList<>();
         for (DataSnapshot userdata : dataFromDb.getChildren()) {
 
             if (userdata.child("Profile").getValue(userProfile.class) != null) {
-                userProfile up = userdata.child("Profile").getValue(userProfile.class); //create userProfile object and set to the individual userProfile at instance
-                up.setUserId(userdata.getKey());   //set the userId for later referencing
-                profiles.add(up);   //add the profile to the arraylist
+                userProfile profile = userdata.child("Profile").getValue(userProfile.class); //create userProfile object and set to the individual userProfile at instance
+                profile.setUserId(userdata.getKey());   //set the userId for later referencing
+                profiles.add(profile);   //add the profile to the arraylist
             }
 
         }
+
         //loop through the profiles arrayList
         // if the user profile contains an id
         for (userProfile profile : profiles) {
@@ -98,9 +97,7 @@ public class Applicants extends AppCompatActivity {
             }
         }
 
-        createRecyclerView(applicantProfiles);    //create the recycler view
-
-
+        createRecyclerView(applicantProfiles);
     }
 
 
@@ -121,7 +118,6 @@ public class Applicants extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new ApplicantsAdapter(applicantProfiles, postID);
         recyclerView.setAdapter(mAdapter);
-
 
     }
 
