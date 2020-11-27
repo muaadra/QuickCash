@@ -49,6 +49,14 @@ public class Applicants extends AppCompatActivity {
     }
 
 
+    public void createRecyclerView(ArrayList<userProfile> userProfiles) {
+
+        RecyclerView recyclerView = findViewById(R.id.applicantsRecyclerView);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        mAdapter = new ApplicantsAdapter(userProfiles, postID);
+        recyclerView.setAdapter(mAdapter);
+    }
 
 
 }
