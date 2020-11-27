@@ -10,7 +10,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -34,14 +33,13 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
     private MyLocation myLocation;
     final FirebaseDatabase db = FirebaseDatabase.getInstance();
 
-    private String postID ="";
+    private String postID;
     TaskPost taskPostFromDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_a_task);
-
 
         spinnerSetup();
 
@@ -55,55 +53,21 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
         if(bundle != null){
             //existing task, show data from db
             postID = bundle.getString("postID");
-            boolean isNew = bundle.getBoolean("isNew");
-            boolean visibilityCheck = bundle.getBoolean("visibilityCheck");
             if(postID != null){
                 retrieveDataFromDbAndDisplay(postID);
-            }
-            if(isNew == true){
-                ((Button)findViewById(R.id.applicantsButton)).setVisibility(View.INVISIBLE);
-                ((Button)findViewById(R.id.payEmployee)).setVisibility(View.INVISIBLE);
-            }else if(visibilityCheck==true){
-                //see if applicants exists
-
-
-                ((Button)findViewById(R.id.applicantsButton)).setVisibility(View.VISIBLE);
-                //goToApplicantsList();
-            }else{
-                ((Button)findViewById(R.id.applicantsButton)).setVisibility(View.VISIBLE);
-
-                showPayEmployeeButton();
+                showApplicantsButton();
             }
 
         }else {
             //new task post
             getLocation();
 
-
             ((LinearLayout)findViewById(R.id.deleteButtonParent)).getLayoutParams().width = 0;
         }
     }
 
-    private void showPayEmployeeButton(){
-        String userId = UserStatusData.getEmail(this).replace(".", ";");
-        String dBPath = "users/"+ userId +"/TaskPosts/" + postID ;
-
-        new DbRead<TaskPost>(dBPath,TaskPost.class, db) {
-            @Override
-            public void getReturnedDbData(TaskPost dataFromDb) {
-                //after data is received from db call checkDbData
-
-                if(dataFromDb.getAssignedEmployee().equals("")){
-                    ((Button)findViewById(R.id.payEmployee)).setVisibility(View.INVISIBLE);
-                }else{
-                    ((Button)findViewById(R.id.payEmployee)).setVisibility(View.VISIBLE);
-                }
-
-            }
-        };
-        //CHECK
-
-
+    private void showApplicantsButton() {
+        ((Button) findViewById(R.id.applicantsButton)).setVisibility(View.VISIBLE);
     }
 
     private void retrieveDataFromDbAndDisplay(String postId) {
@@ -138,12 +102,16 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
 
         ((TextView)findViewById(R.id.GPSLocation)).setText(address);
 
+        if(dataFromDb.getAssignedEmployee() != null
+        && !dataFromDb.getAssignedEmployee().equals("")){
+            ((Button) findViewById(R.id.payEmployee)).setVisibility(View.VISIBLE);
+        }
+
         if(dataFromDb.isPostDeleted()){
             ((Button) findViewById(R.id.applyToTask)).setWidth(0);
             ((LinearLayout)findViewById(R.id.deleteButtonParent)).getLayoutParams().width = 0;
             ((LinearLayout)findViewById(R.id.postButtonParent)).getLayoutParams().width = 0;
             ((TextView) findViewById(R.id.postATaskStatus)).setText("can't post, view only");
-
         }
     }
 
@@ -244,18 +212,7 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
         taskPostFromDB.setPostDeleted(true);
         writeTaskToDB(taskPostFromDB);
     }
-    public void goToApplicantsList(View view){
-        if(view.getId() == R.id.applicantsButton) {
-            Intent intent = new Intent(this, Applicants.class);
-            Log.d("AHDSAUIJ TASK ID", postID);
-            intent.putExtra("postID", postID);
-            //intent.putExtra("")
-            startActivity(intent);
-        }
-    }
-    public void goToPayEmployee(View view){
 
-    }
     /**
      * runs when a user clicks on the post button
      */
@@ -342,6 +299,16 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
                 successPosted();
             }
         };
+    }
+
+    public void goToApplicantsList(View view) {
+        Intent intent = new Intent(this, Applicants.class);
+        intent.putExtra("postID", postID);
+        startActivity(intent);
+    }
+
+    public void goToPayEmployee(View view) {
+
     }
 
     private void successPosted(){
