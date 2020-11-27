@@ -25,9 +25,9 @@ import java.util.HashMap;
  * @author Muaad Alrawhani
  */
 public class ApplicantNotification extends AppCompatActivity {
-    final FirebaseDatabase db = FirebaseDatabase.getInstance();
-    int emptyListTextViewOriginalHeight = -1; // to store original height of the TextView
-    ArrayList<TaskPost> taskPosts;
+    private final FirebaseDatabase db = FirebaseDatabase.getInstance();
+    private int emptyListTextViewOriginalHeight = -1; // to store original height of the TextView
+    private ArrayList<TaskPost> taskPosts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,7 +140,6 @@ public class ApplicantNotification extends AppCompatActivity {
             ((Button)findViewById(R.id.deletedPosts)).setText(R.string.showDeletedPosts);
             ((TextView)findViewById(R.id.emptyStatusMyPosts)).setText(R.string.emptyStringMessage);
             showActivePosts();
-
         }
 
         toggle = !toggle;
