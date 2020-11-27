@@ -28,35 +28,22 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 public class CreateProfileTest {
 
-        @Rule
-        public ActivityScenarioRule<CreateProfile> activityScenarioRule = new ActivityScenarioRule<CreateProfile>(CreateProfile.class);
-        /**
-         * This will test the UI if the user creates the profile (checks against the create profile button label appearing)
-         */
-        @Test
-        public void testCreateProfileLabel(){
-            onView(withId(R.id.editProfileName)).perform(click()).perform(typeText("Jonathan Robichaud"));
+    @Rule
+    public ActivityScenarioRule<CreateProfile> activityScenarioRule = new ActivityScenarioRule<CreateProfile>(CreateProfile.class);
 
-            onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard());
-
-            onView(withId(R.id.createProfile)).perform(click());
-
-            onView(withId(R.id.textViewProfileConfirm)).check(matches(withText(R.string.profileCreated)));
-
-        }
 
     /**
      * tests that the main activity is showing after user canceled creating a profile
      */
     @Test
-    public void mainActivityShowingAfterUserCancels(){
+    public void mainActivityShowingAfterUserCancels() {
         //setup, making sure user is signed in
         activityScenarioRule.getScenario().onActivity(
                 new ActivityScenario.ActivityAction<CreateProfile>() {
                     @Override
                     public void perform(CreateProfile activity) {
                         UserStatusData.removeAllUserPreferences(activity);
-                        UserStatusData.saveUserData("email","jojo@mo.com", activity);
+                        UserStatusData.saveUserData("email", "jojo@mo.com", activity);
                     }
                 });
 

@@ -19,15 +19,16 @@ import com.google.firebase.storage.FirebaseStorage;
 import java.text.DateFormat;
 import java.util.ArrayList;
 
-public class RVAdapterMainActivity extends RecyclerView.Adapter<RVAdapterMainActivity.ListItem> {
+public class MyTasksApplicationsAdapter extends RecyclerView.Adapter<MyTasksApplicationsAdapter.ListItem> {
     private ArrayList<TaskPost> posts;
     private FirebaseStorage fbStorage;
+    private String myID;
     /**
      * constructor
      * @param posts array of TaskPost objects to show on the list
      */
-    public RVAdapterMainActivity(ArrayList<TaskPost> posts,
-                                 FirebaseStorage fbStorage) {
+    public MyTasksApplicationsAdapter(ArrayList<TaskPost> posts,
+                                      FirebaseStorage fbStorage) {
         this.posts = posts;
         this.fbStorage = fbStorage;
     }
@@ -39,7 +40,7 @@ public class RVAdapterMainActivity extends RecyclerView.Adapter<RVAdapterMainAct
     public ListItem onCreateViewHolder(ViewGroup parent, int viewType) {
 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View v = inflater.inflate(R.layout.main_activity_post_list_item,
+        View v = inflater.inflate(R.layout.my_applications_list_item,
                 parent, false);
 
         return (new ListItem(v,posts,fbStorage));
@@ -52,6 +53,13 @@ public class RVAdapterMainActivity extends RecyclerView.Adapter<RVAdapterMainAct
      */
     @Override
     public void onBindViewHolder(ListItem listItem, int position) {
+        if(myID == null){
+           if((myID = UserStatusData.getUserID(listItem.mainView.getContext())) == null) {
+               return;
+           }
+        }
+
+
         TaskPost post = posts.get(position);
 
         //start replacing/modifying the contents of the view
@@ -75,6 +83,11 @@ public class RVAdapterMainActivity extends RecyclerView.Adapter<RVAdapterMainAct
 
         float distanceToPost =((int)(post.getDistance()/10))/100f;
         listItem.postDistance.setText(distanceToPost+ "km away");
+
+        if(post.getAssignedEmployee().equals(myID)
+        && !post.isCompleted() && !post.isPostDeleted()){
+            ((TextView)listItem.mainView.findViewById(R.id.Accepted)).setVisibility(View.VISIBLE);
+        }
 
     }
 

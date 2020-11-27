@@ -125,13 +125,14 @@
                 android:textSize="20sp"
                 android:text="Expected Date" />
         </LinearLayout>
+
         <TextView
             android:id="@+id/textView7"
-            android:layout_marginBottom="2dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:text="Job description" />
+            android:layout_marginBottom="2dp"
+            android:text="Job description and contact info"
+            android:textSize="16sp" />
 
         <TextView
 

@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
+import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -20,6 +21,17 @@ public class ApplicantNotificationTest {
     public ActivityScenarioRule<ApplicantNotification> activityScenarioRule
             = new ActivityScenarioRule<>(ApplicantNotification.class);
 
+    @After
+    public void setup(){
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<ApplicantNotification>() {
+                    @Override
+                    public void perform(ApplicantNotification activity) {
+                        UserStatusData.removeAllUserPreferences(activity);
+                    }
+                });
+    }
+
     @Test
     public void MyPostRecyclerViewIsEmptyWhenNoList_Test1() {
         //setup
@@ -29,6 +41,11 @@ public class ApplicantNotificationTest {
                 new ActivityScenario.ActivityAction<ApplicantNotification>() {
                     @Override
                     public void perform(ApplicantNotification activity) {
+                        UserStatusData.removeAllUserPreferences(activity);
+                        //restart the activity
+                        Intent intent = new Intent(activity, MyPosts.class);
+                        activity.startActivity(intent);
+
                         activity.createRecyclerView(posts);
                         adapter[0] =  ((RecyclerView) activity.findViewById(R.id.TaskPostsList))
                                 .getAdapter() == null;
@@ -40,18 +57,6 @@ public class ApplicantNotificationTest {
 
     @Test
     public void MyRecyclerViewCount_Test2() {
-        //setup
-        activityScenarioRule.getScenario().onActivity(
-                new ActivityScenario.ActivityAction<ApplicantNotification>() {
-                    @Override
-                    public void perform(ApplicantNotification activity) {
-                        UserSignUpData signUpData = new UserSignUpData("jojo@mo.com","password");
-                        UserStatusData.setUserSignInToTrue(activity,signUpData);
-                        //restart the activity
-                        Intent intent = new Intent(activity, MyPosts.class);
-                        activity.startActivity(intent);
-                    }
-                });
 
         final ArrayList<TaskPost> posts = new ArrayList<>();
         TaskPost taskPost1 = new TaskPost("","1","t","d"
@@ -74,5 +79,16 @@ public class ApplicantNotificationTest {
                 });
 
         assertEquals(2, count[0]);
+    }
+
+    @After
+    public void tearDown(){
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<ApplicantNotification>() {
+                    @Override
+                    public void perform(ApplicantNotification activity) {
+                        UserStatusData.removeAllUserPreferences(activity);
+                    }
+                });
     }
 }

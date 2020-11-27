@@ -3,7 +3,6 @@ package com.softeng.quickcash;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.storage.FirebaseStorage;
@@ -19,17 +17,19 @@ import com.google.firebase.storage.FirebaseStorage;
 import java.text.DateFormat;
 import java.util.ArrayList;
 
-public class RVAdapterMainActivity extends RecyclerView.Adapter<RVAdapterMainActivity.ListItem> {
+public class TaskNotificationRVAdapter extends RecyclerView.Adapter<TaskNotificationRVAdapter.ListItem> {
     private ArrayList<TaskPost> posts;
     private FirebaseStorage fbStorage;
+    private ArrayList<String> newPostsIds;
     /**
      * constructor
      * @param posts array of TaskPost objects to show on the list
      */
-    public RVAdapterMainActivity(ArrayList<TaskPost> posts,
-                                 FirebaseStorage fbStorage) {
+    public TaskNotificationRVAdapter(ArrayList<TaskPost> posts,
+                                     FirebaseStorage fbStorage, ArrayList<String> newPostsIds) {
         this.posts = posts;
         this.fbStorage = fbStorage;
+        this.newPostsIds = newPostsIds;
     }
 
     /**
@@ -75,6 +75,11 @@ public class RVAdapterMainActivity extends RecyclerView.Adapter<RVAdapterMainAct
 
         float distanceToPost =((int)(post.getDistance()/10))/100f;
         listItem.postDistance.setText(distanceToPost+ "km away");
+
+        if(newPostsIds.contains(post.getPostId())){
+            TextView isNewTv = ((TextView)listItem.itemView.findViewById(R.id.isNew));
+            isNewTv.setText("NEW");
+        }
 
     }
 
@@ -139,10 +144,11 @@ public class RVAdapterMainActivity extends RecyclerView.Adapter<RVAdapterMainAct
          * get image to firebase when clicked on save data
          */
         public void setProfileImage() {
-            String id = mPosts.get(getAdapterPosition()).getAuthor();
+            String id = mPosts.get(getAdapterPosition())
+                    .getAuthor().replace(".", ";");
 
             String imagePathAndName = "Images/user_ProfileImages/" + id;
-            System.out.println(getAdapterPosition() + "   " + id + mPosts.get(getAdapterPosition()).getPostId() + "    --------");
+
             DbGetImage dbGetImage = new DbGetImage(fbStorage,imagePathAndName) {
                 @Override
                 public void imageGetResult(Bitmap dbProfileImage) {
@@ -151,10 +157,7 @@ public class RVAdapterMainActivity extends RecyclerView.Adapter<RVAdapterMainAct
                         BitmapDrawable ob = new BitmapDrawable(mainView.getResources(),dbProfileImage);
                         profileImage.setBackground(ob);
                     }else {
-
-                        profileImage.setBackground(ContextCompat.getDrawable(mainView.getContext(),
-                                R.drawable.prifile_placeholder));
-
+                        System.out.println("error getting image");
                     }
 
                 }

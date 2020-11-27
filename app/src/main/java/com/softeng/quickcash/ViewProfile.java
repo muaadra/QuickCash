@@ -18,7 +18,7 @@ public class ViewProfile extends AppCompatActivity {
 
     private ImageView profileImage;
     private FirebaseStorage fbStorage;
-    private String userId;
+    private String profileUserId;
     String postId;
 
     @Override
@@ -50,16 +50,15 @@ public class ViewProfile extends AppCompatActivity {
 
     private void getProfileData(){
         Bundle bundle = getIntent().getExtras();
-        userId = bundle.getString("userID");
+        profileUserId = bundle.getString("userID");
 
         getProfileImage();
 
         //path to database object
-        String path = "users/"+ userId +"/Profile";
+        String path = "users/"+ profileUserId +"/Profile";
 
         //read data from database
-        new DbRead<userProfile>(path,
-                userProfile.class, db) {
+        new DbRead<userProfile>(path, userProfile.class, db) {
             @Override
             public void getReturnedDbData(userProfile dataFromDb) {
                 //after data is received from db call checkDbData
@@ -85,7 +84,7 @@ public class ViewProfile extends AppCompatActivity {
      * get image to firebase
      */
     public void getProfileImage() {
-        String imagePathAndName = "Images/user_ProfileImages/" + userId;
+        String imagePathAndName = "Images/user_ProfileImages/" + profileUserId;
 
         DbGetImage dbGetImage = new DbGetImage(fbStorage,imagePathAndName) {
             @Override
@@ -110,7 +109,7 @@ public class ViewProfile extends AppCompatActivity {
         String myID = UserStatusData.getUserID(this);
         String path = "users/"+ myID +"/TaskPosts/"+ postId +"/assignedEmployee";
 
-        new DbWrite<String>(path,userId,db) {
+        new DbWrite<String>(path, profileUserId,db) {
             @Override
             public void writeResult(String userdata) {
                 successPosted();

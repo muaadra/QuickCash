@@ -4,6 +4,7 @@ public class TaskApplication {
     private String taskId;
     private String taskAuthor;
     private long applicationDate;
+    private int status;
 
     public TaskApplication() {
     }
@@ -36,5 +37,13 @@ public class TaskApplication {
 
     public void setApplicationDate(long applicationDate) {
         this.applicationDate = applicationDate;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

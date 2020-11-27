@@ -1,15 +1,22 @@
 package com.softeng.quickcash;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,9 +24,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -35,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     Spinner sortSpinner;
 
     boolean resumedActivity;
+    Thread notificationThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +92,125 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }else {
             setupLocation();
         }
+
+        startNotificationThread();
+
+    }
+
+    private void startNotificationThread(){
+        if (notificationThread != null) return;
+
+        notificationThread = new Thread(){
+            @Override
+            public void run() {
+                while (getName().equals("run")){
+
+                    checkNotifications();
+                    checkIfMyApplicationIsAccepted();
+                    try {
+                        sleep(3000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        };
+        notificationThread.setName("run");
+        notificationThread.start();
+
+    }
+
+    private void checkIfMyApplicationIsAccepted() {
+        String path = "users/";
+        final String userId = UserStatusData.getUserID(this);
+
+
+        new DbRead<DataSnapshot>(path, DataSnapshot.class, db) {
+            @Override
+            public void getReturnedDbData(DataSnapshot dataFromDb) {
+                //find all posts in which I am accepted and is not completed
+
+                final ArrayList<String> acceptedApplications = new ArrayList<>();
+
+                for (DataSnapshot userdata : dataFromDb.getChildren()) {
+
+                    for (DataSnapshot taskPost : userdata.child("TaskPosts").getChildren()) {
+                        TaskPost dbTaskPost = taskPost.getValue(TaskPost.class);
+                        if (dbTaskPost != null) {
+                            if(dbTaskPost.getAssignedEmployee().equals(userId)
+                            && !dbTaskPost.isCompleted() && !dbTaskPost.isPostDeleted()){
+                                acceptedApplications.add(dbTaskPost.getPostId());
+                            }
+                        }
+                    }
+                }
+
+                if(acceptedApplications.size() > 0){
+                    applicationAcceptedNotification(Color.parseColor("#02ad2d"));
+                }else {
+                    applicationAcceptedNotification(Color.BLACK);
+                }
+
+            }
+        };
+
+    }
+
+    private void applicationAcceptedNotification(int color){
+        ((Button)findViewById(R.id.myApplicationsMainButton)).setTextColor(color);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(notificationThread != null){
+            notificationThread.setName("stop");
+            notificationThread = null;
+        }
+    }
+
+    private void checkNotifications() {
+        String userID = UserStatusData.getUserID(this);
+        final Button bell = ((Button)findViewById(R.id.bell));
+        if(userID == null){
+            bell.setVisibility(View.INVISIBLE);
+            return;
+        }
+        String path = "users/" + userID + "/Notifications/NewTasksNotification";
+
+        final Drawable bellOn = ContextCompat.getDrawable(this, R.drawable.bell_on);
+        final Drawable bellOff = ContextCompat.getDrawable(this, R.drawable.bell);
+        final Button newTasks = ((Button)findViewById(R.id.goToNewTasks));
+
+
+        new DbRead<Integer>(path, Integer.class, db) {
+            @Override
+            public void getReturnedDbData(Integer dataFromDb) {
+                if(dataFromDb != null && dataFromDb != 0){
+                    bell.setBackground(bellOn);
+                    newTasks.setTextColor(Color.parseColor("#02ad2d"));
+                }else {
+                    bell.setBackground(bellOff);
+                    newTasks.setTextColor(Color.BLACK);
+                }
+            }
+        };
+    }
+
+    private void SetNotificationsOff() {
+        ((RelativeLayout)findViewById(R.id.notificationMenu)).setVisibility(View.INVISIBLE);
+
+        String userID = UserStatusData.getUserID(this);
+        if(userID == null){
+            return;
+        }
+        String path = "users/" + userID + "/Notifications/NewTasksNotification";
+
+        new DbWrite<Integer>(path,0,db) {
+            @Override
+            public void writeResult(Integer userdata) {}
+        };
     }
 
 
@@ -138,7 +267,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             for (DataSnapshot post : userdata.child("TaskPosts").getChildren()) {
                 TaskPost taskPost = post.getValue(TaskPost.class);
-                if(taskPost != null){
+                if(taskPost != null && taskPost.getPostId() != null){
                     float distance = getDistance(taskPost.getLatLonLocation());
                     if(distance <= MAX_LOCAL_DISTANCE){
                         taskPost.setDistance(getDistance(taskPost.getLatLonLocation()));
@@ -317,6 +446,38 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
         ((TextView)findViewById(R.id.goToProfile)).setText(userFirstChar);
     }
+
+    /**
+     * runs when a user clicks on "My Applications" button
+     */
+    public void gotToMyApplications(View view) {
+        Intent intent = new Intent(this, MyTasksApplications.class);
+        startActivity(intent);
+    }
+
+    /**
+     * runs when bell notification button is clicked
+     */
+    public void bellOnClick(View v){
+        RelativeLayout notificationMenu = (RelativeLayout) findViewById(R.id.notificationMenu);
+        int isVisible = notificationMenu.getVisibility();
+        if(isVisible == View.VISIBLE){
+            notificationMenu.setVisibility(View.INVISIBLE);
+        }else {
+            notificationMenu.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+    /**
+     * runs when new Task notification button is clicked
+     */
+    public void goToNewTaskNotificationActivity(View v){
+        SetNotificationsOff();
+        Intent intent = new Intent(this, NewTasksNotifications.class);
+        startActivity(intent);
+    }
+
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
