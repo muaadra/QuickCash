@@ -33,6 +33,14 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/newApplicants"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:text=""
+            android:textColor="#78DF00" />
+
+        <TextView
             android:id="@+id/postTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
