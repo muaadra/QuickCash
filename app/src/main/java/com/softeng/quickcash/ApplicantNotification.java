@@ -35,13 +35,26 @@ public class ApplicantNotification extends AppCompatActivity {
         setContentView(R.layout.activity_applicant_notification);
     }
 
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        getDataFromDbAndShowOnUI();
+    }
+
     /**
      * creates the Recycler view for all my task posts
      * @param posts list of all my posts
      */
     public void createRecyclerView(ArrayList<TaskPost> posts) {
 
-
+        //a message shows/expands in the recycleView if it's empty and collapses otherwise
+        TextView emptyListTV = (TextView)findViewById(R.id.emptyStatusMyPosts);
+        if(emptyListTextViewOriginalHeight == -1){
+            emptyListTextViewOriginalHeight = emptyListTV.getHeight();
+        }
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.TaskPostsList);
 
@@ -53,10 +66,98 @@ public class ApplicantNotification extends AppCompatActivity {
         RecyclerView.Adapter mAdapter = new ApplicantNotificationAdapter(posts,db);
         recyclerView.setAdapter(mAdapter);
 
+        if(posts != null && posts.size() > 0){
+            //hide message that says the list is empty
+            emptyListTV.setHeight(0);
+        }else {
+            emptyListTV.setHeight(emptyListTextViewOriginalHeight);
+        }
 
     }
 
+    private void getDataFromDbAndShowOnUI() {
+        // to toggle between the "deleted posts" and active posts button
+        resetToggle();
 
+        final ArrayList<TaskPost> posts = new ArrayList<>();
 
+        String userId = UserStatusData.getEmail(this).replace(".", ";");
+        //path to database object
+        String path = "users/"+ userId +"/TaskPosts";
 
+        new DbRead<DataSnapshot>(path, DataSnapshot.class, db) {
+            @Override
+            public void getReturnedDbData(DataSnapshot dataFromDb) {
+                //loop through all children in path
+                for (DataSnapshot userdata : dataFromDb.getChildren()) {
+                    TaskPost taskPost = (TaskPost) userdata.getValue(TaskPost.class);
+                    if(taskPost != null){
+                        posts.add(taskPost);
+                    }
+                }
+                taskPosts = posts;
+
+                showActivePosts();
+            }
+        };
+    }
+
+    private void showActivePosts() {
+        ArrayList<TaskPost> activePosts = new ArrayList<>();
+
+        for (TaskPost task: taskPosts) {
+            if(!task.isPostDeleted()){
+                activePosts.add(task);
+            }
+        }
+        createRecyclerView(activePosts);
+    }
+
+    /**
+     * runs when "post a task" button is clicked
+     */
+    public void goToPostATaskOnClickButton(View view) {
+        //go to next activity
+        Intent intent = new Intent(this, PostATaskActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * runs when "show deleted posts" button is clicked
+     */
+    boolean toggle;
+    public void showDeletedPostsOnClickButton(View view) {
+        if(taskPosts == null){
+            Toast.makeText(this,"There are no posts to show",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(!toggle){
+            ((Button)findViewById(R.id.deletedPosts)).setText("< back");
+            ((TextView)findViewById(R.id.emptyStatusMyPosts)).setText(R.string.noDeletedPosts);
+            showDeletedPosts();
+        }else {
+            ((Button)findViewById(R.id.deletedPosts)).setText(R.string.showDeletedPosts);
+            ((TextView)findViewById(R.id.emptyStatusMyPosts)).setText(R.string.emptyStringMessage);
+            showActivePosts();
+
+        }
+
+        toggle = !toggle;
+    }
+
+    private void resetToggle(){
+        toggle = false;
+        ((Button)findViewById(R.id.deletedPosts)).setText(R.string.showDeletedPosts);
+    }
+
+    private void showDeletedPosts(){
+        ArrayList<TaskPost> deletedPosts = new ArrayList<>();
+        for (TaskPost task: taskPosts) {
+            if(task.isPostDeleted()){
+                deletedPosts.add(task);
+            }
+        }
+        createRecyclerView(deletedPosts);
+    }
 }
