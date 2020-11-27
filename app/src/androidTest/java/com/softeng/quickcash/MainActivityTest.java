@@ -254,6 +254,28 @@ public class MainActivityTest {
     }
 
     @Test
+    public void goToMyApplications()  {
+        //setup, making sure user is signed in
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<MainActivity>() {
+                    @Override
+                    public void perform(MainActivity activity) {
+                        UserStatusData.removeAllUserPreferences(activity);
+                        UserSignUpData signUpData = new UserSignUpData("email","jojo@mo.com");
+                        UserStatusData.setUserSignInToTrue(activity,signUpData);
+                        //restarting activity
+                        Intent intent = new Intent(activity, MainActivity.class);
+                        activity.startActivity(intent);
+                    }
+                });
+        onView(withId(R.id.bell)).perform(click());
+        onView(withId(R.id.myApplicationsMainButton)).perform(click());
+
+        //check screen is displayed
+        onView(withId(R.id.myApplicationsLayout)).check(matches(isDisplayed()));
+    }
+
+    @Test
     public void showNotificationTest(){
         onView(withId(R.id.bell)).perform(click());
 
