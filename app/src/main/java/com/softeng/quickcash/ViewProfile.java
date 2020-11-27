@@ -3,16 +3,15 @@ package com.softeng.quickcash;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
-
-import java.text.DateFormat;
 
 public class ViewProfile extends AppCompatActivity {
     final FirebaseDatabase db = FirebaseDatabase.getInstance();
@@ -20,11 +19,14 @@ public class ViewProfile extends AppCompatActivity {
     private ImageView profileImage;
     private FirebaseStorage fbStorage;
     private String userId;
+    String postId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_profile);
+
+        getApplicationData();
 
         //create instance of FirebaseStorage
         fbStorage = FirebaseStorage.getInstance();
@@ -32,6 +34,17 @@ public class ViewProfile extends AppCompatActivity {
         profileImage = (ImageView)findViewById(R.id.profileImage_VP);
 
         getProfileData();
+
+    }
+
+    private void getApplicationData() {
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null){
+            postId = bundle.getString("postId");
+            if(postId != null){
+                ((Button)findViewById(R.id.acceptApplicant)).setVisibility(View.VISIBLE);
+            }
+        }
     }
 
 
@@ -88,5 +101,27 @@ public class ViewProfile extends AppCompatActivity {
         };
         dbGetImage.getImage();
     }
+
+
+    /**
+     * runs when Accept Applicant button is pushed
+     */
+    public void acceptApplicant(View view){
+        String myID = UserStatusData.getUserID(this);
+        String path = "users/"+ myID +"/TaskPosts/"+ postId +"/assignedEmployee";
+
+        new DbWrite<String>(path,userId,db) {
+            @Override
+            public void writeResult(String userdata) {
+                successPosted();
+            }
+        };
+    }
+
+    private void successPosted(){
+        Toast.makeText(this,"Operation was successful",Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
 
 }

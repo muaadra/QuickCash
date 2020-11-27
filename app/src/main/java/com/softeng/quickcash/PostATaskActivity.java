@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -54,16 +55,19 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
             postID = bundle.getString("postID");
             if(postID != null){
                 retrieveDataFromDbAndDisplay(postID);
+                showApplicantsButton();
             }
-
 
         }else {
             //new task post
             getLocation();
 
-
             ((LinearLayout)findViewById(R.id.deleteButtonParent)).getLayoutParams().width = 0;
         }
+    }
+
+    private void showApplicantsButton() {
+        ((Button) findViewById(R.id.applicantsButton)).setVisibility(View.VISIBLE);
     }
 
     private void retrieveDataFromDbAndDisplay(String postId) {
@@ -98,12 +102,16 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
 
         ((TextView)findViewById(R.id.GPSLocation)).setText(address);
 
+        if(dataFromDb.getAssignedEmployee() != null
+        && !dataFromDb.getAssignedEmployee().equals("")){
+            ((Button) findViewById(R.id.payEmployee)).setVisibility(View.VISIBLE);
+        }
+
         if(dataFromDb.isPostDeleted()){
             ((Button) findViewById(R.id.applyToTask)).setWidth(0);
             ((LinearLayout)findViewById(R.id.deleteButtonParent)).getLayoutParams().width = 0;
             ((LinearLayout)findViewById(R.id.postButtonParent)).getLayoutParams().width = 0;
             ((TextView) findViewById(R.id.postATaskStatus)).setText("can't post, view only");
-
         }
     }
 
@@ -291,6 +299,16 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
                 successPosted();
             }
         };
+    }
+
+    public void goToApplicantsList(View view) {
+        Intent intent = new Intent(this, Applicants.class);
+        intent.putExtra("postID", postID);
+        startActivity(intent);
+    }
+
+    public void goToPayEmployee(View view) {
+
     }
 
     private void successPosted(){

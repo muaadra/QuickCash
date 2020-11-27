@@ -5,6 +5,7 @@ import androidx.annotation.Keep;
 class userProfile{
     private String fName ="";
     private String aboutMe ="";
+    private String userId ="";
     //public avatar;
     @Keep
     public userProfile(){}
@@ -21,6 +22,14 @@ class userProfile{
     }
     public String getfName() {
         return fName;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getAboutMe() {
