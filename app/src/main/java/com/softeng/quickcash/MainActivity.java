@@ -224,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             for (DataSnapshot post : userdata.child("TaskPosts").getChildren()) {
                 TaskPost taskPost = post.getValue(TaskPost.class);
-                if(taskPost != null){
+                if(taskPost != null && taskPost.getPostId() != null){
                     float distance = getDistance(taskPost.getLatLonLocation());
                     if(distance <= MAX_LOCAL_DISTANCE){
                         taskPost.setDistance(getDistance(taskPost.getLatLonLocation()));
