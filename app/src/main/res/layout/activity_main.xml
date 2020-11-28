@@ -19,7 +19,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
             android:background="#E8E8E7"
             android:layout_gravity="end"
             android:gravity="right|center"
@@ -60,6 +59,7 @@
                 android:layout_width="wrap_content"
                 android:onClick="goToProfileOnClickButton"
                 android:gravity="center"
+                android:layout_marginRight="5dp"
                 android:layout_height="wrap_content">
 
 
@@ -249,7 +249,7 @@
                 android:layout_margin="5dp"
                 android:background="@drawable/rounded_edit_text"
                 android:layout_height="wrap_content"
-                android:onClick="gotToMyPostsOnButtonClick"
+                android:onClick="gotToNewApplicantsActivity"
                 android:text="New Applicants"/>
 
         </LinearLayout>

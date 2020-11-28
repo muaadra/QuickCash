@@ -3,6 +3,7 @@ package com.softeng.quickcash;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import androidx.test.core.app.ActivityScenario;
@@ -203,6 +204,8 @@ public class PostATaskTest {
                     @Override
                     public void perform(PostATaskActivity activity) {
                         ((Button)activity.findViewById(R.id.applicantsButton)).setVisibility(View.VISIBLE);
+                        ((LinearLayout)activity.findViewById(R.id.bottomBar)).setVisibility(View.VISIBLE);
+
                     }
                 });
 
@@ -217,6 +220,7 @@ public class PostATaskTest {
                 new ActivityScenario.ActivityAction<PostATaskActivity>() {
                     @Override
                     public void perform(PostATaskActivity activity) {
+                        ((LinearLayout)activity.findViewById(R.id.bottomBar)).setVisibility(View.VISIBLE);
                         ((Button)activity.findViewById(R.id.payEmployee)).setVisibility(View.VISIBLE);
                     }
                 });

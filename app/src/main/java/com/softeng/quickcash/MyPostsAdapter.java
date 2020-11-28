@@ -11,7 +11,12 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * this class is the adapter for "My posts" activity recyclerView
@@ -21,13 +26,16 @@ import java.util.ArrayList;
 
 public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.ListItem> {
     private ArrayList<TaskPost> posts;
+    final FirebaseDatabase db;
 
     /**
      * constructor
      * @param posts array of TaskPost objects to show on the list
      */
-    public MyPostsAdapter(ArrayList<TaskPost> posts) {
+    public MyPostsAdapter(ArrayList<TaskPost> posts, FirebaseDatabase db) {
         this.posts = posts;
+        this.db = db;
+
     }
 
     //Create new views (invoked by the layout manager)
@@ -47,7 +55,6 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.ListItem
         int pos = posts.size() - (position + 1);//to reverse order
 
         listItem.postTitle.setText(posts.get(pos).getTaskTitle());
-
         //set description and shorten length if needed
         String desc = posts.get(pos).getTaskDescription();
         if(desc.length() > 20){
@@ -64,8 +71,34 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.ListItem
 
         listItem.jobIcon.setBackgroundResource(id);
 
+        //find if this post has new applicants
+        boolean newApplicant = false;
+        if(posts.get(pos).getApplicants() != null){
+            for (Map.Entry<String, Integer> entry : posts.get(pos).getApplicants().entrySet()) {
+                if(entry.getValue() == 1){
+                    newApplicant = true;
+                    ((TextView)listItem.mainView.findViewById(R.id.newApplicants)).setText("NEW APPLICANT(S)");
+                    entry.setValue(0);
+                }
+            }
+        }
+
+        if(newApplicant){
+            clearApplicantsFlags(posts.get(pos), listItem.mainView.getContext());
+        }
     }
 
+
+    private void clearApplicantsFlags(TaskPost post, Context context) {
+        String path = "users/"+ UserStatusData.getUserID(context) +"/TaskPosts/"
+                + post.getPostId() + "/Applicants/";
+        new DbWrite<HashMap<String,Integer>>(path,post.getApplicants(),db) {
+            @Override
+            public void writeResult(HashMap<String,Integer> userdata) {
+            }
+        };
+
+    }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override

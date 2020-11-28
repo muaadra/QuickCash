@@ -16,6 +16,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * this class represents the "My posts" activity, it displays all user's posts
@@ -33,7 +34,6 @@ public class MyPosts extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_posts);
     }
-
 
 
     @Override
@@ -62,7 +62,7 @@ public class MyPosts extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
 
-        RecyclerView.Adapter mAdapter = new MyPostsAdapter(posts);
+        RecyclerView.Adapter mAdapter = new MyPostsAdapter(posts,db);
         recyclerView.setAdapter(mAdapter);
 
         if(posts != null && posts.size() > 0){
@@ -93,7 +93,6 @@ public class MyPosts extends AppCompatActivity {
                     if(taskPost != null){
                         posts.add(taskPost);
                     }
-                    Log.d("post",posts.get(posts.size()-1).getPostId());
                 }
                 taskPosts = posts;
 

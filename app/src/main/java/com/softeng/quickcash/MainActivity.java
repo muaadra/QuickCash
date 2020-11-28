@@ -2,7 +2,9 @@ package com.softeng.quickcash;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.text.Layout;
@@ -28,7 +30,9 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -177,23 +181,52 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             bell.setVisibility(View.INVISIBLE);
             return;
         }
-        String path = "users/" + userID + "/Notifications/NewTasksNotification";
+        String path = "users/" + userID;
 
         final Drawable bellOn = ContextCompat.getDrawable(this, R.drawable.bell_on);
         final Drawable bellOff = ContextCompat.getDrawable(this, R.drawable.bell);
         final Button newTasks = ((Button)findViewById(R.id.goToNewTasks));
+        final Button newApplicant = ((Button)findViewById(R.id.newApplicantsButton));
 
 
-        new DbRead<Integer>(path, Integer.class, db) {
+
+        new DbRead<DataSnapshot>(path, DataSnapshot.class, db) {
             @Override
-            public void getReturnedDbData(Integer dataFromDb) {
-                if(dataFromDb != null && dataFromDb != 0){
+            public void getReturnedDbData(DataSnapshot dataFromDb) {
+                boolean turnBellOn = false;
+                //new applications to my job posts
+                DataSnapshot userPosts = dataFromDb.child("/TaskPosts");
+                //loop through all children in path
+                for (DataSnapshot post : userPosts.getChildren()) {
+                    TaskPost taskPost = (TaskPost) post.getValue(TaskPost.class);
+                    if(taskPost != null && taskPost.getApplicants() != null){
+                        for (Map.Entry<String, Integer> entry : taskPost.getApplicants().entrySet()) {
+                            if(entry.getValue() == 1){
+                                newApplicant.setTextColor(Color.parseColor("#02ad2d"));
+                                turnBellOn = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                //new tasks notifications
+                Integer newTaskOn = dataFromDb.child("/Notifications/NewTasksNotification").getValue(Integer.class);
+                if(newTaskOn != null){
+                    if(newTaskOn != 0){
+                        turnBellOn = true;
+                        newTasks.setTextColor(Color.parseColor("#02ad2d"));
+                    }
+                }
+
+                if(turnBellOn){
                     bell.setBackground(bellOn);
-                    newTasks.setTextColor(Color.parseColor("#02ad2d"));
                 }else {
                     bell.setBackground(bellOff);
                     newTasks.setTextColor(Color.BLACK);
+                    newApplicant.setTextColor(Color.BLACK);
                 }
+
             }
         };
     }
@@ -357,6 +390,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
+    /**
+     * runs when "new applicants" button is clicked
+     */
+    public void gotToNewApplicantsActivity(View view) {
+        ((RelativeLayout)findViewById(R.id.notificationMenu)).setVisibility(View.INVISIBLE);
+        Intent intent = new Intent(this, MyPosts.class);
+        startActivity(intent);
+    }
+
     private void checkIfUserHasAProfile(){
         String userId = UserStatusData.getEmail(this).replace(".", ";");
         //path to database object
@@ -445,6 +487,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
         }
         ((TextView)findViewById(R.id.goToProfile)).setText(userFirstChar);
+
+        String profileIconColors[] = {"#81b835", "#288a9e","#f5af0c","#4193bf", "#d48037", "#373ad4", "#4CAF50"};
+        int iconColor = Color.parseColor(profileIconColors[((userFirstChar.charAt(0))%profileIconColors.length)]);
+
+        ((Button)findViewById(R.id.goToProfile)).getBackground().setColorFilter(iconColor, PorterDuff.Mode.SRC_ATOP);
     }
 
     /**

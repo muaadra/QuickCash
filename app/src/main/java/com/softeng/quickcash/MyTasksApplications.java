@@ -71,6 +71,9 @@ public class MyTasksApplications extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
 
+        //sort list to show latest first
+        Collections.sort(posts,new LatestDateSort(false));
+
         RecyclerView.Adapter mAdapter = new MyTasksApplicationsAdapter(posts, fbStorage);
         recyclerView.setAdapter(mAdapter);
 

@@ -2,6 +2,7 @@ package com.softeng.quickcash;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -84,9 +85,17 @@ public class MyTasksApplicationsAdapter extends RecyclerView.Adapter<MyTasksAppl
         float distanceToPost =((int)(post.getDistance()/10))/100f;
         listItem.postDistance.setText(distanceToPost+ "km away");
 
+
+        TextView statusTextV = ((TextView)listItem.mainView.findViewById(R.id.Accepted));
         if(post.getAssignedEmployee().equals(myID)
         && !post.isCompleted() && !post.isPostDeleted()){
-            ((TextView)listItem.mainView.findViewById(R.id.Accepted)).setVisibility(View.VISIBLE);
+            statusTextV.setVisibility(View.VISIBLE);
+        }else if(post.getAssignedEmployee().equals(myID)
+                && post.isCompleted()){
+            statusTextV.setVisibility(View.VISIBLE);
+            statusTextV.setText("*Completed*");
+            statusTextV.setTextColor(Color.parseColor("#6f03fc"));
+
         }
 
     }
