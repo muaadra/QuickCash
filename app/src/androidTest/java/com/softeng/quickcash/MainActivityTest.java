@@ -3,6 +3,7 @@ package com.softeng.quickcash;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -275,6 +276,23 @@ public class MainActivityTest {
         onView(withId(R.id.newTaskNotificationLayout)).check(matches(isDisplayed()));
     }
 
+    @Test
+    public void goToNewApplicantsNotification()  {
+        //setup, making sure user is signed in
+        activityScenarioRule.getScenario().onActivity(
+                new ActivityScenario.ActivityAction<MainActivity>() {
+                    @Override
+                    public void perform(MainActivity activity) {
+                        ((Button)activity.findViewById(R.id.bell)).setVisibility(View.VISIBLE);
+
+                    }
+                });
+        onView(withId(R.id.bell)).perform(click());
+        onView(withId(R.id.newApplicantsButton)).perform(click());
+
+        //check screen is displayed
+        onView(withId(R.id.myPostsLayout)).check(matches(isDisplayed()));
+    }
      /**
      * clear all data from SharedPreferences
      */
