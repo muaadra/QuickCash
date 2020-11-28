@@ -25,16 +25,27 @@
             android:gravity="center"
             android:layout_marginBottom="5dp"
 
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:fontFamily="sans-serif-black"
-                android:gravity="center"
+                android:gravity="right"
                 android:text="Profile"
                 android:textColor="#FFFFFF"
                 android:textSize="50sp" />
+            <Button
+                android:id="@+id/signOut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/rounded_edit_text"
+                android:onClick="signInOrOutOnClickButton"
+                android:text="Sign out" />
 
 
         </LinearLayout>
@@ -64,7 +75,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:layout_marginLeft="20dp"
-                android:layout_marginRight="30dp"
+                android:layout_marginRight="10dp"
                 android:background="@drawable/rounded_edit_text"
                 android:onClick="gotToMyApplications"
                 android:text="My Applications" />
@@ -172,12 +183,18 @@
                     android:orientation="vertical">
 
                     <Button
-                        android:id="@+id/signOut"
-                        android:layout_width="164dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:onClick="signInOrOutOnClickButton"
-                        android:text="Sign out" />
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/rounded_button"
+                        android:onClick="goToSubscription"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:text="Subscriptions"
+                        android:textColor="#FFFFFF" />
+
+
 
                     <TextView
                         android:id="@+id/textViewEditProfileConfirm"

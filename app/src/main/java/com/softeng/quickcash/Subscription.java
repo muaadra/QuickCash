@@ -45,7 +45,7 @@ public class Subscription extends AppCompatActivity {
     }
 
     private void voidGetSubscriptionsFromDB(){
-        String path = "users/"+ UserStatusData.getUserID(this) +"/Subscriptions";
+        String path = "users/"+ UserStatusData.getUserID(this) +"/TaskSubscriptions";
 
         //read data from database
         DbRead<DataSnapshot> dbRead = new DbRead<DataSnapshot>(path,DataSnapshot.class, db) {
@@ -73,7 +73,7 @@ public class Subscription extends AppCompatActivity {
     public void subscribeToTasks(View v){
         ArrayList<Boolean> subscriptions  = getSelectedItems();
         //path where you want to write data to
-        String path = "users/"+ UserStatusData.getUserID(this) +"/Subscriptions";
+        String path = "users/"+ UserStatusData.getUserID(this) +"/TaskSubscriptions";
 
         new DbWrite< ArrayList<Boolean>>(path,subscriptions,db) {
             @Override

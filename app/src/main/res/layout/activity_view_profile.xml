@@ -1,27 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/viewProfileLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/viewProfileLayout"
-    tools:context=".ViewProfile" >
+    tools:context=".ViewProfile">
 
     <LinearLayout
         android:layout_width="409dp"
-        android:layout_height="729dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="match_parent"
         android:background="#FFFFFF"
+        android:orientation="vertical"
 
-        app:layout_constraintTop_toTopOf="parent">
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="120dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="10dp"
             android:background="#00BCD4"
             android:orientation="vertical">
 
@@ -52,9 +49,33 @@
                     android:id="@+id/profileImage_VP"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:layout_marginBottom="8dp"
                     android:layout_gravity="center"
+                    android:layout_marginBottom="8dp"
                     app:srcCompat="@drawable/defaultavatar" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/r5"
+                        android:tag="5"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        app:srcCompat="@drawable/rating_star" />
+                    <TextView
+                        android:id="@+id/profileRatings"
+                        android:layout_width="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:gravity="center"
+                        android:textSize="30sp"
+                        android:layout_height="match_parent"
+                        android:text="-/5 (no ratings yet)"
+                        />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -71,13 +92,13 @@
 
                     <TextView
                         android:id="@+id/profileName"
-                        android:padding="5dp"
                         android:layout_width="284dp"
                         android:layout_height="35dp"
                         android:layout_gravity="center"
                         android:background="@drawable/rounded_edit_text"
                         android:ems="10"
-                        android:inputType="textPersonName" />
+                        android:inputType="textPersonName"
+                        android:padding="5dp" />
 
                     <TextView
                         android:id="@+id/textViewProfileConfirm"
@@ -109,7 +130,6 @@
                 </LinearLayout>
 
 
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -119,30 +139,30 @@
                         android:id="@+id/textViewEditProfileConfirm"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="#302D2D"
-                        android:gravity="center"/>
+                        android:gravity="center"
+                        android:textColor="#302D2D" />
 
                     <TextView
                         android:id="@+id/textViewDeleteProfileConfirm"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="#FF0000"
-                        android:layout_gravity="center"/>
+                        android:layout_gravity="center"
+                        android:textColor="#FF0000" />
 
                 </LinearLayout>
 
 
                 <Button
                     android:id="@+id/acceptApplicant"
-                    android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:text="Accept Applicant"
                     android:onClick="acceptApplicant"
+                    android:text="Accept Applicant"
                     android:visibility="invisible" />
 
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

@@ -1,56 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/applicantsLayout"
+    android:id="@+id/myPostsLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Applicants">
-
+    android:orientation="vertical"
+    tools:context=".MyPosts">
 
     <LinearLayout
-        android:layout_width="409dp"
-        android:layout_height="729dp"
-        android:orientation="vertical"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="1dp">
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:gravity="center"
+        android:background="#F3F3F3"
+        android:orientation="vertical">
 
-        <LinearLayout
+
+        <TextView
+            android:id="@+id/textView11"
             android:layout_width="match_parent"
-            android:layout_height="92dp"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:fontFamily="sans-serif-black"
+            android:gravity="center"
+            android:text="Applicants"
+            android:textColor="#673AB7"
+            android:textSize="35dp" />
 
-            <TextView
-                android:id="@+id/textView9"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Applicants" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="438dp"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="333dp"
-                android:layout_height="407dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/applicantsRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"/>
     </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="390dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+
+        android:background="@drawable/rounded_edit_text"
+
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/emptyStatusMyPosts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:text="@string/noApplicantsYet"
+            android:textSize="16sp" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:padding="10dp"
+            android:id="@+id/applicantsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:autofillHints="Empty"
+            android:scrollbars="vertical">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </LinearLayout>
+
+
+
+
+
+</LinearLayout>

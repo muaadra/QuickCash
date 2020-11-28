@@ -36,13 +36,13 @@
 
         <Button
             android:id="@+id/deletedPosts"
-            android:layout_width="150dp"
+            android:layout_width="297dp"
             android:layout_height="35dp"
             android:layout_gravity="center"
             android:layout_marginRight="20dp"
-            android:background="#CFCFCF"
+            android:background="#C8C8C8"
             android:onClick="showDeletedPostsOnClickButton"
-            android:text="Show Deleted"
+            android:text="Show Deleted/Completed posts"
             android:textColor="#FFFFFF"
             android:textSize="16sp" />
     </LinearLayout>

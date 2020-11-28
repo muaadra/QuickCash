@@ -269,4 +269,9 @@ public class EditProfile extends AppCompatActivity {
         Intent intent = new Intent(this, WelcomeActivity.class);
         startActivity(intent);
     }
+
+    public void goToSubscription(View v){
+        Intent intent = new Intent(this, Subscription.class);
+        startActivity(intent);
+    }
 }

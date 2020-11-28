@@ -2,6 +2,7 @@ package com.softeng.quickcash;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,7 +15,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class Rate extends AppCompatActivity {
     private int rating;
     private ImageView stars[] = new ImageView[5];
-    private String userIDToBeRated = "m@m;m"; ///**********place holder, keep it for now
+    private String userIDToBeRated;
     private userProfile userToBeRatedProfile;
     private String postID;
     private final FirebaseDatabase db = FirebaseDatabase.getInstance();
@@ -50,8 +51,10 @@ public class Rate extends AppCompatActivity {
      * runs when a start is clicked
      */
     public void starOnClick(View v){
-
         rating = Integer.parseInt(v.getTag().toString());
+        showStars();
+    }
+    private void showStars(){
         ((TextView) findViewById(R.id.ratingLabel)).setText(rating + "");
 
         //reset stars
@@ -88,12 +91,22 @@ public class Rate extends AppCompatActivity {
 
     private void getUserInfoFromDB(){
         //read data from database
-        String path = "users/"+ userIDToBeRated +"/Profile";
+        String path = "users/";
 
-        new DbRead<userProfile>(path, userProfile.class, db) {
+        new DbRead<DataSnapshot>(path, DataSnapshot.class, db) {
             @Override
-            public void getReturnedDbData(userProfile dataFromDb) {
-                showOnUI(dataFromDb);
+            public void getReturnedDbData(DataSnapshot dataFromDb) {
+                userProfile profile = dataFromDb.child(userIDToBeRated +"/Profile").getValue(userProfile.class);
+                //check if already rated
+                Integer prevRating = dataFromDb.child(userIDToBeRated + "/Ratings/" + postID).getValue(Integer.class);
+                if(prevRating != null){
+                    rating = prevRating;
+                    showStars();
+                }
+
+                if(profile != null){
+                    showOnUI(profile);
+                }
             }
         };
     }
@@ -101,6 +114,15 @@ public class Rate extends AppCompatActivity {
     private void showOnUI(userProfile dataFromDb){
         userToBeRatedProfile = dataFromDb;
         ((TextView)findViewById(R.id.userToBeRated)).setText(userToBeRatedProfile.getfName());
+    }
+
+    /**
+     * runs when author name button is clicked
+     */
+    public void goToViewProfile(View view) {
+        Intent intent = new Intent(this, ViewProfile.class);
+        intent.putExtra("userID",userIDToBeRated);
+        startActivity(intent);
     }
 
 

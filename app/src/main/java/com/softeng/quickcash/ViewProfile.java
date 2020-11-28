@@ -10,8 +10,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ViewProfile extends AppCompatActivity {
     final FirebaseDatabase db = FirebaseDatabase.getInstance();
@@ -55,14 +60,18 @@ public class ViewProfile extends AppCompatActivity {
         getProfileImage();
 
         //path to database object
-        String path = "users/"+ profileUserId +"/Profile";
+        String path = "users/";
 
         //read data from database
-        new DbRead<userProfile>(path, userProfile.class, db) {
+        new DbRead<DataSnapshot>(path, DataSnapshot.class, db) {
             @Override
-            public void getReturnedDbData(userProfile dataFromDb) {
+            public void getReturnedDbData(DataSnapshot dataFromDb) {
+                userProfile profile = dataFromDb.child(profileUserId +"/Profile").getValue(userProfile.class);
                 //after data is received from db call checkDbData
-                showPostDataOnUI(dataFromDb);
+                if(profile != null){
+                    showPostDataOnUI(profile);
+                }
+                showRatings(dataFromDb);
             }
         };
 
@@ -77,6 +86,23 @@ public class ViewProfile extends AppCompatActivity {
         ((TextView)findViewById(R.id.profileName)).setText(userProfile.getfName());
 
         ((TextView)findViewById(R.id.aboutMe_Box)).setText(userProfile.getAboutMe());
+
+    }
+
+    private void showRatings(DataSnapshot dataFromDb){
+
+        ArrayList<Integer> ratingsList = DataSnapShotToArrayList.getArrayList(
+                dataFromDb.child(profileUserId + "/Ratings"),Integer.class);
+
+        if(ratingsList.size() > 0){
+            int rating = 0;
+            for (int i = 0; i < ratingsList.size(); i++) {
+                rating += ratingsList.get(i);
+            }
+
+            rating = (int)((float)rating/ratingsList.size());
+            ((TextView)findViewById(R.id.profileRatings)).setText(rating + "/5");
+        }
 
     }
 

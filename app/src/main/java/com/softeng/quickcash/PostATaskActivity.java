@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -32,6 +33,7 @@ import java.util.List;
 public class PostATaskActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
 
+    public static final int REQUEST_CODE = 99;
     private MyLocation myLocation;
     final FirebaseDatabase db = FirebaseDatabase.getInstance();
 
@@ -39,16 +41,31 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
     private String newPostID;
     TaskPost taskPostFromDB;
     TaskPost writtenPost;
+    DataSnapshot root;
+    boolean canRate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_a_task);
 
+        getDbRoot();
+
         spinnerSetup();
 
-        showDataOnUI();
+    }
 
+
+
+    private void getDbRoot() {
+        String dBPath = "users/" ;
+
+        new DbRead<DataSnapshot>(dBPath,DataSnapshot.class, db) {
+            @Override
+            public void getReturnedDbData(DataSnapshot dataFromDb) {
+                root = dataFromDb;
+            }
+        };
     }
 
     private void showDataOnUI() {
@@ -59,6 +76,8 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
             postID = bundle.getString("postID");
             if(postID != null){
                 retrieveDataFromDbAndDisplay(postID);
+                ((Button) findViewById(R.id.applyToTask)).setText("RePost");
+                ((LinearLayout) findViewById(R.id.bottomBar)).setVisibility(View.VISIBLE);
                 showApplicantsButton();
             }
 
@@ -67,12 +86,12 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
             //new task post
             getLocation();
 
-
             ((LinearLayout)findViewById(R.id.deleteButtonParent)).getLayoutParams().width = 0;
         }
     }
 
     private void showApplicantsButton() {
+        if(canRate) return;
         ((Button) findViewById(R.id.applicantsButton)).setVisibility(View.VISIBLE);
     }
 
@@ -108,17 +127,17 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
 
         ((TextView)findViewById(R.id.GPSLocation)).setText(address);
 
+
         if(dataFromDb.getAssignedEmployee() != null
-                && !dataFromDb.getAssignedEmployee().equals("")){
+                && !dataFromDb.getAssignedEmployee().equals("") && !canRate){
             ((Button) findViewById(R.id.payEmployee)).setVisibility(View.VISIBLE);
         }
 
         if(dataFromDb.isPostDeleted()){
             ((Button) findViewById(R.id.applyToTask)).setWidth(0);
             ((LinearLayout)findViewById(R.id.deleteButtonParent)).getLayoutParams().width = 0;
-            ((LinearLayout)findViewById(R.id.postButtonParent)).getLayoutParams().width = 0;
+            //((LinearLayout)findViewById(R.id.postButtonParent)).getLayoutParams().width = 0;
             ((TextView) findViewById(R.id.postATaskStatus)).setText("can't post, view only");
-
         }
     }
 
@@ -224,6 +243,11 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
      * runs when a user clicks on the post button
      */
     public void postATaskOnButtonClick(View view){
+        if(canRate){
+            goToRateActivity();
+            return;
+        }
+
         if(!areRequiredFieldsProvidedAndShowStatus()){
             return;
         }
@@ -243,6 +267,17 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
         }
 
     }
+
+    /**
+     * runs when a user clicks on "rate" button
+     */
+    private void goToRateActivity() {
+        Intent intent = new Intent(this, Rate.class);
+        intent.putExtra("userIDToBeRated", taskPostFromDB.getAssignedEmployee());
+        intent.putExtra("postID",postID);
+        startActivity(intent);
+    }
+
 
     private boolean areRequiredFieldsProvidedAndShowStatus(){
         //getting value from ui
@@ -315,14 +350,31 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
         };
     }
 
+    /**
+     * runs when a user clicks on the "applicants" button
+     */
     public void goToApplicantsList(View view) {
         Intent intent = new Intent(this, Applicants.class);
         intent.putExtra("postID", postID);
         startActivity(intent);
     }
 
+    /**
+     * runs when a user clicks on "pay" button
+     */
     public void goToPayEmployee(View view) {
+        userProfile employeeProfile = null;
+        if(root != null){
+            employeeProfile =
+            root.child(taskPostFromDB.getAssignedEmployee() + "/Profile").getValue(userProfile.class);
+        }
+        Intent intent = new Intent(this, PayPalActivity.class);
+        intent.putExtra("postID", postID);
 
+        if(employeeProfile != null){
+            intent.putExtra("userName", employeeProfile.getfName());
+        }
+        startActivityForResult(intent, REQUEST_CODE);
     }
 
     public void taskCompleted(View v){
@@ -344,6 +396,13 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
                 getSubScribedUsers(dataFromDb);
             }
         };
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showDataOnUI();
+        showPaymentSuccessOnUI();
     }
 
     private void getSubScribedUsers(DataSnapshot dataFromDb) {
@@ -377,10 +436,7 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
     }
 
     private void sendNotifications(ArrayList<String> subscribedUsers) {
-        //path to database object
-
-
-        //add new notification
+          //add new notification
         for (int i = 0; i < subscribedUsers.size(); i++) {
             //raise new notification flag
             String path = "users/"+ subscribedUsers.get(i) +"/Notifications/NewTasksNotification";
@@ -409,6 +465,30 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
     }
 
 
+    private void showPaymentSuccessOnUI() {
+        String userId = UserStatusData.getEmail(this).replace(".", ";");
+        String dBPath = "users/"+ userId +"/TaskPosts/" + postID ;
+
+        new DbRead<TaskPost>(dBPath,TaskPost.class, db) {
+            @Override
+            public void getReturnedDbData(TaskPost dataFromDb) {
+                if(dataFromDb != null && dataFromDb.isCompleted()){
+                    //Task Completed View
+                    canRate = true;
+                    ((TextView) findViewById(R.id.costEditTxt)).setText(dataFromDb.getTotalPayed() + "");
+                    ((TextView) findViewById(R.id.textView10)).setText(" CAD");
+                    ((TextView) findViewById(R.id.textView8)).setText("Total Paid");
+                    ((LinearLayout)findViewById(R.id.deleteButtonParent)).setLayoutParams(new LinearLayout.LayoutParams(0, 0));
+                    ((Button) findViewById(R.id.applyToTask)).setText("Rate");
+                    ((TextView) findViewById(R.id.textView11)).setText("TASK COMPLETED");
+                    ((TextView) findViewById(R.id.textView11)).setTextColor(Color.RED);
+
+                    ((Button) findViewById(R.id.payEmployee)).setVisibility(View.INVISIBLE);
+                    ((Button) findViewById(R.id.applicantsButton)).setVisibility(View.INVISIBLE);
+                }
+            }
+        };
+    }
 
     @Override
     public void onDateSet(android.widget.DatePicker view, int year, int month, int dayOfMonth) {

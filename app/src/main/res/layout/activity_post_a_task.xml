@@ -171,7 +171,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
 
         android:orientation="vertical">
 
@@ -230,22 +231,35 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/bottomBar"
         android:layout_width="match_parent"
-        android:layout_height="69dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:gravity="center"
+        android:visibility="invisible"
+
+        android:background="#DADADA"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="center"
+
             android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_marginTop="5dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="10dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal">
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:gravity="right"
+                    android:layout_height="wrap_content">
                 <Button
                     android:id="@+id/applicantsButton"
                     android:layout_width="wrap_content"
@@ -256,16 +270,27 @@
                     android:paddingLeft="10dp"
                     android:onClick="goToApplicantsList"
                     android:text="Applicants"
+                    android:layout_marginLeft="15dp"
                     android:visibility="invisible" />
-                <Button
-                    android:id="@+id/payEmployee"
-                    android:layout_width="230dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/rounded_edit_text"
-                    android:gravity="center|center_vertical"
-                    android:onClick="goToPayEmployee"
-                    android:text="Pay Employee"
-                    android:visibility="invisible" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:layout_height="wrap_content">
+                    <Button
+                        android:id="@+id/payEmployee"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_edit_text"
+                        android:gravity="center|center_vertical"
+                        android:onClick="goToPayEmployee"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginRight="10dp"
+                        android:text="Pay Employee"
+                        android:visibility="invisible" />
+                </LinearLayout>
+
 
             </LinearLayout>
 

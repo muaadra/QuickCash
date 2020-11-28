@@ -24,8 +24,10 @@
     <string name="costMissingPostATask">compensation field is required</string>
     <string name="emptyStringMessage">You don\'t have any posts yet, you can start by clicking on the \'Post A New Task\' button below \n------------------</string>
     <string name="noDeletedPosts">You don\'t have any deleted posts \n------------------</string>
+    <string name="noApplicantsYet">You don\'t have any applicants to your post yet \n------------------</string>
+
     <string name="emptyRVMyApplications">You Haven\'t applied to any tasks yet \n------------------</string>
-    <string name="showDeletedPosts">show Deleted</string>
+    <string name="showDeletedPosts">Show Deleted/Completed posts</string>
     <string name="emptyTaskMessage">There are no tasks posted</string>
 
 </resources>

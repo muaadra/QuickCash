@@ -13,10 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NewTasksNotifications"></activity>
-        <activity android:name=".Rate"></activity>
-        <activity android:name=".ApplicantNotification"></activity>
-        <activity android:name=".Subscription"></activity>
+        <activity android:name=".PayPalActivity"></activity>
+        <activity android:name=".NewTasksNotifications" />
+        <activity android:name=".Rate" />
+        <activity android:name=".ApplicantNotification" />
+        <activity android:name=".Subscription" />
         <activity android:name=".MyTasksApplications" />
         <activity android:name=".Applicants" />
         <activity android:name=".ViewProfile" />

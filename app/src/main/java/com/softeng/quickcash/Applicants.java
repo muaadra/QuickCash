@@ -1,6 +1,7 @@
 package com.softeng.quickcash;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 
@@ -18,14 +20,20 @@ public class Applicants extends AppCompatActivity {
     private final FirebaseDatabase db = FirebaseDatabase.getInstance();
     private ArrayList<String> applicantNames;
     private ArrayList<userProfile> applicantProfiles;
+    int emptyListTextViewOriginalHeight = -1; // to store original height of the TextView
     private String postID;
     private String userID;
+    private FirebaseStorage fbStorage;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_job_applicants);
+
+        //create instance of FirebaseStorage
+        fbStorage = FirebaseStorage.getInstance();
     }
 
 
@@ -111,13 +119,27 @@ public class Applicants extends AppCompatActivity {
      * This method will create the recycler view of user Profiles or Applicants to the job in which have profiles.
      */
     public void createRecyclerView(ArrayList<userProfile> userProfiles) {
+        //a message shows/expands in the recycleView if it's empty and collapses otherwise
+        TextView emptyListTV = (TextView)findViewById(R.id.emptyStatusMyPosts);
+        if(emptyListTextViewOriginalHeight == -1){
+            emptyListTextViewOriginalHeight = emptyListTV.getHeight();
+        }
+
         applicantProfiles = userProfiles;
 
         RecyclerView recyclerView = findViewById(R.id.applicantsRecyclerView);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new ApplicantsAdapter(applicantProfiles, postID);
+        mAdapter = new ApplicantsAdapter(applicantProfiles, postID,fbStorage);
         recyclerView.setAdapter(mAdapter);
+
+
+        if(applicantProfiles != null && applicantProfiles.size() > 0){
+            //hide message that says the list is empty
+            emptyListTV.setHeight(0);
+        }else {
+            emptyListTV.setHeight(emptyListTextViewOriginalHeight);
+        }
 
     }
 

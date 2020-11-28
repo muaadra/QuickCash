@@ -16,6 +16,7 @@ public class TaskPost {
     private String latLonLocation;
     private float distance;
     private boolean isCompleted;
+    private String totalPayed;
     private HashMap<String,Integer> Applicants;
 
     public TaskPost() {
@@ -139,5 +140,13 @@ public class TaskPost {
 
     public void setApplicants(HashMap<String, Integer> applicants) {
         this.Applicants = applicants;
+    }
+
+    public String getTotalPayed() {
+        return totalPayed;
+    }
+
+    public void setTotalPayed(String totalPayed) {
+        this.totalPayed = totalPayed;
     }
 }

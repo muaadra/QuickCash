@@ -3,6 +3,7 @@ package com.softeng.quickcash;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -25,14 +26,20 @@ public class ViewPost extends AppCompatActivity {
     private String postID;
     private String authorID;
     DataSnapshot root;
+    boolean isRating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_post);
-        getTaskPostFromDP();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        getTaskPostFromDP();
+    }
 
     private void getTaskPostFromDP(){
         Bundle bundle = getIntent().getExtras();
@@ -79,10 +86,32 @@ public class ViewPost extends AppCompatActivity {
         ((TextView)findViewById(R.id.authorTV)).setText(dataSnapshot.child(task.getAuthor() + "/Profile/fName").getValue(String.class));
 
 
-        if(haveIAppliedToThisTask(task)){
+        if(task.isCompleted() && task.getAssignedEmployee().equals(UserStatusData.getUserID(this))){
+            //employee is viewing the post
+            //rate the employer
+            showRating(task, task.getAuthor());
+            isRating = true;
+        }else if(task.isCompleted() && task.getAssignedEmployee().equals(task.getAuthor())){
+            //employer is viewing the post
+            //rate the employee
+            showRating(task, task.getAssignedEmployee());
+            isRating = true;
+        }else if(haveIAppliedToThisTask(task)){
             ((Button)findViewById(R.id.applyToTask)).setText("Cancel My Application");
         }
     }
+
+    String userIDToBeRated;
+    private void showRating(TaskPost task, String targetUser) {
+        userIDToBeRated = targetUser;
+        ((TextView) findViewById(R.id.taskTile)).setText("TASK COMPLETED");
+        ((TextView) findViewById(R.id.taskTile)).setTextColor(Color.RED);
+        ((TextView) findViewById(R.id.textView10)).setText(" CAD");
+        ((TextView) findViewById(R.id.payPerHourTV)).setText(task.getTotalPayed() + "");
+        ((TextView) findViewById(R.id.textView8)).setText("Total Paid");
+        ((Button)findViewById(R.id.applyToTask)).setText("Rate");
+    }
+
 
 
     private String getAddressFromLonLatOnUI(String latLon){
@@ -105,6 +134,11 @@ public class ViewPost extends AppCompatActivity {
      * runs when apply button is clicked
      */
     public void applyToTask(View v){
+        if(isRating){
+            gotToRateActivity();
+            return;
+        }
+
         if(((Button)findViewById(R.id.applyToTask)).getText()
                 .toString().equals("Cancel My Application")){
             cancelMyApplication();
@@ -133,6 +167,13 @@ public class ViewPost extends AppCompatActivity {
         };
 
         addToMyApplications();
+    }
+
+    private void gotToRateActivity() {
+        Intent intent = new Intent(this, Rate.class);
+        intent.putExtra("userIDToBeRated", userIDToBeRated);
+        intent.putExtra("postID",postID);
+        startActivity(intent);
     }
 
     private void cancelMyApplication(){

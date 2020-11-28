@@ -21,7 +21,7 @@
             android:id="@+id/userPicture"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:background="@drawable/ic_launcher_background" />
+            android:background="@drawable/prifile_placeholder" />
     </LinearLayout>
 
     <LinearLayout
@@ -41,7 +41,7 @@
 
 
         <TextView
-            android:id="@+id/userRating"
+            android:id="@+id/userAbout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="rating" />
