@@ -14,9 +14,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class Rate extends AppCompatActivity {
     private int rating;
-    private ImageView stars[] = new ImageView[5];
+    private ImageView[] stars = new ImageView[5];
     private String userIDToBeRated;
-    private userProfile userToBeRatedProfile;
     private String postID;
     private final FirebaseDatabase db = FirebaseDatabase.getInstance();
 
@@ -25,12 +24,13 @@ public class Rate extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rate);
+
+        findStarViews();
         getPassedArgs();
         getUserInfoFromDB();
-        findStarViews();
     }
 
-    void getPassedArgs(){
+    private void getPassedArgs(){
         Bundle bundle = getIntent().getExtras();
         if(bundle == null){
             return;
@@ -54,12 +54,13 @@ public class Rate extends AppCompatActivity {
         rating = Integer.parseInt(v.getTag().toString());
         showStars();
     }
+
     private void showStars(){
         ((TextView) findViewById(R.id.ratingLabel)).setText(rating + "");
 
         //reset stars
-        for (int i = 0; i < stars.length ; i++) {
-            stars[i].setImageResource(R.drawable.rating_star_grey);
+        for (ImageView star : stars) {
+            star.setImageResource(R.drawable.rating_star_grey);
         }
 
         //set new rating
@@ -112,8 +113,7 @@ public class Rate extends AppCompatActivity {
     }
 
     private void showOnUI(userProfile dataFromDb){
-        userToBeRatedProfile = dataFromDb;
-        ((TextView)findViewById(R.id.userToBeRated)).setText(userToBeRatedProfile.getfName());
+        ((TextView)findViewById(R.id.userToBeRated)).setText(dataFromDb.getfName());
     }
 
     /**
