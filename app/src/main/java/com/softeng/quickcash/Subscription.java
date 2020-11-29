@@ -7,25 +7,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Subscription extends AppCompatActivity {
-    final FirebaseDatabase db = FirebaseDatabase.getInstance();
+    private final FirebaseDatabase db = FirebaseDatabase.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subscription);
-        voidGetSubscriptionsFromDB();
 
+        voidGetSubscriptionsFromDB();
     }
 
     /**
@@ -48,17 +46,18 @@ public class Subscription extends AppCompatActivity {
         String path = "users/"+ UserStatusData.getUserID(this) +"/TaskSubscriptions";
 
         //read data from database
-        DbRead<DataSnapshot> dbRead = new DbRead<DataSnapshot>(path,DataSnapshot.class, db) {
+        new DbRead<DataSnapshot>(path,DataSnapshot.class, db) {
             @Override
             public void getReturnedDbData(DataSnapshot dataFromDb) {
-                showOnUI(dataFromDb);
+                showMySubscriptionsOnUI(dataFromDb);
             }
         };
 
     }
 
-    private void showOnUI(DataSnapshot dataFromDb){
+    private void showMySubscriptionsOnUI(DataSnapshot dataFromDb){
         ArrayList<Boolean> subscriptions = new ArrayList<>();
+
         if(dataFromDb == null){
             createRecyclerView(TaskTypes.getTaskTypes(),subscriptions);
             return;
@@ -66,10 +65,12 @@ public class Subscription extends AppCompatActivity {
 
         subscriptions = DataSnapShotToArrayList.getArrayList(dataFromDb,Boolean.class);
         createRecyclerView(TaskTypes.getTaskTypes(),subscriptions);
-
     }
 
 
+    /**
+     * runs when "Subscribe" button is clicked
+     */
     public void subscribeToTasks(View v){
         ArrayList<Boolean> subscriptions  = getSelectedItems();
         //path where you want to write data to
@@ -96,11 +97,13 @@ public class Subscription extends AppCompatActivity {
         for(int i = 0; i < itemsCount ; i++){
             View view = recyclerView.getLayoutManager().getChildAt(i);
             boolean selected = ((CheckBox)view.findViewById(R.id.listCheckBox)).isChecked();
+
             if(selected){
                 checkedItems.add(true);
             }else {
                 checkedItems.add(false);
             }
+
         }
         return checkedItems;
     }
