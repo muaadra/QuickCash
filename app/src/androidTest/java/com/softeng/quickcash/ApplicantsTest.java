@@ -66,17 +66,5 @@ public class ApplicantsTest {
 
         assertEquals(2,count[0]);
 
-        profiles.remove(0);
-        activityScenarioRule.getScenario().onActivity(
-                new ActivityScenario.ActivityAction<Applicants>() {
-                    @Override
-                    public void perform(Applicants activity) {
-                        activity.createRecyclerView(profiles);
-                        count[0] = (((RecyclerView) activity.findViewById(R.id.applicantsRecyclerView)).getAdapter().getItemCount());
-                    }
-                });
-
-        assertEquals(1,count[0]);
-
     }
 }
