@@ -66,7 +66,7 @@ public class ApplicantsTest {
 
         assertEquals(2,count[0]);
 
-        profiles.remove(1);
+        profiles.remove(0);
         activityScenarioRule.getScenario().onActivity(
                 new ActivityScenario.ActivityAction<Applicants>() {
                     @Override

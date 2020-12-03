@@ -126,6 +126,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void checkIfMyApplicationIsAccepted() {
+        if(!UserStatusData.isUserSignIn(this)){
+            ((Button)findViewById(R.id.myApplicationsMainButton)).setVisibility(View.INVISIBLE);
+            return;
+        }
+
         String path = "users/";
         final String userId = UserStatusData.getUserID(this);
 
