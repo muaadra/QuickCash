@@ -30,22 +30,6 @@ public class SignInActivityTest {
     public ActivityScenarioRule<MainActivity> activityScenarioRule
             = new ActivityScenarioRule<>(MainActivity.class);
 
-    /**
-     * setup method for remove UserStatus Data.
-     */
-    @Before
-    public void setup() {
-        activityScenarioRule.getScenario().onActivity(
-                new ActivityScenario.ActivityAction<MainActivity>() {
-                    @Override
-                    public void perform(MainActivity activity) {
-                        UserStatusData.removeAllUserPreferences(activity);
-                        Intent intent = new Intent(activity, WelcomeActivity.class);
-                        activity.startActivity(intent);
-                    }
-        });
-        onView(withId(R.id.signInButton)).perform(click());
-    }
 
      /**
      * this Junit test if email and password are valid
@@ -65,22 +49,6 @@ public class SignInActivityTest {
         assertTrue(input.isPasswordValid(signUpInfo.get("password")));
     }
 
-    /**
-     * this Ui test if user not found.
-     */
-    @Test
-    public void test_user_not_found() {
-        onView(withId(R.id.input_email)).perform(typeText("signUp1test.com"));
-        onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard());
-
-        onView(withId(R.id.input_password)).perform(typeText("testPassword"));
-        onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard());
-
-        onView(withId(R.id.btn_login)).perform(click());
-        onView(ViewMatchers.isRoot()).perform(ViewActions.closeSoftKeyboard());
-
-        onView(withId(R.id.err_msg_email)).check(matches(isDisplayed()));
-    }
 
 
 }

@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.NoMatchingViewException;
@@ -214,18 +215,16 @@ public class PostATaskTest {
     }
 
     @Test
-    public void goToPayPalPayment()  {
+    public void goToPayPalPayment() throws InterruptedException {
         //setup, making sure user is signed in
         activityScenarioRule.getScenario().onActivity(
                 new ActivityScenario.ActivityAction<PostATaskActivity>() {
                     @Override
                     public void perform(PostATaskActivity activity) {
-                        ((LinearLayout)activity.findViewById(R.id.bottomBar)).setVisibility(View.VISIBLE);
-                        ((Button)activity.findViewById(R.id.payEmployee)).setVisibility(View.VISIBLE);
+                        activity.root = null;
+                        activity.goToPayEmployee(activity.findViewById(R.id.payEmployee));
                     }
                 });
-
-        onView(withId(R.id.payEmployee)).perform(click());
 
         //check screen is displayed
         onView(withId(R.id.paymentLayout)).check(matches(isDisplayed()));

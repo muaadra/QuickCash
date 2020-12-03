@@ -39,6 +39,6 @@ public class WelcomeActivityTest {
     @Test
     public void tapContinueAsGuest() {
         onView(withId(R.id.continueAsGuestButton)).perform(click());
-        onView(withId(R.id.GuestView_Layout));
+        onView(withId(R.id.mainActivityLayOut)).check(matches(isDisplayed()));
     }
 }

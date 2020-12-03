@@ -18,11 +18,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * this class is the adapter for "My posts" activity recyclerView
- *
- * @author Muaad Alrawhani
- */
 
 public class ApplicantNotificationAdapter extends RecyclerView.Adapter<ApplicantNotificationAdapter.ListItem> {
     private ArrayList<TaskPost> posts;

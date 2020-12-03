@@ -235,10 +235,9 @@ public class MainActivityTest {
                 new ActivityScenario.ActivityAction<MainActivity>() {
                     @Override
                     public void perform(MainActivity activity) {
-                        ((Button)activity.findViewById(R.id.bell)).setVisibility(View.VISIBLE);
+                        ((Button)activity.findViewById(R.id.myApplicationsMainButton)).setVisibility(View.VISIBLE);
                     }
                 });
-        onView(withId(R.id.bell)).perform(click());
         onView(withId(R.id.myApplicationsMainButton)).perform(click());
 
         //check screen is displayed
