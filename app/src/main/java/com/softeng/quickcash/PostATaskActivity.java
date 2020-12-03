@@ -136,7 +136,6 @@ public class PostATaskActivity extends AppCompatActivity implements DatePickerDi
         if(dataFromDb.isPostDeleted()){
             ((Button) findViewById(R.id.applyToTask)).setWidth(0);
             ((LinearLayout)findViewById(R.id.deleteButtonParent)).getLayoutParams().width = 0;
-            //((LinearLayout)findViewById(R.id.postButtonParent)).getLayoutParams().width = 0;
             ((TextView) findViewById(R.id.postATaskStatus)).setText("can't post, view only");
         }
     }

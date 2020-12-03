@@ -20,7 +20,7 @@ public class Applicants extends AppCompatActivity {
     private final FirebaseDatabase db = FirebaseDatabase.getInstance();
     private ArrayList<String> applicantNames;
     private ArrayList<userProfile> applicantProfiles;
-    int emptyListTextViewOriginalHeight = -1; // to store original height of the TextView
+    private int emptyListTextViewOriginalHeight = -1; // to store original height of the TextView
     private String postID;
     private String userID;
     private FirebaseStorage fbStorage;

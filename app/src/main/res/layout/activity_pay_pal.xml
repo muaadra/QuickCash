@@ -110,6 +110,7 @@
                 android:layout_gravity="center"
                 android:background="@drawable/rounded_button"
                 android:text="Pay"
+                android:onClick="processPayment"
                 android:textColor="#FFFFFF"
                 android:textSize="22sp" />
         </LinearLayout>

@@ -31,13 +31,10 @@ public class PayPalActivity extends AppCompatActivity {
             .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
             .clientId(PAYPAL_CLIENT_ID);
 
-    Button btnPayNow;
-    EditText edtAmount;
+    private String amount = "";
+    private String postID;
+    private String userName;
 
-    String amount = "";
-
-    String postID;
-    String userName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,21 +42,13 @@ public class PayPalActivity extends AppCompatActivity {
 
         getBundleData();
 
-        //start paypal service
+        startPayPalService();
+    }
+
+    private void startPayPalService() {
         Intent intent = new Intent(this, PayPalService.class);
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION,config);
         startService(intent);
-
-        btnPayNow = findViewById(R.id.btnPay);
-        edtAmount = findViewById(R.id.edtAmount);
-
-        btnPayNow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                processPayment();
-            }
-        });
-
     }
 
     private void getBundleData(){
@@ -70,8 +59,6 @@ public class PayPalActivity extends AppCompatActivity {
             userName = bundle.getString("userName");
             showInfoOnUI();
         }
-
-
     }
 
     private void showInfoOnUI() {
@@ -79,8 +66,12 @@ public class PayPalActivity extends AppCompatActivity {
     }
 
 
-    private void processPayment() {
-        amount = edtAmount.getText().toString();
+    /**
+     * runs when a "pay" is clicked
+     */
+    public void processPayment(View view) {
+        EditText amountEditText = findViewById(R.id.edtAmount);
+        amount = amountEditText.getText().toString();
         PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(String.valueOf(amount)),"CAD",
                 "Employment Pay",PayPalPayment.PAYMENT_INTENT_SALE);
         Intent intent = new Intent(this, PaymentActivity.class);
